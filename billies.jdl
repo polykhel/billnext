@@ -1,0 +1,68 @@
+entity Wallet {
+	id Long required unique
+    walletGroup WalletGroup required
+    name String required
+    amount BigDecimal required
+    currency String
+    remarks String
+}
+
+enum WalletGroup {
+	CASH (Cash)
+    ACCOUNTS (Accounts)
+    CARD (Card)
+    DEBIT ("Debit Card")
+    SAVINGS (Savings)
+    PREPAID ("Top-Up/Prepaid")
+    INVESTMENTS (Investments)
+    OVERDRAFTS (Overdrafts)
+    LOAN (Loan)
+    INSURANCE (Insurance)
+    OTHERS (Others)
+}
+
+entity Activity {
+	id Long required unique
+    date ZonedDateTime required
+    amount BigDecimal required
+    remarks String
+    type ActivityType required
+}
+
+enum ActivityType {
+	INCOME
+    EXPENSE
+}
+
+entity Category {
+	id Long required unique
+    name String required
+    type ActivityType
+}
+
+entity Subcategory {
+	id Long required unique
+    name String required
+}
+
+relationship ManyToOne {
+    Category{user required} to User
+	Wallet{user required} to User
+    Activity{user required} to User
+    Activity{wallet required} to Wallet{activity}
+    Activity{category required} to Category{activity}
+    Subcategory{category required} to Category
+}
+
+// Set pagination options
+paginate Wallet, Category, Subcategory with infinite-scroll
+paginate Activity with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

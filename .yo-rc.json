@@ -44,6 +44,8 @@
     "packageFolder": "com/polykhel/billies",
     "clientPackageManager": "npm",
     "languages": ["en"],
-    "otherModules": []
+    "otherModules": [],
+    "entities": ["Wallet", "Activity", "Category", "Subcategory"],
+    "lastLiquibaseTimestamp": 1615719997000
   }
 }

@@ -1,0 +1,9 @@
+{
+  "billiesApp": {
+    "ActivityType": {
+      "null": "",
+      "INCOME": "INCOME",
+      "EXPENSE": "EXPENSE"
+    }
+  }
+}

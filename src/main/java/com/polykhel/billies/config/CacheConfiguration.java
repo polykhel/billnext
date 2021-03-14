@@ -49,6 +49,12 @@ public class CacheConfiguration {
             createCache(cm, com.polykhel.billies.domain.User.class.getName());
             createCache(cm, com.polykhel.billies.domain.Authority.class.getName());
             createCache(cm, com.polykhel.billies.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.polykhel.billies.domain.Wallet.class.getName());
+            createCache(cm, com.polykhel.billies.domain.Wallet.class.getName() + ".activities");
+            createCache(cm, com.polykhel.billies.domain.Activity.class.getName());
+            createCache(cm, com.polykhel.billies.domain.Category.class.getName());
+            createCache(cm, com.polykhel.billies.domain.Category.class.getName() + ".activities");
+            createCache(cm, com.polykhel.billies.domain.Subcategory.class.getName());
             // jhipster-needle-caffeine-add-entry
         };
     }
