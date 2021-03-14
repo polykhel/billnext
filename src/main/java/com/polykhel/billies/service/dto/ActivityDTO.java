@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
 /**
  * A DTO for the {@link com.polykhel.billies.domain.Activity} entity.
  */
-public class ActivityDTO implements Serializable {
+public class ActivityDTO extends AbstractAuditingDTO implements Serializable {
 
     @NotNull
     private Long id;

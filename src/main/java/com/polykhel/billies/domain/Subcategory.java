@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "subcategory")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Subcategory implements Serializable {
+public class Subcategory extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -55,5 +55,6 @@
   "readOnly": false,
   "embedded": false,
   "applications": "*",
-  "changelogDate": "20210314110634"
+  "changelogDate": "20210314110634",
+  "enableEntityAudit": true
 }

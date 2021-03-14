@@ -55,6 +55,7 @@ public class CacheConfiguration {
             createCache(cm, com.polykhel.billies.domain.Category.class.getName());
             createCache(cm, com.polykhel.billies.domain.Category.class.getName() + ".activities");
             createCache(cm, com.polykhel.billies.domain.Subcategory.class.getName());
+            createCache(cm, com.polykhel.billies.domain.EntityAuditEvent.class.getName());
             // jhipster-needle-caffeine-add-entry
         };
     }

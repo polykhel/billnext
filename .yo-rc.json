@@ -47,5 +47,10 @@
     "otherModules": [],
     "entities": ["Wallet", "Activity", "Category", "Subcategory"],
     "lastLiquibaseTimestamp": 1615719997000
+  },
+  "generator-jhipster-entity-audit": {
+    "auditFramework": "custom",
+    "auditPage": false,
+    "lastLiquibaseTimestamp": 1615720919000
   }
 }
