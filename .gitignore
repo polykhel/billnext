@@ -146,3 +146,8 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+#####################
+# Environment Files
+*.env
+####################
