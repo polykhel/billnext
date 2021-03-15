@@ -47,4 +47,12 @@ public interface CategoryService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the categories by the current user.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<CategoryDTO> findAllByCurrentUser(Pageable pageable);
 }

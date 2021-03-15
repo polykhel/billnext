@@ -77,4 +77,10 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         log.debug("Request to delete Subcategory : {}", id);
         subcategoryRepository.deleteById(id);
     }
+
+    @Override
+    public Page<SubcategoryDTO> findAllByCategoryId(Long categoryId, Pageable pageable) {
+        log.debug("Request to get all Subcategories by Category id : {}", categoryId);
+        return subcategoryRepository.findAllByCategoryId(categoryId, pageable);
+    }
 }

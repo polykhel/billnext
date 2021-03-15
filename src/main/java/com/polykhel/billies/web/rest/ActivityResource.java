@@ -152,4 +152,18 @@ public class ActivityResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /activities/current-user} : get all the activities by the current user.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of activities in body.
+     */
+    @GetMapping("/activities/current-user")
+    public ResponseEntity<List<ActivityDTO>> getAllActivitiesByCurrentUser(Pageable pageable) {
+        log.debug("REST request to get a page of Activities by the current user");
+        Page<ActivityDTO> page = activityService.findAllByCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

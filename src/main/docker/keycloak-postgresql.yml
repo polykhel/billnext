@@ -46,3 +46,8 @@ services:
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:5432:5432
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - 127.0.0.1:8025:8025

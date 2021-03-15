@@ -81,4 +81,10 @@ public class CategoryServiceImpl implements CategoryService {
         log.debug("Request to delete Category : {}", id);
         categoryRepository.deleteById(id);
     }
+
+    @Override
+    public Page<CategoryDTO> findAllByCurrentUser(Pageable pageable) {
+        log.debug("Request to get all Categories by the current user");
+        return categoryRepository.findByUserIsCurrentUser(pageable).map(categoryMapper::toDto);
+    }
 }

@@ -47,4 +47,12 @@ public interface WalletService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all the wallets by the current user.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<WalletDTO> findAllByCurrentUser(Pageable pageable);
 }

@@ -153,4 +153,19 @@ public class SubcategoryResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /subcategories/category/:categoryId} : get subcategories by category id.
+     *
+     * @param categoryId the id of the parent category.
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200(OK)} and the list of subcategories in body.
+     */
+    @GetMapping("/subcategories/category/{categoryId}")
+    public ResponseEntity<List<SubcategoryDTO>> getAllSubcategoriesByCategoryId(@PathVariable Long categoryId, Pageable pageable) {
+        log.debug("REST request to get a page of Subcategories by Category : {}", categoryId);
+        Page<SubcategoryDTO> page = subcategoryService.findAllByCategoryId(categoryId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

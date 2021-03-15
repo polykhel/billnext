@@ -89,4 +89,10 @@ public class ActivityServiceImpl implements ActivityService {
         log.debug("Request to delete Activity : {}", id);
         activityRepository.deleteById(id);
     }
+
+    @Override
+    public Page<ActivityDTO> findAllByCurrentUser(Pageable pageable) {
+        log.debug("Request to get all Activities by the current user");
+        return activityRepository.findByUserIsCurrentUser(pageable).map(activityMapper::toDto);
+    }
 }

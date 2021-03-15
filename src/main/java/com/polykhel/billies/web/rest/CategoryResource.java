@@ -152,4 +152,18 @@ public class CategoryResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /categories/current-user} : get all the categories by the current user.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
+     */
+    @GetMapping("/categories/current-user")
+    public ResponseEntity<List<CategoryDTO>> getAllCategoriesByCurrentUser(Pageable pageable) {
+        log.debug("REST request to get a page of Categories of the current user");
+        Page<CategoryDTO> page = categoryService.findAllByCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

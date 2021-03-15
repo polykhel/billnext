@@ -5,6 +5,7 @@ import com.polykhel.billies.service.dto.WalletDTO;
 import com.polykhel.billies.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -151,5 +152,19 @@ public class WalletResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /wallets/current-user} : get all the wallets by the current user.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of wallets in body.
+     */
+    @GetMapping("/wallets/current-user")
+    public ResponseEntity<List<WalletDTO>> getAllWalletsByCurrentUser(Pageable pageable) {
+        log.debug("REST request to get a page of Wallets by the current user");
+        Page<WalletDTO> page = walletService.findAllByCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

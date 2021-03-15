@@ -47,4 +47,13 @@ public interface SubcategoryService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get all subcategories by category id.
+     *
+     * @param categoryId the id of the parent category.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<SubcategoryDTO> findAllByCategoryId(Long categoryId, Pageable pageable);
 }
