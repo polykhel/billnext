@@ -1,0 +1,10 @@
+{
+  "navbar": {
+    "title": "Billies",
+    "activity": "Activity",
+    "stats": "Stats",
+    "wallets": "Wallets",
+    "profile": "Profile",
+    "settings": "Settings"
+  }
+}
