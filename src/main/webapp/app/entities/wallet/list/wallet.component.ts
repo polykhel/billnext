@@ -10,7 +10,7 @@ import { WalletDeleteDialogComponent } from '../delete/wallet-delete-dialog.comp
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
-  selector: 'jhi-wallet',
+  selector: 'app-wallet',
   templateUrl: './wallet.component.html',
 })
 export class WalletComponent implements OnInit {

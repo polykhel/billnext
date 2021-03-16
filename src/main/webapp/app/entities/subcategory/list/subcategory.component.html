@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="SubcategoryHeading">
-    <span jhiTranslate="billiesApp.subcategory.home.title">Subcategories</span>
+    <span appTranslate="billiesApp.subcategory.home.title">Subcategories</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="billiesApp.subcategory.home.refreshListLabel">Refresh List</span>
+        <span appTranslate="billiesApp.subcategory.home.refreshListLabel">Refresh List</span>
       </button>
 
       <button
@@ -15,27 +15,27 @@
         [routerLink]="['/subcategory/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="billiesApp.subcategory.home.createLabel"> Create a new Subcategory </span>
+        <span appTranslate="billiesApp.subcategory.home.createLabel"> Create a new Subcategory </span>
       </button>
     </div>
   </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+  <app-alert-error></app-alert-error>
 
-  <jhi-alert></jhi-alert>
+  <app-alert></app-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="subcategories?.length === 0">
-    <span jhiTranslate="billiesApp.subcategory.home.notFound">No subcategories found</span>
+    <span appTranslate="billiesApp.subcategory.home.notFound">No subcategories found</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="subcategories && subcategories.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="billiesApp.subcategory.id">Id</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="name"><span jhiTranslate="billiesApp.subcategory.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="category.id">
-            <span jhiTranslate="billiesApp.subcategory.category">Category</span> <fa-icon icon="sort"></fa-icon>
+        <tr appSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" appSortBy="id"><span appTranslate="billiesApp.subcategory.id">Id</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" appSortBy="name"><span appTranslate="billiesApp.subcategory.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" appSortBy="category.id">
+            <span appTranslate="billiesApp.subcategory.category">Category</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
@@ -60,7 +60,7 @@
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.view">View</span>
               </button>
 
               <button
@@ -70,12 +70,12 @@
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.edit">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(subcategory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.delete">Delete</span>
               </button>
             </div>
           </td>

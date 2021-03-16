@@ -8,7 +8,7 @@ import { Alert, AlertService } from 'app/core/util/alert.service';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 
 @Component({
-  selector: 'jhi-alert-error',
+  selector: 'app-alert-error',
   templateUrl: './alert-error.component.html',
 })
 export class AlertErrorComponent implements OnDestroy {

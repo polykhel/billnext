@@ -10,7 +10,7 @@ import { ICategory } from 'app/entities/category/category.model';
 import { CategoryService } from 'app/entities/category/service/category.service';
 
 @Component({
-  selector: 'jhi-subcategory-update',
+  selector: 'app-subcategory-update',
   templateUrl: './subcategory-update.component.html',
 })
 export class SubcategoryUpdateComponent implements OnInit {

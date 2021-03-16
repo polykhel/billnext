@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="CategoryHeading">
-    <span jhiTranslate="billiesApp.category.home.title">Categories</span>
+    <span appTranslate="billiesApp.category.home.title">Categories</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="billiesApp.category.home.refreshListLabel">Refresh List</span>
+        <span appTranslate="billiesApp.category.home.refreshListLabel">Refresh List</span>
       </button>
 
       <button
@@ -15,27 +15,27 @@
         [routerLink]="['/category/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="billiesApp.category.home.createLabel"> Create a new Category </span>
+        <span appTranslate="billiesApp.category.home.createLabel"> Create a new Category </span>
       </button>
     </div>
   </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+  <app-alert-error></app-alert-error>
 
-  <jhi-alert></jhi-alert>
+  <app-alert></app-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="categories?.length === 0">
-    <span jhiTranslate="billiesApp.category.home.notFound">No categories found</span>
+    <span appTranslate="billiesApp.category.home.notFound">No categories found</span>
   </div>
 
   <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="billiesApp.category.id">Id</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="name"><span jhiTranslate="billiesApp.category.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="type"><span jhiTranslate="billiesApp.category.type">Type</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="user.id"><span jhiTranslate="billiesApp.category.user">User</span> <fa-icon icon="sort"></fa-icon></th>
+        <tr appSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" appSortBy="id"><span appTranslate="billiesApp.category.id">Id</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" appSortBy="name"><span appTranslate="billiesApp.category.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" appSortBy="type"><span appTranslate="billiesApp.category.type">Type</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" appSortBy="user.id"><span appTranslate="billiesApp.category.user">User</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,7 +45,7 @@
             <a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a>
           </td>
           <td>{{ category.name }}</td>
-          <td jhiTranslate="{{ 'billiesApp.ActivityType.' + category.type }}">{{ category.type }}</td>
+          <td appTranslate="{{ 'billiesApp.ActivityType.' + category.type }}">{{ category.type }}</td>
           <td>
             {{ category.user?.id }}
           </td>
@@ -58,7 +58,7 @@
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.view">View</span>
               </button>
 
               <button
@@ -68,12 +68,12 @@
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.edit">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(category)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" appTranslate="entity.action.delete">Delete</span>
               </button>
             </div>
           </td>

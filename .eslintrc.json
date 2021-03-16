@@ -25,7 +25,7 @@
       "error",
       {
         "type": "element",
-        "prefix": "jhi",
+        "prefix": "app",
         "style": "kebab-case"
       }
     ],
@@ -33,7 +33,7 @@
       "error",
       {
         "type": "attribute",
-        "prefix": "jhi",
+        "prefix": "app",
         "style": "camelCase"
       }
     ],

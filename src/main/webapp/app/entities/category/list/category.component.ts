@@ -10,7 +10,7 @@ import { CategoryDeleteDialogComponent } from '../delete/category-delete-dialog.
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
-  selector: 'jhi-category',
+  selector: 'app-category',
   templateUrl: './category.component.html',
 })
 export class CategoryComponent implements OnInit {

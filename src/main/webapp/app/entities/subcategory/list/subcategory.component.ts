@@ -10,7 +10,7 @@ import { SubcategoryDeleteDialogComponent } from '../delete/subcategory-delete-d
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
-  selector: 'jhi-subcategory',
+  selector: 'app-subcategory',
   templateUrl: './subcategory.component.html',
 })
 export class SubcategoryComponent implements OnInit {

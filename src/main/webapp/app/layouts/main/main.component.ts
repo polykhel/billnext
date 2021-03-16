@@ -6,7 +6,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
-  selector: 'jhi-main',
+  selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })

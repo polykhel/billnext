@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { HttpServerRequests } from 'app/admin/metrics/metrics.model';
 
 @Component({
-  selector: 'jhi-metrics-request',
+  selector: 'app-metrics-request',
   templateUrl: './metrics-request.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

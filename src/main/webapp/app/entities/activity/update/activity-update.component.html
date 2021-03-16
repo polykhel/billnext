@@ -1,28 +1,28 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-activity-heading" data-cy="ActivityCreateUpdateHeading" jhiTranslate="billiesApp.activity.home.createOrEditLabel">
+      <h2 id="app-activity-heading" data-cy="ActivityCreateUpdateHeading" appTranslate="billiesApp.activity.home.createOrEditLabel">
         Create or edit a Activity
       </h2>
 
       <div>
-        <jhi-alert-error></jhi-alert-error>
+        <app-alert-error></app-alert-error>
 
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.id" for="field_id">Id</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.id" for="field_id">Id</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
+            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" appTranslate="entity.validation.required">
               This field is required.
             </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('id')?.errors?.number" jhiTranslate="entity.validation.number">
+            <small class="form-text text-danger" [hidden]="!editForm.get('id')?.errors?.number" appTranslate="entity.validation.number">
               This field should be a number.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.date" for="field_date">Date</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.date" for="field_date">Date</label>
           <div class="d-flex">
             <input
               id="field_date"
@@ -35,13 +35,13 @@
             />
           </div>
           <div *ngIf="editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('date')?.errors?.required" jhiTranslate="entity.validation.required">
+            <small class="form-text text-danger" *ngIf="editForm.get('date')?.errors?.required" appTranslate="entity.validation.required">
               This field is required.
             </small>
             <small
               class="form-text text-danger"
               [hidden]="!editForm.get('date')?.errors?.ZonedDateTimelocal"
-              jhiTranslate="entity.validation.ZonedDateTimelocal"
+              appTranslate="entity.validation.ZonedDateTimelocal"
             >
               This field should be a date and time.
             </small>
@@ -49,39 +49,39 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.amount" for="field_amount">Amount</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.amount" for="field_amount">Amount</label>
           <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
           <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('amount')?.errors?.required" jhiTranslate="entity.validation.required">
+            <small class="form-text text-danger" *ngIf="editForm.get('amount')?.errors?.required" appTranslate="entity.validation.required">
               This field is required.
             </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('amount')?.errors?.number" jhiTranslate="entity.validation.number">
+            <small class="form-text text-danger" [hidden]="!editForm.get('amount')?.errors?.number" appTranslate="entity.validation.number">
               This field should be a number.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.remarks" for="field_remarks">Remarks</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.remarks" for="field_remarks">Remarks</label>
           <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.type" for="field_type">Type</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.type" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null">{{ 'billiesApp.ActivityType.null' | translate }}</option>
             <option value="INCOME">{{ 'billiesApp.ActivityType.INCOME' | translate }}</option>
             <option value="EXPENSE">{{ 'billiesApp.ActivityType.EXPENSE' | translate }}</option>
           </select>
           <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" appTranslate="entity.validation.required">
               This field is required.
             </small>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.user" for="field_user">User</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.user" for="field_user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
             <option *ngIf="!editForm.get('user')!.value" [ngValue]="null" selected></option>
             <option
@@ -93,13 +93,13 @@
           </select>
         </div>
         <div *ngIf="editForm.get(['user'])!.invalid && (editForm.get(['user'])!.dirty || editForm.get(['user'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['user'])?.errors?.required" jhiTranslate="entity.validation.required">
+          <small class="form-text text-danger" *ngIf="editForm.get(['user'])?.errors?.required" appTranslate="entity.validation.required">
             This field is required.
           </small>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.wallet" for="field_wallet">Wallet</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.wallet" for="field_wallet">Wallet</label>
           <select class="form-control" id="field_wallet" data-cy="wallet" name="wallet" formControlName="wallet">
             <option *ngIf="!editForm.get('wallet')!.value" [ngValue]="null" selected></option>
             <option
@@ -111,13 +111,13 @@
           </select>
         </div>
         <div *ngIf="editForm.get(['wallet'])!.invalid && (editForm.get(['wallet'])!.dirty || editForm.get(['wallet'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['wallet'])?.errors?.required" jhiTranslate="entity.validation.required">
+          <small class="form-text text-danger" *ngIf="editForm.get(['wallet'])?.errors?.required" appTranslate="entity.validation.required">
             This field is required.
           </small>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="billiesApp.activity.category" for="field_category">Category</label>
+          <label class="form-control-label" appTranslate="billiesApp.activity.category" for="field_category">Category</label>
           <select class="form-control" id="field_category" data-cy="category" name="category" formControlName="category">
             <option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>
             <option
@@ -132,7 +132,7 @@
           <small
             class="form-text text-danger"
             *ngIf="editForm.get(['category'])?.errors?.required"
-            jhiTranslate="entity.validation.required"
+            appTranslate="entity.validation.required"
           >
             This field is required.
           </small>
@@ -141,7 +141,7 @@
 
       <div>
         <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span appTranslate="entity.action.cancel">Cancel</span>
         </button>
 
         <button
@@ -151,7 +151,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span appTranslate="entity.action.save">Save</span>
         </button>
       </div>
     </form>

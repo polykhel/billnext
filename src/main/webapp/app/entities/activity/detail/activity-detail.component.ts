@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IActivity } from '../activity.model';
 
 @Component({
-  selector: 'jhi-activity-detail',
+  selector: 'app-activity-detail',
   templateUrl: './activity-detail.component.html',
 })
 export class ActivityDetailComponent implements OnInit {

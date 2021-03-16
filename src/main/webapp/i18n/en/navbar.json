@@ -1,7 +1,7 @@
 {
   "navbar": {
     "title": "Billies",
-    "activity": "Activity",
+    "dashboard": "Dashboard",
     "stats": "Stats",
     "wallets": "Wallets",
     "profile": "Profile",

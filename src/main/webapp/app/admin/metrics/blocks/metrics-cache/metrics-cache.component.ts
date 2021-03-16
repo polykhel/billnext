@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CacheMetrics } from 'app/admin/metrics/metrics.model';
 
 @Component({
-  selector: 'jhi-metrics-cache',
+  selector: 'app-metrics-cache',
   templateUrl: './metrics-cache.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

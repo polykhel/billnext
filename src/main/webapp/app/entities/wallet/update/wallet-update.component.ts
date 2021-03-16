@@ -10,7 +10,7 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 
 @Component({
-  selector: 'jhi-wallet-update',
+  selector: 'app-wallet-update',
   templateUrl: './wallet-update.component.html',
 })
 export class WalletUpdateComponent implements OnInit {

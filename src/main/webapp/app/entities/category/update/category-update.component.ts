@@ -10,7 +10,7 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 
 @Component({
-  selector: 'jhi-category-update',
+  selector: 'app-category-update',
   templateUrl: './category-update.component.html',
 })
 export class CategoryUpdateComponent implements OnInit {

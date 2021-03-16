@@ -1,51 +1,51 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="wallet">
-      <h2 data-cy="walletDetailsHeading"><span jhiTranslate="billiesApp.wallet.detail.title">Wallet</span></h2>
+      <h2 data-cy="walletDetailsHeading"><span appTranslate="billiesApp.wallet.detail.title">Wallet</span></h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <app-alert-error></app-alert-error>
 
-      <jhi-alert></jhi-alert>
+      <app-alert></app-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="billiesApp.wallet.id">Id</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.id">Id</span></dt>
         <dd>
           <span>{{ wallet.id }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.walletGroup">Wallet Group</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.walletGroup">Wallet Group</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'billiesApp.WalletGroup.' + wallet.walletGroup }}">{{ wallet.walletGroup }}</span>
+          <span appTranslate="{{ 'billiesApp.WalletGroup.' + wallet.walletGroup }}">{{ wallet.walletGroup }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.name">Name</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.name">Name</span></dt>
         <dd>
           <span>{{ wallet.name }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.amount">Amount</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.amount">Amount</span></dt>
         <dd>
           <span>{{ wallet.amount }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.currency">Currency</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.currency">Currency</span></dt>
         <dd>
           <span>{{ wallet.currency }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.remarks">Remarks</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.remarks">Remarks</span></dt>
         <dd>
           <span>{{ wallet.remarks }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.wallet.user">User</span></dt>
+        <dt><span appTranslate="billiesApp.wallet.user">User</span></dt>
         <dd>
           <span>{{ wallet.user?.id }}</span>
         </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span appTranslate="entity.action.back">Back</span>
       </button>
 
       <button type="button" [routerLink]="['/wallet', wallet.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span appTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
   </div>

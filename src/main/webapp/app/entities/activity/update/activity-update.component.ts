@@ -16,7 +16,7 @@ import { ICategory } from 'app/entities/category/category.model';
 import { CategoryService } from 'app/entities/category/service/category.service';
 
 @Component({
-  selector: 'jhi-activity-update',
+  selector: 'app-activity-update',
   templateUrl: './activity-update.component.html',
 })
 export class ActivityUpdateComponent implements OnInit {

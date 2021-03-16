@@ -10,11 +10,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./wallet/wallet.module').then(m => m.WalletModule),
       },
       {
-        path: 'activity',
-        data: { pageTitle: 'billiesApp.activity.home.title' },
-        loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule),
-      },
-      {
         path: 'category',
         data: { pageTitle: 'billiesApp.category.home.title' },
         loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),

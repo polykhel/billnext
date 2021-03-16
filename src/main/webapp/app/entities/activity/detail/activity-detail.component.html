@@ -1,46 +1,46 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="activity">
-      <h2 data-cy="activityDetailsHeading"><span jhiTranslate="billiesApp.activity.detail.title">Activity</span></h2>
+      <h2 data-cy="activityDetailsHeading"><span appTranslate="billiesApp.activity.detail.title">Activity</span></h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <app-alert-error></app-alert-error>
 
-      <jhi-alert></jhi-alert>
+      <app-alert></app-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="billiesApp.activity.id">Id</span></dt>
+        <dt><span appTranslate="billiesApp.activity.id">Id</span></dt>
         <dd>
           <span>{{ activity.id }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.date">Date</span></dt>
+        <dt><span appTranslate="billiesApp.activity.date">Date</span></dt>
         <dd>
           <span>{{ activity.date | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.amount">Amount</span></dt>
+        <dt><span appTranslate="billiesApp.activity.amount">Amount</span></dt>
         <dd>
           <span>{{ activity.amount }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.remarks">Remarks</span></dt>
+        <dt><span appTranslate="billiesApp.activity.remarks">Remarks</span></dt>
         <dd>
           <span>{{ activity.remarks }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.type">Type</span></dt>
+        <dt><span appTranslate="billiesApp.activity.type">Type</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'billiesApp.ActivityType.' + activity.type }}">{{ activity.type }}</span>
+          <span appTranslate="{{ 'billiesApp.ActivityType.' + activity.type }}">{{ activity.type }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.user">User</span></dt>
+        <dt><span appTranslate="billiesApp.activity.user">User</span></dt>
         <dd>
           <span>{{ activity.user?.id }}</span>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.wallet">Wallet</span></dt>
+        <dt><span appTranslate="billiesApp.activity.wallet">Wallet</span></dt>
         <dd>
           <div *ngIf="activity.wallet">
             <a [routerLink]="['/wallet', activity.wallet?.id, 'view']">{{ activity.wallet?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="billiesApp.activity.category">Category</span></dt>
+        <dt><span appTranslate="billiesApp.activity.category">Category</span></dt>
         <dd>
           <div *ngIf="activity.category">
             <a [routerLink]="['/category', activity.category?.id, 'view']">{{ activity.category?.id }}</a>
@@ -49,11 +49,11 @@
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span appTranslate="entity.action.back">Back</span>
       </button>
 
       <button type="button" [routerLink]="['/activity', activity.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span appTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
   </div>

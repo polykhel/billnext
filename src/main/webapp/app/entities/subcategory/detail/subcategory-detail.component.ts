@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ISubcategory } from '../subcategory.model';
 
 @Component({
-  selector: 'jhi-subcategory-detail',
+  selector: 'app-subcategory-detail',
   templateUrl: './subcategory-detail.component.html',
 })
 export class SubcategoryDetailComponent implements OnInit {

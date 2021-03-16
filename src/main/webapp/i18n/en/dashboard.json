@@ -1,7 +1,7 @@
 {
-  "activity": {
+  "dashboard": {
     "home": {
-      "title": "Activities",
+      "title": "Dashboard",
       "refreshListLabel": "Refresh list",
       "createLabel": "Create a new Activity",
       "createOrEditLabel": "Create or edit a Activity",

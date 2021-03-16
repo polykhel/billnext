@@ -11,7 +11,7 @@ import { ActivityService } from '../service/activity.service';
 import { ActivityDeleteDialogComponent } from '../delete/activity-delete-dialog.component';
 
 @Component({
-  selector: 'jhi-activity',
+  selector: 'app-activity',
   templateUrl: './activity.component.html',
 })
 export class ActivityComponent implements OnInit {

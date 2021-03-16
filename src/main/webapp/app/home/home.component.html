@@ -2,13 +2,13 @@
   <div class="col-md-3"></div>
 
   <div class="col-md-9">
-    <h1 class="display-4" jhiTranslate="home.title">Billies</h1>
+    <h1 class="display-4" appTranslate="home.title">Billies</h1>
 
-    <p class="lead" jhiTranslate="home.subtitle">Track your bills and expenses!</p>
+    <p class="lead" appTranslate="home.subtitle">Track your bills and expenses!</p>
 
     <div *ngIf="isAuthenticated()">
       <div class="alert alert-success" *ngSwitchCase="true">
-        <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }">
+        <span id="home-logged-message" *ngIf="account" appTranslate="home.logged.message" [translateValues]="{ username: account.login }">
           You are logged in as user "{{ account.login }}".</span
         >
       </div>

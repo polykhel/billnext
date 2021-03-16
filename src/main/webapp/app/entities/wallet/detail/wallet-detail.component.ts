@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IWallet } from '../wallet.model';
 
 @Component({
-  selector: 'jhi-wallet-detail',
+  selector: 'app-wallet-detail',
   templateUrl: './wallet-detail.component.html',
 })
 export class WalletDetailComponent implements OnInit {
