@@ -1,39 +1,39 @@
-<ul class="navbar-nav">
+<ul class="custom-navbar-nav">
   <li class="logo">
-    <a href="#" class="nav-link">
-      <span class="link-text logo-text" jhiTranslate="navbar.title">Billies</span>
+    <a routerLink="/" class="custom-nav-link">
+      <span class="link-text logo-text" appTranslate="navbar.title">Billies</span>
       <fa-icon icon="angle-double-right" size="2x"></fa-icon>
     </a>
   </li>
 
-  <li class="nav-item">
-    <a href="#" class="nav-link">
+  <li class="custom-nav-item">
+    <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="custom-nav-link">
       <fa-icon icon="book" size="2x"></fa-icon>
-      <span class="link-text" jhiTranslate="navbar.activity">Activity</span>
+      <span class="link-text" appTranslate="navbar.dashboard">Dashboard</span>
     </a>
   </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">
+  <li class="custom-nav-item">
+    <a href="#" class="custom-nav-link">
       <fa-icon icon="chart-bar" size="2x"></fa-icon>
-      <span class="link-text" jhiTranslate="navbar.stats">Stats</span>
+      <span class="link-text" appTranslate="navbar.stats">Stats</span>
     </a>
   </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">
+  <li class="custom-nav-item">
+    <a href="#" class="custom-nav-link">
       <fa-icon icon="wallet" size="2x"></fa-icon>
-      <span class="link-text" jhiTranslate="navbar.wallets">Wallets</span>
+      <span class="link-text" appTranslate="navbar.wallets">Wallets</span>
     </a>
   </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">
+  <li class="custom-nav-item">
+    <a href="#" class="custom-nav-link">
       <fa-icon icon="user" size="2x"></fa-icon>
-      <span class="link-text" jhiTranslate="navbar.profile">Profile</span>
+      <span class="link-text" appTranslate="navbar.profile">Profile</span>
     </a>
   </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">
+  <li class="custom-nav-item">
+    <a href="#" class="custom-nav-link">
       <fa-icon icon="cog" size="2x"></fa-icon>
-      <span class="link-text" jhiTranslate="navbar.settings">Settings</span>
+      <span class="link-text" appTranslate="navbar.settings">Settings</span>
     </a>
   </li>
 </ul>
