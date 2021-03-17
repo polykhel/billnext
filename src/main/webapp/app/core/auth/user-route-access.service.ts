@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
-import { LoginService } from 'app/login/login.service';
+import { LoginService } from 'app/shared/login/login.service';
 import { StateStorageService } from './state-storage.service';
 
 @Injectable({ providedIn: 'root' })
