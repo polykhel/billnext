@@ -5,6 +5,7 @@
     "stats": "Stats",
     "wallets": "Wallets",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "logout": "Sign Out"
   }
 }

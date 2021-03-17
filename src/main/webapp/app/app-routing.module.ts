@@ -6,6 +6,7 @@ import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { DashboardComponent } from 'app/dashboard/dashboard.component';
 
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 
@@ -20,6 +21,14 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+        },
+        {
+          path: 'dashboard',
+          data: {
+            authorities: [Authority.USER],
+          },
+          canActivate: [UserRouteAccessService],
+          component: DashboardComponent,
         },
         ...LAYOUT_ROUTES,
       ],

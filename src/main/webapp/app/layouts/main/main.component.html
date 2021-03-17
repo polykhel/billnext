@@ -1,10 +1,12 @@
 <app-page-ribbon></app-page-ribbon>
 
-<nav class="custom-navbar">
+<nav *ngIf="isAuthenticated()" class="custom-navbar">
   <router-outlet name="navbar"></router-outlet>
 </nav>
 
 <main>
-  <router-outlet></router-outlet>
+  <div class="container-fluid">
+    <router-outlet></router-outlet>
+  </div>
   <!--  <app-footer></app-footer>-->
 </main>
