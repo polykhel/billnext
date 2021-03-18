@@ -4,19 +4,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import * as dayjs from 'dayjs';
-import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 
-import './config/dayjs';
 import { SharedModule } from 'app/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './modules/home/home.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
-import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from './core/interceptor';
 import { translatePartialLoader, missingTranslationHandler } from './config/translation.config';
 import { MainComponent } from './layouts/main/main.component';
@@ -26,10 +20,14 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { DateFnsModule } from 'ngx-date-fns';
+import { HeaderComponent } from 'app/layouts/header/header.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     SharedModule,
     HomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
@@ -37,7 +35,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
-    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
+    NgxWebstorageModule.forRoot({ prefix: 'app', separator: '-' }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -49,13 +47,9 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
         useFactory: missingTranslationHandler,
       },
     }),
+    DateFnsModule.forRoot(),
   ],
-  providers: [
-    Title,
-    { provide: LOCALE_ID, useValue: 'en' },
-    { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
-    httpInterceptorProviders,
-  ],
+  providers: [Title, { provide: LOCALE_ID, useValue: 'en' }, httpInterceptorProviders],
   declarations: [
     MainComponent,
     NavbarComponent,
@@ -63,15 +57,14 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
     PageRibbonComponent,
     ActiveMenuDirective,
     FooterComponent,
+    HeaderComponent,
     DashboardComponent,
   ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
-  constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig, translateService: TranslateService) {
+  constructor(translateService: TranslateService) {
     registerLocaleData(locale);
-    iconLibrary.addIcons(...fontAwesomeIcons);
-    dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
     translateService.setDefaultLang('en');
     translateService.use('en');
   }

@@ -9,7 +9,7 @@
     "skipUserManagement": true,
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
-    "jhiPrefix": "jhi",
+    "jhiPrefix": "app",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "testFrameworks": ["cypress"],

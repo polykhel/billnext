@@ -1,45 +1,36 @@
-<ul class="custom-navbar-nav">
-  <li class="logo">
-    <a routerLink="/" class="custom-nav-link">
-      <span class="link-text logo-text" appTranslate="navbar.title">Billies</span>
-      <fa-icon icon="angle-double-right" size="2x"></fa-icon>
-    </a>
+<div class="sidebar-logo">
+  <a routerLink="/" target="_blank">
+    <img alt="logo" src="/content/images/logo_transparent.png" />
+    <h1>BilEx</h1>
+  </a>
+</div>
+<ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline" nzTheme="dark">
+  <li nz-submenu nzIcon="dashboard" nzOpen nzTitle="Dashboard">
+    <ul>
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="/welcome">Welcome</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a>Monitor</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a>Workplace</a>
+      </li>
+    </ul>
   </li>
-
-  <li class="custom-nav-item">
-    <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="custom-nav-link">
-      <fa-icon icon="book" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.dashboard">Dashboard</span>
-    </a>
+  <li nz-submenu nzIcon="bar-chart" nzOpen nzTitle="Stats">
+    <ul>
+      <li nz-menu-item nzMatchRouter>
+        <a>Basic Form</a>
+      </li>
+    </ul>
   </li>
-  <li class="custom-nav-item">
-    <a href="#" class="custom-nav-link">
-      <fa-icon icon="chart-bar" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.stats">Stats</span>
-    </a>
+  <li nz-menu-item>
+    <i nz-icon nzType="book"></i>
+    Accounts
   </li>
-  <li class="custom-nav-item">
-    <a href="#" class="custom-nav-link">
-      <fa-icon icon="wallet" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.wallets">Wallets</span>
-    </a>
-  </li>
-  <li class="custom-nav-item">
-    <a href="#" class="custom-nav-link">
-      <fa-icon icon="user" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.profile">Profile</span>
-    </a>
-  </li>
-  <li class="custom-nav-item">
-    <a href="#" class="custom-nav-link">
-      <fa-icon icon="cog" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.settings">Settings</span>
-    </a>
-  </li>
-  <li class="custom-nav-item">
-    <a (click)="logout()" class="custom-nav-link">
-      <fa-icon icon="sign-out-alt" size="2x"></fa-icon>
-      <span class="link-text" appTranslate="navbar.logout">Sign Out</span>
-    </a>
+  <li nz-menu-item>
+    <i nz-icon nzType="setting"></i>
+    Settings
   </li>
 </ul>

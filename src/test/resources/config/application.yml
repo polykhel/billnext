@@ -95,7 +95,7 @@ server:
 
 jhipster:
   clientApp:
-    name: 'billiesApp'
+    name: 'billies'
   logging:
     # To test json console appender
     use-json-format: false

@@ -89,7 +89,7 @@
           "strict": true
         }
       },
-      "prefix": "jhi"
+      "prefix": "app"
     }
   },
   "defaultProject": "billies",

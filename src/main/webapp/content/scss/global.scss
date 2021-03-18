@@ -1,36 +1,10 @@
-@import 'bootstrap-variables';
-@import '~bootstrap/scss/functions';
-@import '~bootswatch/dist/lux/variables';
-@import '~bootstrap/scss/variables';
-
 :root {
-  font-size: 16px;
-  --text-primary: #b6b6b6;
-  --text-secondary: #ececec;
-  --bg-primary: #23232e;
-  --bg-secondary: #141418;
   --transition-speed: 600ms;
-}
-
-/* ==============================================================
-Bootstrap tweaks
-===============================================================*/
-
-body,
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 300;
 }
 
 a:hover {
   /* make sure browsers use the pointer cursor for anchors, even with no href */
   cursor: pointer;
-}
-
-.dropdown-item:hover {
-  color: $dropdown-link-hover-color;
 }
 
 /* ==========================================================================
@@ -48,12 +22,6 @@ Generic styles
 ========================================================================== */
 
 /* other generic styles */
-
-.jh-card {
-  padding: 1.5%;
-  margin-top: 20px;
-  border: none;
-}
 
 .error {
   color: white;
@@ -180,13 +148,6 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
-
-body {
-  color: black;
-  background-color: white;
-  margin: 0;
-  padding: 0;
-}
 
 body::-webkit-scrollbar {
   width: 0.25rem;

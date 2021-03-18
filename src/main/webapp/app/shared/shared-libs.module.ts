@@ -1,12 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { nzIcons } from 'app/config/nz-icons';
+import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
+const nzModules = [
+  NzIconModule,
+  NzLayoutModule,
+  NzFormModule,
+  NzDatePickerModule,
+  NzNotificationModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzAlertModule,
+];
 
 @NgModule({
-  exports: [FormsModule, CommonModule, NgbModule, InfiniteScrollModule, FontAwesomeModule, ReactiveFormsModule, TranslateModule],
+  exports: [FormsModule, CommonModule, InfiniteScrollModule, ReactiveFormsModule, TranslateModule, ...nzModules],
+  providers: [
+    { provide: NZ_ICONS, useValue: nzIcons },
+    { provide: NZ_I18N, useValue: en_US },
+  ],
 })
 export class SharedLibsModule {}

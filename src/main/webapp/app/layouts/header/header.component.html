@@ -1,0 +1,17 @@
+<nz-header>
+  <div class="app-header" nz-row nzAlign="middle" nzJustify="space-between">
+    <span (click)="toggleNavbar()" class="header-trigger" nz-col nzSpan="4">
+      <i [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger" nz-icon></i>
+    </span>
+    <ng-container [ngSwitch]="isAuthenticated()">
+      <a (click)="logout()" *ngSwitchCase="true" nz-col nzSpan="2">
+        <i nz-icon nzType="logout"></i>
+        <span appTranslate="header.logout">Log Out</span>
+      </a>
+      <a (click)="login()" *ngSwitchCase="false" nz-col nzSpan="2">
+        <i nz-icon nzType="logout"></i>
+        <span appTranslate="header.login">Log In</span>
+      </a>
+    </ng-container>
+  </div>
+</nz-header>

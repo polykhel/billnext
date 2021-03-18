@@ -1,12 +1,17 @@
-<app-page-ribbon></app-page-ribbon>
+<!--<app-page-ribbon></app-page-ribbon>-->
 
-<nav *ngIf="isAuthenticated()" class="custom-navbar">
-  <router-outlet name="navbar"></router-outlet>
-</nav>
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isNavbarCollapsed" [nzTrigger]="null">
+    <app-navbar [isCollapsed]="isNavbarCollapsed"></app-navbar>
+  </nz-sider>
 
-<main>
-  <div class="container-fluid">
-    <router-outlet></router-outlet>
-  </div>
+  <nz-layout>
+    <app-header (toggleNavbarEvent)="toggleNavbar($event)"></app-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
   <!--  <app-footer></app-footer>-->
-</main>
+</nz-layout>

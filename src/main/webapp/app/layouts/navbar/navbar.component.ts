@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -16,10 +16,10 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 })
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
-  isNavbarCollapsed = true;
   languages = LANGUAGES;
   openAPIEnabled?: boolean;
   version: string;
+  @Input() isCollapsed = false;
 
   constructor(
     private loginService: LoginService,
@@ -44,10 +44,6 @@ export class NavbarComponent implements OnInit {
     this.translateService.use(languageKey);
   }
 
-  collapseNavbar(): void {
-    this.isNavbarCollapsed = true;
-  }
-
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
   }
@@ -57,13 +53,8 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.collapseNavbar();
     this.loginService.logout();
-    this.router.navigate(['']);
-  }
-
-  toggleNavbar(): void {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    this.router.navigate(['']).then();
   }
 
   getImageUrl(): string {

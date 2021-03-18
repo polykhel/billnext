@@ -12,6 +12,7 @@ import { AccountService } from 'app/core/auth/account.service';
 })
 export class MainComponent implements OnInit {
   private renderer: Renderer2;
+  isNavbarCollapsed = false;
 
   constructor(
     private accountService: AccountService,
@@ -32,7 +33,7 @@ export class MainComponent implements OnInit {
         this.updateTitle();
       }
       if (event instanceof NavigationError && event.error.status === 404) {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/404']).then();
       }
     });
 
@@ -61,5 +62,9 @@ export class MainComponent implements OnInit {
 
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
+  }
+
+  toggleNavbar(isNavbarCollapsed: boolean): void {
+    this.isNavbarCollapsed = isNavbarCollapsed;
   }
 }
