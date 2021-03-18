@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "billies": {
+    "billnext": {
       "root": "",
       "sourceRoot": "src/main/webapp",
       "projectType": "application",
@@ -65,12 +65,12 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "billies:build",
+            "browserTarget": "billnext:build",
             "proxyConfig": "./webpack/proxy.conf.js"
           },
           "configurations": {
             "production": {
-              "browserTarget": "billies:build:production"
+              "browserTarget": "billnext:build:production"
             }
           }
         },
@@ -92,7 +92,7 @@
       "prefix": "app"
     }
   },
-  "defaultProject": "billies",
+  "defaultProject": "billnext",
   "cli": {
     "packageManager": "npm"
   }

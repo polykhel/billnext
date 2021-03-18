@@ -17,18 +17,18 @@ eureka:
   client:
     enabled: false
   instance:
-    appname: billies
-    instanceId: billies:${spring.application.instance-id:${random.value}}
+    appname: billnext
+    instanceId: billnext:${spring.application.instance-id:${random.value}}
 
 spring:
   profiles:
     # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
     #active: testcontainers
   application:
-    name: billies
+    name: billnext
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:billies;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:billnext;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     name:
     username:
     password:
@@ -64,13 +64,13 @@ spring:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: billies-task-
+      thread-name-prefix: billnext-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: billies-scheduling-
+      thread-name-prefix: billnext-scheduling-
       pool:
         size: 1
   thymeleaf:
@@ -95,7 +95,7 @@ server:
 
 jhipster:
   clientApp:
-    name: 'billies'
+    name: 'billnext'
   logging:
     # To test json console appender
     use-json-format: false

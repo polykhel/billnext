@@ -24,8 +24,8 @@ eureka:
     instance-info-replication-interval-seconds: 10
     registry-fetch-interval-seconds: 10
   instance:
-    appname: billies
-    instanceId: billies:${spring.application.instance-id:${random.value}}
+    appname: billnext
+    instanceId: billnext:${spring.application.instance-id:${random.value}}
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 10
     status-page-url-path: ${management.endpoints.web.base-path}/info
@@ -93,7 +93,7 @@ management:
 
 spring:
   application:
-    name: billies
+    name: billnext
   jmx:
     enabled: false
   data:
@@ -126,13 +126,13 @@ spring:
     allow-bean-definition-overriding: true
   task:
     execution:
-      thread-name-prefix: billies-task-
+      thread-name-prefix: billnext-task-
       pool:
         core-size: 2
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: billies-scheduling-
+      thread-name-prefix: billnext-scheduling-
       pool:
         size: 2
   thymeleaf:
@@ -170,7 +170,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'billies'
+    name: 'billnext'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #   allowed-origins: "*"
@@ -180,11 +180,11 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: billies@localhost
+    from: billnext@localhost
   api-docs:
     default-include-pattern: /api/.*
-    title: billies API
-    description: billies API documentation
+    title: billnext API
+    description: billnext API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:

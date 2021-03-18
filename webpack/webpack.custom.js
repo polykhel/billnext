@@ -20,7 +20,7 @@ module.exports = (config, options) => {
       }),
       new FriendlyErrorsWebpackPlugin(),
       new WebpackNotifierPlugin({
-        title: 'Billies',
+        title: 'BillNext',
         contentImage: path.join(__dirname, 'logo.png'),
       }),
       new BrowserSyncPlugin(

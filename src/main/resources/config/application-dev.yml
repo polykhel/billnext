@@ -18,7 +18,7 @@ logging:
     ROOT: DEBUG
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
-    com.polykhel.billies: DEBUG
+    com.polykhel.billnext: DEBUG
 
 eureka:
   instance:
@@ -46,8 +46,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/billies
-    username: billies
+    url: jdbc:postgresql://localhost:5432/billnext
+    username: billnext
     password: 1234
     hikari:
       poolName: Hikari
