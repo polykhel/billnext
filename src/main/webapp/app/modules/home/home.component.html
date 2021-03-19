@@ -1,25 +1,23 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+<div nz-row>
+  <div nz-col nzSpan="6">
+    <img nz-image width="200px" height="200px" nzSrc="./content/images/logo.png" alt="logo" />
   </div>
 
-  <div class="col-md-9">
-    <h1 class="display-4" appTranslate="home.title">BillNext</h1>
+  <div nz-col nzSpan="18">
+    <h1 appTranslate="home.title">BillNext</h1>
 
-    <p class="lead" appTranslate="home.subtitle">Track your bills and expenses!</p>
+    <p appTranslate="home.subtitle">Track your bills and expenses!</p>
 
     <div [ngSwitch]="isAuthenticated()">
-      <div class="alert alert-success" *ngSwitchCase="true">
+      <div *ngSwitchCase="true">
         <span id="home-logged-message" *ngIf="account" appTranslate="home.logged.message" [translateValues]="{ username: account.login }">
           You are logged in as user "{{ account.login }}".</span
         >
       </div>
 
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <a class="alert-link" (click)="login()">Sign in</a>
+      <div *ngSwitchCase="false">
+        <a (click)="login()">Sign in</a>
       </div>
-
-      <span>Add more info here for Home page</span>
     </div>
   </div>
 </div>

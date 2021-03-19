@@ -38,7 +38,21 @@
                 "output": "src/main/webapp/assets/"
               }
             ],
-            "styles": ["src/main/webapp/content/scss/vendor.scss", "src/main/webapp/content/scss/global.scss"],
+            "styles": [
+              {
+                "input": "src/main/webapp/content/less/default.less",
+                "bundleName": "default",
+                "inject": false
+              },
+              {
+                "input": "src/main/webapp/content/less/dark.less",
+                "bundleName": "dark",
+                "inject": false
+              }
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/main/webapp/content/less/themes"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -88,7 +102,7 @@
       },
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "less"
         },
         "@schematics/angular:application": {
           "strict": true

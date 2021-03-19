@@ -1,26 +1,13 @@
 <div class="sidebar-logo">
   <a routerLink="/">
     <img alt="logo" src="/content/images/logo_transparent.png" />
-    <h1>Billnext</h1>
+    <h1>BillNext</h1>
   </a>
 </div>
 <ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline">
-  <li nz-submenu nzOpen>
-    <span title>
-      <i nz-icon nzType="dashboard"></i>
-      <span appTranslate="navbar.dashboard">Dashboard</span>
-    </span>
-    <ul>
-      <li nz-menu-item nzMatchRouter>
-        <a routerLink="/welcome">Welcome</a>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <a>Monitor</a>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <a>Workplace</a>
-      </li>
-    </ul>
+  <li nz-menu-item routerLink="/dashboard">
+    <i nz-icon nzType="dashboard"></i>
+    <span *ngIf="!isCollapsed" appTranslate="navbar.dashboard">Dashboard</span>
   </li>
   <li nz-submenu nzOpen>
     <span title>

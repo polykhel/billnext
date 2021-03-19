@@ -13,6 +13,7 @@ import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzImageModule } from 'ng-zorro-antd/image';
 
 @NgModule({
   exports: [
@@ -29,6 +30,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzMenuModule,
     NzAlertModule,
     NzDropDownModule,
+    NzImageModule,
   ],
   providers: [
     { provide: NZ_ICONS, useValue: nzIcons },

@@ -17,7 +17,6 @@ import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
-import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DateFnsModule } from 'ngx-date-fns';
@@ -51,16 +50,7 @@ import { AppInitializerProvider } from 'app/app-initializer.service';
     DateFnsModule.forRoot(),
   ],
   providers: [AppInitializerProvider, Title, { provide: LOCALE_ID, useValue: 'en' }, httpInterceptorProviders],
-  declarations: [
-    MainComponent,
-    NavbarComponent,
-    ErrorComponent,
-    PageRibbonComponent,
-    ActiveMenuDirective,
-    FooterComponent,
-    HeaderComponent,
-    DashboardComponent,
-  ],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, HeaderComponent, DashboardComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {
