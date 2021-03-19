@@ -4,11 +4,12 @@ import {
   FormOutline,
   DashboardOutline,
   BarChartOutline,
+  GlobalOutline,
   LoginOutline,
   LogoutOutline,
   SettingOutline,
-  BookOutline,
   SkinOutline,
+  WalletOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const nzIcons = [
@@ -17,9 +18,10 @@ export const nzIcons = [
   FormOutline,
   DashboardOutline,
   BarChartOutline,
+  GlobalOutline,
   LoginOutline,
   LogoutOutline,
   SettingOutline,
-  BookOutline,
   SkinOutline,
+  WalletOutline,
 ];

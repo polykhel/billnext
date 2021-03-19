@@ -12,20 +12,24 @@ import { nzIcons } from 'app/config/nz-icons';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
-
-const nzModules = [
-  NzIconModule,
-  NzLayoutModule,
-  NzFormModule,
-  NzDatePickerModule,
-  NzNotificationModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzAlertModule,
-];
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @NgModule({
-  exports: [FormsModule, CommonModule, InfiniteScrollModule, ReactiveFormsModule, TranslateModule, ...nzModules],
+  exports: [
+    FormsModule,
+    CommonModule,
+    InfiniteScrollModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    NzIconModule,
+    NzLayoutModule,
+    NzFormModule,
+    NzDatePickerModule,
+    NzNotificationModule,
+    NzMenuModule,
+    NzAlertModule,
+    NzDropDownModule,
+  ],
   providers: [
     { provide: NZ_ICONS, useValue: nzIcons },
     { provide: NZ_I18N, useValue: en_US },

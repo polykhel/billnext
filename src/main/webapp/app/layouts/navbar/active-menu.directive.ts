@@ -19,9 +19,9 @@ export class ActiveMenuDirective implements OnInit {
 
   updateActiveFlag(selectedLanguage: string): void {
     if (this.appActiveMenu === selectedLanguage) {
-      this.renderer.addClass(this.el.nativeElement, 'active');
+      this.renderer.setAttribute(this.el.nativeElement, 'nzDisabled', '');
     } else {
-      this.renderer.removeClass(this.el.nativeElement, 'active');
+      this.renderer.removeAttribute(this.el.nativeElement, 'nzDisabled');
     }
   }
 }

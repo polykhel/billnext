@@ -1,11 +1,15 @@
 <div class="sidebar-logo">
   <a routerLink="/">
-    <img alt="logo" src="/content/images/logo.png" />
-    <h1>billnext</h1>
+    <img alt="logo" src="/content/images/logo_transparent.png" />
+    <h1>Billnext</h1>
   </a>
 </div>
 <ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline">
-  <li nz-submenu nzIcon="dashboard" nzOpen nzTitle="Dashboard">
+  <li nz-submenu nzOpen>
+    <span title>
+      <i nz-icon nzType="dashboard"></i>
+      <span appTranslate="navbar.dashboard">Dashboard</span>
+    </span>
     <ul>
       <li nz-menu-item nzMatchRouter>
         <a routerLink="/welcome">Welcome</a>
@@ -18,7 +22,11 @@
       </li>
     </ul>
   </li>
-  <li nz-submenu nzIcon="bar-chart" nzOpen nzTitle="Stats">
+  <li nz-submenu nzOpen>
+    <span title>
+      <i nz-icon nzType="bar-chart"></i>
+      <span appTranslate="navbar.stats">Stats</span>
+    </span>
     <ul>
       <li nz-menu-item nzMatchRouter>
         <a>Basic Form</a>
@@ -26,11 +34,11 @@
     </ul>
   </li>
   <li nz-menu-item>
-    <i nz-icon nzType="book"></i>
-    <span *ngIf="!isCollapsed">Accounts</span>
+    <i nz-icon nzType="wallet"></i>
+    <span *ngIf="!isCollapsed" appTranslate="navbar.wallets">Wallets</span>
   </li>
   <li nz-menu-item>
     <i nz-icon nzType="setting"></i>
-    <span *ngIf="!isCollapsed">Settings</span>
+    <span *ngIf="!isCollapsed" appTranslate="navbar.settings">Settings</span>
   </li>
 </ul>

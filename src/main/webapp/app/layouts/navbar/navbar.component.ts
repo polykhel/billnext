@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
-import { LANGUAGES } from 'app/config/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/shared/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
@@ -16,7 +14,6 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 })
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
-  languages = LANGUAGES;
   openAPIEnabled?: boolean;
   version: string;
   @Input() isCollapsed = false;
@@ -26,8 +23,7 @@ export class NavbarComponent implements OnInit {
     private translateService: TranslateService,
     private sessionStorage: SessionStorageService,
     private accountService: AccountService,
-    private profileService: ProfileService,
-    private router: Router
+    private profileService: ProfileService
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
   }
@@ -39,22 +35,8 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  changeLanguage(languageKey: string): void {
-    this.sessionStorage.store('locale', languageKey);
-    this.translateService.use(languageKey);
-  }
-
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
-  }
-
-  login(): void {
-    this.loginService.login();
-  }
-
-  logout(): void {
-    this.loginService.logout();
-    this.router.navigate(['']).then();
   }
 
   getImageUrl(): string {

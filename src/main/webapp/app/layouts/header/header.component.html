@@ -7,6 +7,21 @@
       <span (click)="toggleTheme()" class="header-trigger">
         <i class="trigger" nz-icon nzTheme="outline" nzType="skin"></i>
       </span>
+      <a *ngIf="languages && languages.length > 1" id="languagesNavBarDropdown" class="header-trigger" nz-dropdown [nzDropdownMenu]="menu">
+        <i class="trigger" nz-icon nzTheme="outline" nzType="global"></i>
+      </a>
+      <nz-dropdown-menu #menu="nzDropdownMenu" aria-labelledby="languagesNavBarDropdown">
+        <ul nz-menu>
+          <li
+            [nzDisabled]="language === currentLanguage"
+            *ngFor="let language of languages"
+            nz-menu-item
+            (click)="changeLanguage(language)"
+          >
+            {{ language | findLanguageFromKey }}
+          </li>
+        </ul>
+      </nz-dropdown-menu>
     </div>
     <ng-container [ngSwitch]="isAuthenticated()">
       <a (click)="logout()" *ngSwitchCase="true" nz-col nzSpan="2">

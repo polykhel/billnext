@@ -3,6 +3,9 @@ import { LoginService } from 'app/shared/login/login.service';
 import { Router } from '@angular/router';
 import { AccountService } from 'app/core/auth/account.service';
 import { ThemeService } from 'app/shared/theme/theme.service';
+import { LANGUAGES } from 'app/config/language.constants';
+import { SessionStorageService } from 'ngx-webstorage';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +14,8 @@ import { ThemeService } from 'app/shared/theme/theme.service';
 })
 export class HeaderComponent {
   isCollapsed = false;
+  languages = LANGUAGES;
+  currentLanguage = 'en';
 
   @Output() toggleNavbarEvent = new EventEmitter<boolean>();
 
@@ -18,7 +23,9 @@ export class HeaderComponent {
     private loginService: LoginService,
     private accountService: AccountService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private sessionStorage: SessionStorageService,
+    private translateService: TranslateService
   ) {}
 
   toggleNavbar(): void {
@@ -41,5 +48,11 @@ export class HeaderComponent {
 
   toggleTheme(): void {
     this.themeService.toggleTheme().then();
+  }
+
+  changeLanguage(languageKey: string): void {
+    this.sessionStorage.store('locale', languageKey);
+    this.translateService.use(languageKey);
+    this.currentLanguage = languageKey;
   }
 }
