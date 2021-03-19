@@ -8,6 +8,7 @@ import {
   LogoutOutline,
   SettingOutline,
   BookOutline,
+  SkinOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const nzIcons = [
@@ -20,4 +21,5 @@ export const nzIcons = [
   LogoutOutline,
   SettingOutline,
   BookOutline,
+  SkinOutline,
 ];

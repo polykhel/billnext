@@ -7,7 +7,7 @@ import { Account } from 'app/core/auth/account.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.less'],
 })
 export class HomeComponent implements OnInit {
   account: Account | null = null;

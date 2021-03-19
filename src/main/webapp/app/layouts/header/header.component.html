@@ -1,8 +1,13 @@
 <nz-header>
   <div class="app-header" nz-row nzAlign="middle" nzJustify="space-between">
-    <span (click)="toggleNavbar()" class="header-trigger" nz-col nzSpan="4">
-      <i [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger" nz-icon></i>
-    </span>
+    <div class="left-toggles" nz-col nzSpan="6">
+      <span (click)="toggleNavbar()" class="header-trigger">
+        <i [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger" nz-icon></i>
+      </span>
+      <span (click)="toggleTheme()" class="header-trigger">
+        <i class="trigger" nz-icon nzTheme="outline" nzType="skin"></i>
+      </span>
+    </div>
     <ng-container [ngSwitch]="isAuthenticated()">
       <a (click)="logout()" *ngSwitchCase="true" nz-col nzSpan="2">
         <i nz-icon nzType="logout"></i>

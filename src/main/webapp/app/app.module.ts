@@ -23,6 +23,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DateFnsModule } from 'ngx-date-fns';
 import { HeaderComponent } from 'app/layouts/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppInitializerProvider } from 'app/app-initializer.service';
 
 @NgModule({
   imports: [
@@ -49,7 +50,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     }),
     DateFnsModule.forRoot(),
   ],
-  providers: [Title, { provide: LOCALE_ID, useValue: 'en' }, httpInterceptorProviders],
+  providers: [AppInitializerProvider, Title, { provide: LOCALE_ID, useValue: 'en' }, httpInterceptorProviders],
   declarations: [
     MainComponent,
     NavbarComponent,

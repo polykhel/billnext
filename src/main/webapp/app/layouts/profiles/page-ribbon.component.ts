@@ -10,7 +10,7 @@ import { ProfileService } from './profile.service';
       <a href="" appTranslate="global.ribbon.{{ ribbonEnv }}">{{ ribbonEnv }}</a>
     </div>
   `,
-  styleUrls: ['./page-ribbon.component.scss'],
+  styleUrls: ['./page-ribbon.component.less'],
 })
 export class PageRibbonComponent implements OnInit {
   ribbonEnv$?: Observable<string | undefined>;
