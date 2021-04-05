@@ -1,0 +1,30 @@
+{
+  "billnextApp": {
+    "wallet": {
+      "home": {
+        "title": "Wallets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Wallet",
+        "createOrEditLabel": "Create or edit a Wallet",
+        "notFound": "No Wallets found"
+      },
+      "created": "A new Wallet is created with identifier {{ param }}",
+      "updated": "A Wallet is updated with identifier {{ param }}",
+      "deleted": "A Wallet is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Wallet {{ id }}?"
+      },
+      "detail": {
+        "title": "Wallet"
+      },
+      "id": "Id",
+      "walletGroup": "Wallet Group",
+      "name": "Name",
+      "amount": "Amount",
+      "currency": "Currency",
+      "remarks": "Remarks",
+      "user": "User",
+      "activity": "Activity"
+    }
+  }
+}

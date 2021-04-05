@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="category">
+      <h2 data-cy="categoryDetailsHeading"><span appTranslate="billnextApp.category.detail.title">Category</span></h2>
+
+      <hr />
+
+      <app-alert-error></app-alert-error>
+
+      <app-alert></app-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span appTranslate="billnextApp.category.id">Id</span></dt>
+        <dd>
+          <span>{{ category.id }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.category.name">Name</span></dt>
+        <dd>
+          <span>{{ category.name }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.category.type">Type</span></dt>
+        <dd>
+          <span appTranslate="{{ 'billnextApp.ActivityType.' + category.type }}">{{ category.type }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.category.user">User</span></dt>
+        <dd>
+          <span>{{ category.user?.id }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span appTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/category', category.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span appTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

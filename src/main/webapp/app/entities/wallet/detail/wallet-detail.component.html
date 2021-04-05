@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="wallet">
+      <h2 data-cy="walletDetailsHeading"><span appTranslate="billnextApp.wallet.detail.title">Wallet</span></h2>
+
+      <hr />
+
+      <app-alert-error></app-alert-error>
+
+      <app-alert></app-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span appTranslate="billnextApp.wallet.id">Id</span></dt>
+        <dd>
+          <span>{{ wallet.id }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.walletGroup">Wallet Group</span></dt>
+        <dd>
+          <span appTranslate="{{ 'billnextApp.WalletGroup.' + wallet.walletGroup }}">{{ wallet.walletGroup }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.name">Name</span></dt>
+        <dd>
+          <span>{{ wallet.name }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.amount">Amount</span></dt>
+        <dd>
+          <span>{{ wallet.amount }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.currency">Currency</span></dt>
+        <dd>
+          <span>{{ wallet.currency }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.remarks">Remarks</span></dt>
+        <dd>
+          <span>{{ wallet.remarks }}</span>
+        </dd>
+        <dt><span appTranslate="billnextApp.wallet.user">User</span></dt>
+        <dd>
+          <span>{{ wallet.user?.id }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span appTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/wallet', wallet.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span appTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

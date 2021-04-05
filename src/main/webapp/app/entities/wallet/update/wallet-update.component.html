@@ -1,0 +1,120 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="app-wallet-heading" data-cy="WalletCreateUpdateHeading" appTranslate="billnextApp.wallet.home.createOrEditLabel">
+        Create or edit a Wallet
+      </h2>
+
+      <div>
+        <app-alert-error></app-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.id" for="field_id">Id</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" appTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('id')?.errors?.number" appTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.walletGroup" for="field_walletGroup">Wallet Group</label>
+          <select class="form-control" name="walletGroup" formControlName="walletGroup" id="field_walletGroup" data-cy="walletGroup">
+            <option [ngValue]="null">{{ 'billnextApp.WalletGroup.null' | translate }}</option>
+            <option value="CASH">{{ 'billnextApp.WalletGroup.CASH' | translate }}</option>
+            <option value="ACCOUNTS">{{ 'billnextApp.WalletGroup.ACCOUNTS' | translate }}</option>
+            <option value="CARD">{{ 'billnextApp.WalletGroup.CARD' | translate }}</option>
+            <option value="DEBIT">{{ 'billnextApp.WalletGroup.DEBIT' | translate }}</option>
+            <option value="SAVINGS">{{ 'billnextApp.WalletGroup.SAVINGS' | translate }}</option>
+            <option value="PREPAID">{{ 'billnextApp.WalletGroup.PREPAID' | translate }}</option>
+            <option value="INVESTMENTS">{{ 'billnextApp.WalletGroup.INVESTMENTS' | translate }}</option>
+            <option value="OVERDRAFTS">{{ 'billnextApp.WalletGroup.OVERDRAFTS' | translate }}</option>
+            <option value="LOAN">{{ 'billnextApp.WalletGroup.LOAN' | translate }}</option>
+            <option value="INSURANCE">{{ 'billnextApp.WalletGroup.INSURANCE' | translate }}</option>
+            <option value="OTHERS">{{ 'billnextApp.WalletGroup.OTHERS' | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('walletGroup')!.invalid && (editForm.get('walletGroup')!.dirty || editForm.get('walletGroup')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('walletGroup')?.errors?.required"
+              appTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" appTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.amount" for="field_amount">Amount</label>
+          <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+          <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('amount')?.errors?.required" appTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('amount')?.errors?.number" appTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.currency" for="field_currency">Currency</label>
+          <input type="text" class="form-control" name="currency" id="field_currency" data-cy="currency" formControlName="currency" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.remarks" for="field_remarks">Remarks</label>
+          <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" appTranslate="billnextApp.wallet.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option *ngIf="!editForm.get('user')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of users; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['user'])!.invalid && (editForm.get(['user'])!.dirty || editForm.get(['user'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['user'])?.errors?.required" appTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span appTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span appTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
