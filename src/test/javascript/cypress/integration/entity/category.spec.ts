@@ -15,7 +15,7 @@ describe('Category e2e test', () => {
   beforeEach(() => {
     cy.getOauth2Data();
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogin(oauth2Data, 'user');
+      cy.oauthLogin(oauth2Data, Cypress.env('E2E_USERNAME') || 'admin', Cypress.env('E2E_PASSWORD') || 'admin');
     });
     cy.intercept('GET', '/api/categories*').as('entitiesRequest');
     cy.visit('');
@@ -26,7 +26,7 @@ describe('Category e2e test', () => {
 
   afterEach(() => {
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogout(oauth2Data);
+      cy.oauthLogout(oauth2Data);
     });
     cy.clearCache();
   });
@@ -87,11 +87,12 @@ describe('Category e2e test', () => {
     cy.intercept('GET', '/api/categories*').as('entitiesRequest');
     cy.visit('/');
     cy.clickOnEntityMenuItem('category');
-    cy.wait('@entitiesRequest');
+    cy.wait('@entitiesRequest')
+      .then(({ request, response }) => startingEntitiesCount = response.body.length);
     cy.get(entityCreateButtonSelector).click({force: true});
     cy.getEntityCreateUpdateHeading('Category');
 
-    cy.get(`[data-cy="name"]`).type('Table', { force: true }).invoke('val').should('match', new RegExp('Table'));
+    cy.get(`[data-cy="name"]`).type('projection Directives', { force: true }).invoke('val').should('match', new RegExp('projection Directives'));
 
 
     cy.get(`[data-cy="type"]`).select('INCOME');

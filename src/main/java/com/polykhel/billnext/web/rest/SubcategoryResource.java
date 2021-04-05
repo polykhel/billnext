@@ -1,11 +1,13 @@
 package com.polykhel.billnext.web.rest;
 
+import com.polykhel.billnext.repository.SubcategoryRepository;
 import com.polykhel.billnext.service.SubcategoryService;
 import com.polykhel.billnext.service.dto.SubcategoryDTO;
 import com.polykhel.billnext.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -38,8 +40,11 @@ public class SubcategoryResource {
 
     private final SubcategoryService subcategoryService;
 
-    public SubcategoryResource(SubcategoryService subcategoryService) {
+    private final SubcategoryRepository subcategoryRepository;
+
+    public SubcategoryResource(SubcategoryService subcategoryService, SubcategoryRepository subcategoryRepository) {
         this.subcategoryService = subcategoryService;
+        this.subcategoryRepository = subcategoryRepository;
     }
 
     /**
@@ -63,20 +68,32 @@ public class SubcategoryResource {
     }
 
     /**
-     * {@code PUT  /subcategories} : Updates an existing subcategory.
+     * {@code PUT  /subcategories/:id} : Updates an existing subcategory.
      *
+     * @param id the id of the subcategoryDTO to save.
      * @param subcategoryDTO the subcategoryDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated subcategoryDTO,
      * or with status {@code 400 (Bad Request)} if the subcategoryDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the subcategoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/subcategories")
-    public ResponseEntity<SubcategoryDTO> updateSubcategory(@Valid @RequestBody SubcategoryDTO subcategoryDTO) throws URISyntaxException {
-        log.debug("REST request to update Subcategory : {}", subcategoryDTO);
+    @PutMapping("/subcategories/{id}")
+    public ResponseEntity<SubcategoryDTO> updateSubcategory(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody SubcategoryDTO subcategoryDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Subcategory : {}, {}", id, subcategoryDTO);
         if (subcategoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, subcategoryDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!subcategoryRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         SubcategoryDTO result = subcategoryService.save(subcategoryDTO);
         return ResponseEntity
             .ok()
@@ -85,8 +102,9 @@ public class SubcategoryResource {
     }
 
     /**
-     * {@code PATCH  /subcategories} : Updates given fields of an existing subcategory.
+     * {@code PATCH  /subcategories/:id} : Partial updates given fields of an existing subcategory, field will ignore if it is null
      *
+     * @param id the id of the subcategoryDTO to save.
      * @param subcategoryDTO the subcategoryDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated subcategoryDTO,
      * or with status {@code 400 (Bad Request)} if the subcategoryDTO is not valid,
@@ -94,12 +112,21 @@ public class SubcategoryResource {
      * or with status {@code 500 (Internal Server Error)} if the subcategoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/subcategories", consumes = "application/merge-patch+json")
-    public ResponseEntity<SubcategoryDTO> partialUpdateSubcategory(@NotNull @RequestBody SubcategoryDTO subcategoryDTO)
-        throws URISyntaxException {
-        log.debug("REST request to update Subcategory partially : {}", subcategoryDTO);
+    @PatchMapping(value = "/subcategories/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<SubcategoryDTO> partialUpdateSubcategory(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody SubcategoryDTO subcategoryDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Subcategory partially : {}, {}", id, subcategoryDTO);
         if (subcategoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, subcategoryDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!subcategoryRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<SubcategoryDTO> result = subcategoryService.partialUpdate(subcategoryDTO);

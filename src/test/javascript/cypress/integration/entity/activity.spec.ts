@@ -15,7 +15,7 @@ describe('Activity e2e test', () => {
   beforeEach(() => {
     cy.getOauth2Data();
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogin(oauth2Data, 'user');
+      cy.oauthLogin(oauth2Data, Cypress.env('E2E_USERNAME') || 'admin', Cypress.env('E2E_PASSWORD') || 'admin');
     });
     cy.intercept('GET', '/api/activities*').as('entitiesRequest');
     cy.visit('');
@@ -26,7 +26,7 @@ describe('Activity e2e test', () => {
 
   afterEach(() => {
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogout(oauth2Data);
+      cy.oauthLogout(oauth2Data);
     });
     cy.clearCache();
   });
@@ -87,20 +87,21 @@ describe('Activity e2e test', () => {
     cy.intercept('GET', '/api/activities*').as('entitiesRequest');
     cy.visit('/');
     cy.clickOnEntityMenuItem('activity');
-    cy.wait('@entitiesRequest');
+    cy.wait('@entitiesRequest')
+      .then(({ request, response }) => startingEntitiesCount = response.body.length);
     cy.get(entityCreateButtonSelector).click({force: true});
     cy.getEntityCreateUpdateHeading('Activity');
 
-    cy.get(`[data-cy="date"]`).type('2021-03-13T16:32').invoke('val').should('equal', '2021-03-13T16:32');
+    cy.get(`[data-cy="date"]`).type('2021-03-13T12:52').invoke('val').should('equal', '2021-03-13T12:52');
 
 
-    cy.get(`[data-cy="amount"]`).type('38418').should('have.value', '38418');
+    cy.get(`[data-cy="amount"]`).type('86559').should('have.value', '86559');
 
 
-    cy.get(`[data-cy="remarks"]`).type('Baht PCI Markets', { force: true }).invoke('val').should('match', new RegExp('Baht PCI Markets'));
+    cy.get(`[data-cy="remarks"]`).type('lavender navigate', { force: true }).invoke('val').should('match', new RegExp('lavender navigate'));
 
 
-    cy.get(`[data-cy="type"]`).select('INCOME');
+    cy.get(`[data-cy="type"]`).select('EXPENSE');
 
     cy.setFieldSelectToLastOfEntity('user');
 

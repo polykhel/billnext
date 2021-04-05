@@ -16,4 +16,5 @@
 import './commands';
 import './navbar';
 import './entity';
-import './keycloak-oauth2';
+import './management';
+import './oauth2';

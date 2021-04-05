@@ -11,8 +11,8 @@ import { AccountService } from 'app/core/auth/account.service';
   styleUrls: ['./main.component.less'],
 })
 export class MainComponent implements OnInit {
-  private renderer: Renderer2;
   isNavbarCollapsed = false;
+  private renderer: Renderer2;
 
   constructor(
     private accountService: AccountService,
@@ -39,9 +39,16 @@ export class MainComponent implements OnInit {
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateTitle();
-
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
+
+  toggleNavbar(isNavbarCollapsed: boolean): void {
+    this.isNavbarCollapsed = isNavbarCollapsed;
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
@@ -58,13 +65,5 @@ export class MainComponent implements OnInit {
       pageTitle = 'global.title';
     }
     this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
-  }
-
-  isAuthenticated(): boolean {
-    return this.accountService.isAuthenticated();
-  }
-
-  toggleNavbar(isNavbarCollapsed: boolean): void {
-    this.isNavbarCollapsed = isNavbarCollapsed;
   }
 }

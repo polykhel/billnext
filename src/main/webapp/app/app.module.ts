@@ -7,6 +7,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 
+import { SERVER_API_URL } from './app.constants';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './modules/home/home.module';
@@ -35,7 +37,7 @@ import { AppInitializerProvider } from 'app/app-initializer.service';
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
-    NgxWebstorageModule.forRoot({ prefix: 'app', separator: '-' }),
+    NgxWebstorageModule.forRoot({ prefix: 'app', separator: '-', caseSensitive: true }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -54,7 +56,8 @@ import { AppInitializerProvider } from 'app/app-initializer.service';
   bootstrap: [MainComponent],
 })
 export class AppModule {
-  constructor(translateService: TranslateService) {
+  constructor(translateService: TranslateService, applicationConfigService: ApplicationConfigService) {
+    applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     translateService.setDefaultLang('en');
     translateService.use('en');

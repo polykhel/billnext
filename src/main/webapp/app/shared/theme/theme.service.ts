@@ -23,18 +23,6 @@ export class ThemeService {
     }
   }
 
-  private loadCss(href: string, id: string): Promise<Event> {
-    return new Promise<Event>((resolve, reject) => {
-      const style = document.createElement('link');
-      style.rel = 'stylesheet';
-      style.href = href;
-      style.id = id;
-      style.onload = resolve;
-      style.onerror = reject;
-      document.head.append(style);
-    });
-  }
-
   public loadTheme(firstLoad = true): Promise<Event> {
     const theme = this.currentTheme;
     if (firstLoad) {
@@ -57,5 +45,17 @@ export class ThemeService {
   public toggleTheme(): Promise<Event> {
     this.currentTheme = ThemeService.reverseTheme(this.currentTheme);
     return this.loadTheme(false);
+  }
+
+  private loadCss(href: string, id: string): Promise<Event> {
+    return new Promise<Event>((resolve, reject) => {
+      const style = document.createElement('link');
+      style.rel = 'stylesheet';
+      style.href = href;
+      style.id = id;
+      style.onload = resolve;
+      style.onerror = reject;
+      document.head.append(style);
+    });
   }
 }

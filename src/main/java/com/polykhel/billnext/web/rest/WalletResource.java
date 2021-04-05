@@ -1,11 +1,13 @@
 package com.polykhel.billnext.web.rest;
 
+import com.polykhel.billnext.repository.WalletRepository;
 import com.polykhel.billnext.service.WalletService;
 import com.polykhel.billnext.service.dto.WalletDTO;
 import com.polykhel.billnext.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -38,8 +40,11 @@ public class WalletResource {
 
     private final WalletService walletService;
 
-    public WalletResource(WalletService walletService) {
+    private final WalletRepository walletRepository;
+
+    public WalletResource(WalletService walletService, WalletRepository walletRepository) {
         this.walletService = walletService;
+        this.walletRepository = walletRepository;
     }
 
     /**
@@ -63,20 +68,32 @@ public class WalletResource {
     }
 
     /**
-     * {@code PUT  /wallets} : Updates an existing wallet.
+     * {@code PUT  /wallets/:id} : Updates an existing wallet.
      *
+     * @param id the id of the walletDTO to save.
      * @param walletDTO the walletDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated walletDTO,
      * or with status {@code 400 (Bad Request)} if the walletDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the walletDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/wallets")
-    public ResponseEntity<WalletDTO> updateWallet(@Valid @RequestBody WalletDTO walletDTO) throws URISyntaxException {
-        log.debug("REST request to update Wallet : {}", walletDTO);
+    @PutMapping("/wallets/{id}")
+    public ResponseEntity<WalletDTO> updateWallet(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody WalletDTO walletDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Wallet : {}, {}", id, walletDTO);
         if (walletDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, walletDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!walletRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         WalletDTO result = walletService.save(walletDTO);
         return ResponseEntity
             .ok()
@@ -85,8 +102,9 @@ public class WalletResource {
     }
 
     /**
-     * {@code PATCH  /wallets} : Updates given fields of an existing wallet.
+     * {@code PATCH  /wallets/:id} : Partial updates given fields of an existing wallet, field will ignore if it is null
      *
+     * @param id the id of the walletDTO to save.
      * @param walletDTO the walletDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated walletDTO,
      * or with status {@code 400 (Bad Request)} if the walletDTO is not valid,
@@ -94,11 +112,21 @@ public class WalletResource {
      * or with status {@code 500 (Internal Server Error)} if the walletDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/wallets", consumes = "application/merge-patch+json")
-    public ResponseEntity<WalletDTO> partialUpdateWallet(@NotNull @RequestBody WalletDTO walletDTO) throws URISyntaxException {
-        log.debug("REST request to update Wallet partially : {}", walletDTO);
+    @PatchMapping(value = "/wallets/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<WalletDTO> partialUpdateWallet(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody WalletDTO walletDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Wallet partially : {}, {}", id, walletDTO);
         if (walletDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, walletDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!walletRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<WalletDTO> result = walletService.partialUpdate(walletDTO);

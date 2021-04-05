@@ -23,6 +23,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,12 @@ class ActivityResourceIT {
 
     private static final ActivityType DEFAULT_TYPE = ActivityType.INCOME;
     private static final ActivityType UPDATED_TYPE = ActivityType.EXPENSE;
+
+    private static final String ENTITY_API_URL = "/api/activities";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -152,7 +160,7 @@ class ActivityResourceIT {
         ActivityDTO activityDTO = activityMapper.toDto(activity);
         restActivityMockMvc
             .perform(
-                post("/api/activities")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -181,7 +189,7 @@ class ActivityResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restActivityMockMvc
             .perform(
-                post("/api/activities")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -205,7 +213,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                post("/api/activities")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -228,7 +236,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                post("/api/activities")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -251,7 +259,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                post("/api/activities")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -270,7 +278,7 @@ class ActivityResourceIT {
 
         // Get all the activityList
         restActivityMockMvc
-            .perform(get("/api/activities?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(activity.getId().intValue())))
@@ -288,7 +296,7 @@ class ActivityResourceIT {
 
         // Get the activity
         restActivityMockMvc
-            .perform(get("/api/activities/{id}", activity.getId()))
+            .perform(get(ENTITY_API_URL_ID, activity.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(activity.getId().intValue()))
@@ -302,12 +310,12 @@ class ActivityResourceIT {
     @Transactional
     void getNonExistingActivity() throws Exception {
         // Get the activity
-        restActivityMockMvc.perform(get("/api/activities/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restActivityMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void updateActivity() throws Exception {
+    void putNewActivity() throws Exception {
         // Initialize the database
         activityRepository.saveAndFlush(activity);
 
@@ -322,7 +330,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                put("/api/activities")
+                put(ENTITY_API_URL_ID, activityDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
@@ -341,8 +349,9 @@ class ActivityResourceIT {
 
     @Test
     @Transactional
-    void updateNonExistingActivity() throws Exception {
+    void putNonExistingActivity() throws Exception {
         int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
 
         // Create the Activity
         ActivityDTO activityDTO = activityMapper.toDto(activity);
@@ -350,12 +359,60 @@ class ActivityResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActivityMockMvc
             .perform(
-                put("/api/activities")
+                put(ENTITY_API_URL_ID, activityDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(activityDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Activity in the database
+        List<Activity> activityList = activityRepository.findAll();
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchActivity() throws Exception {
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
+
+        // Create the Activity
+        ActivityDTO activityDTO = activityMapper.toDto(activity);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restActivityMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(activityDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Activity in the database
+        List<Activity> activityList = activityRepository.findAll();
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamActivity() throws Exception {
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
+
+        // Create the Activity
+        ActivityDTO activityDTO = activityMapper.toDto(activity);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restActivityMockMvc
+            .perform(
+                put(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(activityDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Activity in the database
         List<Activity> activityList = activityRepository.findAll();
@@ -378,7 +435,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                patch("/api/activities")
+                patch(ENTITY_API_URL_ID, partialUpdatedActivity.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedActivity))
@@ -411,7 +468,7 @@ class ActivityResourceIT {
 
         restActivityMockMvc
             .perform(
-                patch("/api/activities")
+                patch(ENTITY_API_URL_ID, partialUpdatedActivity.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedActivity))
@@ -430,18 +487,74 @@ class ActivityResourceIT {
 
     @Test
     @Transactional
-    void partialUpdateActivityShouldThrown() throws Exception {
-        // Update the activity without id should throw
-        Activity partialUpdatedActivity = new Activity();
+    void patchNonExistingActivity() throws Exception {
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
 
+        // Create the Activity
+        ActivityDTO activityDTO = activityMapper.toDto(activity);
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restActivityMockMvc
             .perform(
-                patch("/api/activities")
+                patch(ENTITY_API_URL_ID, activityDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedActivity))
+                    .content(TestUtil.convertObjectToJsonBytes(activityDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Activity in the database
+        List<Activity> activityList = activityRepository.findAll();
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchActivity() throws Exception {
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
+
+        // Create the Activity
+        ActivityDTO activityDTO = activityMapper.toDto(activity);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restActivityMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(activityDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Activity in the database
+        List<Activity> activityList = activityRepository.findAll();
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamActivity() throws Exception {
+        int databaseSizeBeforeUpdate = activityRepository.findAll().size();
+        activity.setId(count.incrementAndGet());
+
+        // Create the Activity
+        ActivityDTO activityDTO = activityMapper.toDto(activity);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restActivityMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(activityDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Activity in the database
+        List<Activity> activityList = activityRepository.findAll();
+        assertThat(activityList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -454,7 +567,7 @@ class ActivityResourceIT {
 
         // Delete the activity
         restActivityMockMvc
-            .perform(delete("/api/activities/{id}", activity.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, activity.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

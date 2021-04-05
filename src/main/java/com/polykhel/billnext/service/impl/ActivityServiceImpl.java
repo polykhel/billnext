@@ -47,22 +47,7 @@ public class ActivityServiceImpl implements ActivityService {
             .findById(activityDTO.getId())
             .map(
                 existingActivity -> {
-                    if (activityDTO.getDate() != null) {
-                        existingActivity.setDate(activityDTO.getDate());
-                    }
-
-                    if (activityDTO.getAmount() != null) {
-                        existingActivity.setAmount(activityDTO.getAmount());
-                    }
-
-                    if (activityDTO.getRemarks() != null) {
-                        existingActivity.setRemarks(activityDTO.getRemarks());
-                    }
-
-                    if (activityDTO.getType() != null) {
-                        existingActivity.setType(activityDTO.getType());
-                    }
-
+                    activityMapper.partialUpdate(existingActivity, activityDTO);
                     return existingActivity;
                 }
             )

@@ -15,7 +15,7 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
   openAPIEnabled?: boolean;
-  version: string;
+  version = '';
   @Input() isCollapsed = false;
 
   constructor(
@@ -25,7 +25,9 @@ export class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService
   ) {
-    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+    if (VERSION) {
+      this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
+    }
   }
 
   ngOnInit(): void {

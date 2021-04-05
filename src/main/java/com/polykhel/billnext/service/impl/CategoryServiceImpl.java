@@ -47,14 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
             .findById(categoryDTO.getId())
             .map(
                 existingCategory -> {
-                    if (categoryDTO.getName() != null) {
-                        existingCategory.setName(categoryDTO.getName());
-                    }
-
-                    if (categoryDTO.getType() != null) {
-                        existingCategory.setType(categoryDTO.getType());
-                    }
-
+                    categoryMapper.partialUpdate(existingCategory, categoryDTO);
                     return existingCategory;
                 }
             )
