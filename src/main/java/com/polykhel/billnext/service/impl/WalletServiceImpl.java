@@ -47,26 +47,7 @@ public class WalletServiceImpl implements WalletService {
             .findById(walletDTO.getId())
             .map(
                 existingWallet -> {
-                    if (walletDTO.getWalletGroup() != null) {
-                        existingWallet.setWalletGroup(walletDTO.getWalletGroup());
-                    }
-
-                    if (walletDTO.getName() != null) {
-                        existingWallet.setName(walletDTO.getName());
-                    }
-
-                    if (walletDTO.getAmount() != null) {
-                        existingWallet.setAmount(walletDTO.getAmount());
-                    }
-
-                    if (walletDTO.getCurrency() != null) {
-                        existingWallet.setCurrency(walletDTO.getCurrency());
-                    }
-
-                    if (walletDTO.getRemarks() != null) {
-                        existingWallet.setRemarks(walletDTO.getRemarks());
-                    }
-
+                    walletMapper.partialUpdate(existingWallet, walletDTO);
                     return existingWallet;
                 }
             )

@@ -13,7 +13,4 @@ import tech.jhipster.config.JHipsterConstants;
 @EnableJpaRepositories("com.polykhel.billnext.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
-public class DatabaseConfiguration {
-
-    private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
-}
+public class DatabaseConfiguration {}

@@ -4,18 +4,19 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import { isPresent } from 'app/core/util/operators';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IActivity } from '../activity.model';
+import { IActivity, getActivityIdentifier } from '../activity.model';
 
-type EntityResponseType = HttpResponse<IActivity>;
-type EntityArrayResponseType = HttpResponse<IActivity[]>;
+export type EntityResponseType = HttpResponse<IActivity>;
+export type EntityArrayResponseType = HttpResponse<IActivity[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ActivityService {
-  public resourceUrl = SERVER_API_URL + 'api/activities';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/activities');
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   create(activity: IActivity): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(activity);
@@ -27,7 +28,14 @@ export class ActivityService {
   update(activity: IActivity): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(activity);
     return this.http
-      .put<IActivity>(this.resourceUrl, copy, { observe: 'response' })
+      .put<IActivity>(`${this.resourceUrl}/${getActivityIdentifier(activity) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  partialUpdate(activity: IActivity): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(activity);
+    return this.http
+      .patch<IActivity>(`${this.resourceUrl}/${getActivityIdentifier(activity) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
@@ -48,11 +56,27 @@ export class ActivityService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  addActivityToCollectionIfMissing(activityCollection: IActivity[], ...activitiesToCheck: (IActivity | null | undefined)[]): IActivity[] {
+    const activities: IActivity[] = activitiesToCheck.filter(isPresent);
+    if (activities.length > 0) {
+      const activityCollectionIdentifiers = activityCollection.map(activityItem => getActivityIdentifier(activityItem)!);
+      const activitiesToAdd = activities.filter(activityItem => {
+        const activityIdentifier = getActivityIdentifier(activityItem);
+        if (activityIdentifier == null || activityCollectionIdentifiers.includes(activityIdentifier)) {
+          return false;
+        }
+        activityCollectionIdentifiers.push(activityIdentifier);
+        return true;
+      });
+      return [...activitiesToAdd, ...activityCollection];
+    }
+    return activityCollection;
+  }
+
   protected convertDateFromClient(activity: IActivity): IActivity {
-    const copy: IActivity = Object.assign({}, activity, {
+    return Object.assign({}, activity, {
       date: activity.date?.isValid() ? activity.date.toJSON() : undefined,
     });
-    return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {

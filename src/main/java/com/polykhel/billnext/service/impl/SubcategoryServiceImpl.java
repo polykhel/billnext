@@ -47,10 +47,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
             .findById(subcategoryDTO.getId())
             .map(
                 existingSubcategory -> {
-                    if (subcategoryDTO.getName() != null) {
-                        existingSubcategory.setName(subcategoryDTO.getName());
-                    }
-
+                    subcategoryMapper.partialUpdate(existingSubcategory, subcategoryDTO);
                     return existingSubcategory;
                 }
             )

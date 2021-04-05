@@ -13,6 +13,8 @@ import com.polykhel.billnext.repository.SubcategoryRepository;
 import com.polykhel.billnext.service.dto.SubcategoryDTO;
 import com.polykhel.billnext.service.mapper.SubcategoryMapper;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,12 @@ class SubcategoryResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String ENTITY_API_URL = "/api/subcategories";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private SubcategoryRepository subcategoryRepository;
@@ -103,7 +111,7 @@ class SubcategoryResourceIT {
         SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
         restSubcategoryMockMvc
             .perform(
-                post("/api/subcategories")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
@@ -129,7 +137,7 @@ class SubcategoryResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restSubcategoryMockMvc
             .perform(
-                post("/api/subcategories")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
@@ -153,7 +161,7 @@ class SubcategoryResourceIT {
 
         restSubcategoryMockMvc
             .perform(
-                post("/api/subcategories")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
@@ -172,7 +180,7 @@ class SubcategoryResourceIT {
 
         // Get all the subcategoryList
         restSubcategoryMockMvc
-            .perform(get("/api/subcategories?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subcategory.getId().intValue())))
@@ -187,7 +195,7 @@ class SubcategoryResourceIT {
 
         // Get the subcategory
         restSubcategoryMockMvc
-            .perform(get("/api/subcategories/{id}", subcategory.getId()))
+            .perform(get(ENTITY_API_URL_ID, subcategory.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(subcategory.getId().intValue()))
@@ -198,12 +206,12 @@ class SubcategoryResourceIT {
     @Transactional
     void getNonExistingSubcategory() throws Exception {
         // Get the subcategory
-        restSubcategoryMockMvc.perform(get("/api/subcategories/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restSubcategoryMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void updateSubcategory() throws Exception {
+    void putNewSubcategory() throws Exception {
         // Initialize the database
         subcategoryRepository.saveAndFlush(subcategory);
 
@@ -218,7 +226,7 @@ class SubcategoryResourceIT {
 
         restSubcategoryMockMvc
             .perform(
-                put("/api/subcategories")
+                put(ENTITY_API_URL_ID, subcategoryDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
@@ -234,8 +242,9 @@ class SubcategoryResourceIT {
 
     @Test
     @Transactional
-    void updateNonExistingSubcategory() throws Exception {
+    void putNonExistingSubcategory() throws Exception {
         int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
 
         // Create the Subcategory
         SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
@@ -243,12 +252,60 @@ class SubcategoryResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSubcategoryMockMvc
             .perform(
-                put("/api/subcategories")
+                put(ENTITY_API_URL_ID, subcategoryDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Subcategory in the database
+        List<Subcategory> subcategoryList = subcategoryRepository.findAll();
+        assertThat(subcategoryList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchSubcategory() throws Exception {
+        int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
+
+        // Create the Subcategory
+        SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSubcategoryMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Subcategory in the database
+        List<Subcategory> subcategoryList = subcategoryRepository.findAll();
+        assertThat(subcategoryList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamSubcategory() throws Exception {
+        int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
+
+        // Create the Subcategory
+        SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSubcategoryMockMvc
+            .perform(
+                put(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Subcategory in the database
         List<Subcategory> subcategoryList = subcategoryRepository.findAll();
@@ -269,7 +326,7 @@ class SubcategoryResourceIT {
 
         restSubcategoryMockMvc
             .perform(
-                patch("/api/subcategories")
+                patch(ENTITY_API_URL_ID, partialUpdatedSubcategory.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedSubcategory))
@@ -299,7 +356,7 @@ class SubcategoryResourceIT {
 
         restSubcategoryMockMvc
             .perform(
-                patch("/api/subcategories")
+                patch(ENTITY_API_URL_ID, partialUpdatedSubcategory.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedSubcategory))
@@ -315,18 +372,74 @@ class SubcategoryResourceIT {
 
     @Test
     @Transactional
-    void partialUpdateSubcategoryShouldThrown() throws Exception {
-        // Update the subcategory without id should throw
-        Subcategory partialUpdatedSubcategory = new Subcategory();
+    void patchNonExistingSubcategory() throws Exception {
+        int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
 
+        // Create the Subcategory
+        SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSubcategoryMockMvc
             .perform(
-                patch("/api/subcategories")
+                patch(ENTITY_API_URL_ID, subcategoryDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedSubcategory))
+                    .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Subcategory in the database
+        List<Subcategory> subcategoryList = subcategoryRepository.findAll();
+        assertThat(subcategoryList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchSubcategory() throws Exception {
+        int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
+
+        // Create the Subcategory
+        SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSubcategoryMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Subcategory in the database
+        List<Subcategory> subcategoryList = subcategoryRepository.findAll();
+        assertThat(subcategoryList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamSubcategory() throws Exception {
+        int databaseSizeBeforeUpdate = subcategoryRepository.findAll().size();
+        subcategory.setId(count.incrementAndGet());
+
+        // Create the Subcategory
+        SubcategoryDTO subcategoryDTO = subcategoryMapper.toDto(subcategory);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSubcategoryMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(subcategoryDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Subcategory in the database
+        List<Subcategory> subcategoryList = subcategoryRepository.findAll();
+        assertThat(subcategoryList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -339,7 +452,7 @@ class SubcategoryResourceIT {
 
         // Delete the subcategory
         restSubcategoryMockMvc
-            .perform(delete("/api/subcategories/{id}", subcategory.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, subcategory.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

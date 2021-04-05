@@ -2,25 +2,32 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import { isPresent } from 'app/core/util/operators';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ICategory } from '../category.model';
+import { ICategory, getCategoryIdentifier } from '../category.model';
 
-type EntityResponseType = HttpResponse<ICategory>;
-type EntityArrayResponseType = HttpResponse<ICategory[]>;
+export type EntityResponseType = HttpResponse<ICategory>;
+export type EntityArrayResponseType = HttpResponse<ICategory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
-  public resourceUrl = SERVER_API_URL + 'api/categories';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/categories');
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   create(category: ICategory): Observable<EntityResponseType> {
     return this.http.post<ICategory>(this.resourceUrl, category, { observe: 'response' });
   }
 
   update(category: ICategory): Observable<EntityResponseType> {
-    return this.http.put<ICategory>(this.resourceUrl, category, { observe: 'response' });
+    return this.http.put<ICategory>(`${this.resourceUrl}/${getCategoryIdentifier(category) as number}`, category, { observe: 'response' });
+  }
+
+  partialUpdate(category: ICategory): Observable<EntityResponseType> {
+    return this.http.patch<ICategory>(`${this.resourceUrl}/${getCategoryIdentifier(category) as number}`, category, {
+      observe: 'response',
+    });
   }
 
   find(id: number): Observable<EntityResponseType> {
@@ -34,5 +41,22 @@ export class CategoryService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  addCategoryToCollectionIfMissing(categoryCollection: ICategory[], ...categoriesToCheck: (ICategory | null | undefined)[]): ICategory[] {
+    const categories: ICategory[] = categoriesToCheck.filter(isPresent);
+    if (categories.length > 0) {
+      const categoryCollectionIdentifiers = categoryCollection.map(categoryItem => getCategoryIdentifier(categoryItem)!);
+      const categoriesToAdd = categories.filter(categoryItem => {
+        const categoryIdentifier = getCategoryIdentifier(categoryItem);
+        if (categoryIdentifier == null || categoryCollectionIdentifiers.includes(categoryIdentifier)) {
+          return false;
+        }
+        categoryCollectionIdentifiers.push(categoryIdentifier);
+        return true;
+      });
+      return [...categoriesToAdd, ...categoryCollection];
+    }
+    return categoryCollection;
   }
 }

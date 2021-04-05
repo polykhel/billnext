@@ -19,3 +19,7 @@ export class Category implements ICategory {
     public activities?: IActivity[] | null
   ) {}
 }
+
+export function getCategoryIdentifier(category: ICategory): number | undefined {
+  return category.id;
+}

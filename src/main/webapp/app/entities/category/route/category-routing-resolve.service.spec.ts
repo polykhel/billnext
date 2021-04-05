@@ -32,9 +32,9 @@ describe('Service Tests', () => {
     });
 
     describe('resolve', () => {
-      it('should return existing ICategory for existing id', () => {
+      it('should return ICategory returned by find', () => {
         // GIVEN
-        service.find = jest.fn(id => of(new HttpResponse({ body: new Category(id) })));
+        service.find = jest.fn(id => of(new HttpResponse({ body: { id } })));
         mockActivatedRouteSnapshot.params = { id: 123 };
 
         // WHEN
@@ -44,7 +44,7 @@ describe('Service Tests', () => {
 
         // THEN
         expect(service.find).toBeCalledWith(123);
-        expect(resultCategory).toEqual(new Category(123));
+        expect(resultCategory).toEqual({ id: 123 });
       });
 
       it('should return new ICategory if id is not provided', () => {

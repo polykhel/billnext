@@ -83,7 +83,7 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  sort(): string[] {
+  protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
       result.push('id');
@@ -94,8 +94,8 @@ export class CategoryComponent implements OnInit {
   protected paginateCategories(data: ICategory[] | null, headers: HttpHeaders): void {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
-      for (let i = 0; i < data.length; i++) {
-        this.categories.push(data[i]);
+      for (const d of data) {
+        this.categories.push(d);
       }
     }
   }

@@ -16,6 +16,8 @@ import com.polykhel.billnext.service.dto.WalletDTO;
 import com.polykhel.billnext.service.mapper.WalletMapper;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +50,12 @@ class WalletResourceIT {
 
     private static final String DEFAULT_REMARKS = "AAAAAAAAAA";
     private static final String UPDATED_REMARKS = "BBBBBBBBBB";
+
+    private static final String ENTITY_API_URL = "/api/wallets";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private WalletRepository walletRepository;
@@ -118,7 +126,7 @@ class WalletResourceIT {
         WalletDTO walletDTO = walletMapper.toDto(wallet);
         restWalletMockMvc
             .perform(
-                post("/api/wallets")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -148,7 +156,7 @@ class WalletResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restWalletMockMvc
             .perform(
-                post("/api/wallets")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -172,7 +180,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                post("/api/wallets")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -195,7 +203,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                post("/api/wallets")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -218,7 +226,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                post("/api/wallets")
+                post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -237,7 +245,7 @@ class WalletResourceIT {
 
         // Get all the walletList
         restWalletMockMvc
-            .perform(get("/api/wallets?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wallet.getId().intValue())))
@@ -256,7 +264,7 @@ class WalletResourceIT {
 
         // Get the wallet
         restWalletMockMvc
-            .perform(get("/api/wallets/{id}", wallet.getId()))
+            .perform(get(ENTITY_API_URL_ID, wallet.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(wallet.getId().intValue()))
@@ -271,12 +279,12 @@ class WalletResourceIT {
     @Transactional
     void getNonExistingWallet() throws Exception {
         // Get the wallet
-        restWalletMockMvc.perform(get("/api/wallets/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restWalletMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void updateWallet() throws Exception {
+    void putNewWallet() throws Exception {
         // Initialize the database
         walletRepository.saveAndFlush(wallet);
 
@@ -296,7 +304,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                put("/api/wallets")
+                put(ENTITY_API_URL_ID, walletDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
@@ -316,8 +324,9 @@ class WalletResourceIT {
 
     @Test
     @Transactional
-    void updateNonExistingWallet() throws Exception {
+    void putNonExistingWallet() throws Exception {
         int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
 
         // Create the Wallet
         WalletDTO walletDTO = walletMapper.toDto(wallet);
@@ -325,12 +334,60 @@ class WalletResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restWalletMockMvc
             .perform(
-                put("/api/wallets")
+                put(ENTITY_API_URL_ID, walletDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(walletDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Wallet in the database
+        List<Wallet> walletList = walletRepository.findAll();
+        assertThat(walletList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchWallet() throws Exception {
+        int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
+
+        // Create the Wallet
+        WalletDTO walletDTO = walletMapper.toDto(wallet);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restWalletMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(walletDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Wallet in the database
+        List<Wallet> walletList = walletRepository.findAll();
+        assertThat(walletList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamWallet() throws Exception {
+        int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
+
+        // Create the Wallet
+        WalletDTO walletDTO = walletMapper.toDto(wallet);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restWalletMockMvc
+            .perform(
+                put(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(walletDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Wallet in the database
         List<Wallet> walletList = walletRepository.findAll();
@@ -353,7 +410,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                patch("/api/wallets")
+                patch(ENTITY_API_URL_ID, partialUpdatedWallet.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedWallet))
@@ -392,7 +449,7 @@ class WalletResourceIT {
 
         restWalletMockMvc
             .perform(
-                patch("/api/wallets")
+                patch(ENTITY_API_URL_ID, partialUpdatedWallet.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedWallet))
@@ -412,18 +469,74 @@ class WalletResourceIT {
 
     @Test
     @Transactional
-    void partialUpdateWalletShouldThrown() throws Exception {
-        // Update the wallet without id should throw
-        Wallet partialUpdatedWallet = new Wallet();
+    void patchNonExistingWallet() throws Exception {
+        int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
 
+        // Create the Wallet
+        WalletDTO walletDTO = walletMapper.toDto(wallet);
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restWalletMockMvc
             .perform(
-                patch("/api/wallets")
+                patch(ENTITY_API_URL_ID, walletDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedWallet))
+                    .content(TestUtil.convertObjectToJsonBytes(walletDTO))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Wallet in the database
+        List<Wallet> walletList = walletRepository.findAll();
+        assertThat(walletList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchWallet() throws Exception {
+        int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
+
+        // Create the Wallet
+        WalletDTO walletDTO = walletMapper.toDto(wallet);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restWalletMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(walletDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Wallet in the database
+        List<Wallet> walletList = walletRepository.findAll();
+        assertThat(walletList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamWallet() throws Exception {
+        int databaseSizeBeforeUpdate = walletRepository.findAll().size();
+        wallet.setId(count.incrementAndGet());
+
+        // Create the Wallet
+        WalletDTO walletDTO = walletMapper.toDto(wallet);
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restWalletMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(walletDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Wallet in the database
+        List<Wallet> walletList = walletRepository.findAll();
+        assertThat(walletList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -436,7 +549,7 @@ class WalletResourceIT {
 
         // Delete the wallet
         restWalletMockMvc
-            .perform(delete("/api/wallets/{id}", wallet.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, wallet.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -9,7 +9,7 @@ import { SubcategoryService } from '../service/subcategory.service';
 
 @Injectable({ providedIn: 'root' })
 export class SubcategoryRoutingResolveService implements Resolve<ISubcategory> {
-  constructor(private service: SubcategoryService, private router: Router) {}
+  constructor(protected service: SubcategoryService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ISubcategory> | Observable<never> {
     const id = route.params['id'];

@@ -86,7 +86,7 @@
             <option *ngIf="!editForm.get('user')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
-              *ngFor="let userOption of users; trackBy: trackUserById"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
             >
               {{ userOption.id }}
             </option>
@@ -104,7 +104,7 @@
             <option *ngIf="!editForm.get('wallet')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="walletOption.id === editForm.get('wallet')!.value?.id ? editForm.get('wallet')!.value : walletOption"
-              *ngFor="let walletOption of wallets; trackBy: trackWalletById"
+              *ngFor="let walletOption of walletsSharedCollection; trackBy: trackWalletById"
             >
               {{ walletOption.id }}
             </option>
@@ -122,7 +122,7 @@
             <option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
-              *ngFor="let categoryOption of categories; trackBy: trackCategoryById"
+              *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
             >
               {{ categoryOption.id }}
             </option>

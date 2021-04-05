@@ -9,7 +9,7 @@ import { WalletService } from '../service/wallet.service';
 
 @Injectable({ providedIn: 'root' })
 export class WalletRoutingResolveService implements Resolve<IWallet> {
-  constructor(private service: WalletService, private router: Router) {}
+  constructor(protected service: WalletService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IWallet> | Observable<never> {
     const id = route.params['id'];

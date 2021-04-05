@@ -21,7 +21,14 @@ describe('Service Tests', () => {
       service = TestBed.inject(WalletService);
       httpMock = TestBed.inject(HttpTestingController);
 
-      elemDefault = new Wallet(0, WalletGroup.CASH, 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA');
+      elemDefault = {
+        id: 0,
+        walletGroup: WalletGroup.CASH,
+        name: 'AAAAAAA',
+        amount: 0,
+        currency: 'AAAAAAA',
+        remarks: 'AAAAAAA',
+      };
     });
 
     describe('Service methods', () => {
@@ -74,6 +81,27 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject(expected);
       });
 
+      it('should partial update a Wallet', () => {
+        const patchObject = Object.assign(
+          {
+            walletGroup: 'BBBBBB',
+            name: 'BBBBBB',
+            remarks: 'BBBBBB',
+          },
+          new Wallet()
+        );
+
+        const returnedFromService = Object.assign(patchObject, elemDefault);
+
+        const expected = Object.assign({}, returnedFromService);
+
+        service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'PATCH' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
       it('should return a list of Wallet', () => {
         const returnedFromService = Object.assign(
           {
@@ -103,6 +131,58 @@ describe('Service Tests', () => {
         const req = httpMock.expectOne({ method: 'DELETE' });
         req.flush({ status: 200 });
         expect(expectedResult);
+      });
+
+      describe('addWalletToCollectionIfMissing', () => {
+        it('should add a Wallet to an empty array', () => {
+          const wallet: IWallet = { id: 123 };
+          expectedResult = service.addWalletToCollectionIfMissing([], wallet);
+          expect(expectedResult).toHaveLength(1);
+          expect(expectedResult).toContain(wallet);
+        });
+
+        it('should not add a Wallet to an array that contains it', () => {
+          const wallet: IWallet = { id: 123 };
+          const walletCollection: IWallet[] = [
+            {
+              ...wallet,
+            },
+            { id: 456 },
+          ];
+          expectedResult = service.addWalletToCollectionIfMissing(walletCollection, wallet);
+          expect(expectedResult).toHaveLength(2);
+        });
+
+        it("should add a Wallet to an array that doesn't contain it", () => {
+          const wallet: IWallet = { id: 123 };
+          const walletCollection: IWallet[] = [{ id: 456 }];
+          expectedResult = service.addWalletToCollectionIfMissing(walletCollection, wallet);
+          expect(expectedResult).toHaveLength(2);
+          expect(expectedResult).toContain(wallet);
+        });
+
+        it('should add only unique Wallet to an array', () => {
+          const walletArray: IWallet[] = [{ id: 123 }, { id: 456 }, { id: 22122 }];
+          const walletCollection: IWallet[] = [{ id: 123 }];
+          expectedResult = service.addWalletToCollectionIfMissing(walletCollection, ...walletArray);
+          expect(expectedResult).toHaveLength(3);
+        });
+
+        it('should accept varargs', () => {
+          const wallet: IWallet = { id: 123 };
+          const wallet2: IWallet = { id: 456 };
+          expectedResult = service.addWalletToCollectionIfMissing([], wallet, wallet2);
+          expect(expectedResult).toHaveLength(2);
+          expect(expectedResult).toContain(wallet);
+          expect(expectedResult).toContain(wallet2);
+        });
+
+        it('should accept null and undefined values', () => {
+          const wallet: IWallet = { id: 123 };
+          expectedResult = service.addWalletToCollectionIfMissing([], null, wallet, undefined);
+          expect(expectedResult).toHaveLength(1);
+          expect(expectedResult).toContain(wallet);
+        });
       });
     });
 

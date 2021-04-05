@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Wallet } from '../wallet.model';
-
 import { WalletDetailComponent } from './wallet-detail.component';
 
 describe('Component Tests', () => {
@@ -17,7 +15,7 @@ describe('Component Tests', () => {
         providers: [
           {
             provide: ActivatedRoute,
-            useValue: { data: of({ wallet: new Wallet(123) }) },
+            useValue: { data: of({ wallet: { id: 123 } }) },
           },
         ],
       })

@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 
 import { ActivityService } from '../service/activity.service';
-import { Activity } from '../activity.model';
 
 import { ActivityComponent } from './activity.component';
 
@@ -46,20 +45,19 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(ActivityComponent);
       comp = fixture.componentInstance;
       service = TestBed.inject(ActivityService);
-    });
 
-    it('Should call load all on init', () => {
-      // GIVEN
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Activity(123)],
+            body: [{ id: 123 }],
             headers,
           })
         )
       );
+    });
 
+    it('Should call load all on init', () => {
       // WHEN
       comp.ngOnInit();
 
@@ -69,17 +67,6 @@ describe('Component Tests', () => {
     });
 
     it('should load a page', () => {
-      // GIVEN
-      const headers = new HttpHeaders().append('link', 'link;link');
-      spyOn(service, 'query').and.returnValue(
-        of(
-          new HttpResponse({
-            body: [new Activity(123)],
-            headers,
-          })
-        )
-      );
-
       // WHEN
       comp.loadPage(1);
 
@@ -91,10 +78,9 @@ describe('Component Tests', () => {
     it('should calculate the sort attribute for an id', () => {
       // WHEN
       comp.ngOnInit();
-      const result = comp.sort();
 
       // THEN
-      expect(result).toEqual(['id,desc']);
+      expect(service.query).toHaveBeenCalledWith(expect.objectContaining({ sort: ['id,desc'] }));
     });
 
     it('should calculate the sort attribute for a non-id attribute', () => {
@@ -105,10 +91,10 @@ describe('Component Tests', () => {
       comp.predicate = 'name';
 
       // WHEN
-      const result = comp.sort();
+      comp.loadPage(1);
 
       // THEN
-      expect(result).toEqual(['name,desc', 'id']);
+      expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['name,desc', 'id'] }));
     });
   });
 });

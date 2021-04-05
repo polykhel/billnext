@@ -3,7 +3,7 @@
     "blueprints": [],
     "applicationType": "monolith",
     "baseName": "billnext",
-    "jhipsterVersion": "7.0.0-beta.1",
+    "jhipsterVersion": "7.0.1",
     "skipClient": false,
     "skipServer": false,
     "skipUserManagement": true,

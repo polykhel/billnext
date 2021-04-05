@@ -1,11 +1,13 @@
 package com.polykhel.billnext.web.rest;
 
+import com.polykhel.billnext.repository.ActivityRepository;
 import com.polykhel.billnext.service.ActivityService;
 import com.polykhel.billnext.service.dto.ActivityDTO;
 import com.polykhel.billnext.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -39,8 +41,11 @@ public class ActivityResource {
 
     private final ActivityService activityService;
 
-    public ActivityResource(ActivityService activityService) {
+    private final ActivityRepository activityRepository;
+
+    public ActivityResource(ActivityService activityService, ActivityRepository activityRepository) {
         this.activityService = activityService;
+        this.activityRepository = activityRepository;
     }
 
     /**
@@ -64,20 +69,32 @@ public class ActivityResource {
     }
 
     /**
-     * {@code PUT  /activities} : Updates an existing activity.
+     * {@code PUT  /activities/:id} : Updates an existing activity.
      *
+     * @param id the id of the activityDTO to save.
      * @param activityDTO the activityDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated activityDTO,
      * or with status {@code 400 (Bad Request)} if the activityDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the activityDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/activities")
-    public ResponseEntity<ActivityDTO> updateActivity(@Valid @RequestBody ActivityDTO activityDTO) throws URISyntaxException {
-        log.debug("REST request to update Activity : {}", activityDTO);
+    @PutMapping("/activities/{id}")
+    public ResponseEntity<ActivityDTO> updateActivity(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody ActivityDTO activityDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Activity : {}, {}", id, activityDTO);
         if (activityDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, activityDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!activityRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         ActivityDTO result = activityService.save(activityDTO);
         return ResponseEntity
             .ok()
@@ -86,8 +103,9 @@ public class ActivityResource {
     }
 
     /**
-     * {@code PATCH  /activities} : Updates given fields of an existing activity.
+     * {@code PATCH  /activities/:id} : Partial updates given fields of an existing activity, field will ignore if it is null
      *
+     * @param id the id of the activityDTO to save.
      * @param activityDTO the activityDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated activityDTO,
      * or with status {@code 400 (Bad Request)} if the activityDTO is not valid,
@@ -95,11 +113,21 @@ public class ActivityResource {
      * or with status {@code 500 (Internal Server Error)} if the activityDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/activities", consumes = "application/merge-patch+json")
-    public ResponseEntity<ActivityDTO> partialUpdateActivity(@NotNull @RequestBody ActivityDTO activityDTO) throws URISyntaxException {
-        log.debug("REST request to update Activity partially : {}", activityDTO);
+    @PatchMapping(value = "/activities/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<ActivityDTO> partialUpdateActivity(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody ActivityDTO activityDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Activity partially : {}, {}", id, activityDTO);
         if (activityDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, activityDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!activityRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<ActivityDTO> result = activityService.partialUpdate(activityDTO);

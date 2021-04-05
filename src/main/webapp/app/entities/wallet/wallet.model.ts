@@ -25,3 +25,7 @@ export class Wallet implements IWallet {
     public activities?: IActivity[] | null
   ) {}
 }
+
+export function getWalletIdentifier(wallet: IWallet): number | undefined {
+  return wallet.id;
+}

@@ -9,7 +9,7 @@ import { CategoryService } from '../service/category.service';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryRoutingResolveService implements Resolve<ICategory> {
-  constructor(private service: CategoryService, private router: Router) {}
+  constructor(protected service: CategoryService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ICategory> | Observable<never> {
     const id = route.params['id'];

@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import { ISubcategory, Subcategory } from '../subcategory.model';
 import { SubcategoryService } from '../service/subcategory.service';
@@ -15,7 +16,8 @@ import { CategoryService } from 'app/entities/category/service/category.service'
 })
 export class SubcategoryUpdateComponent implements OnInit {
   isSaving = false;
-  categories: ICategory[] = [];
+
+  categoriesSharedCollection: ICategory[] = [];
 
   editForm = this.fb.group({
     id: [null, [Validators.required]],
@@ -27,22 +29,14 @@ export class SubcategoryUpdateComponent implements OnInit {
     protected subcategoryService: SubcategoryService,
     protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ subcategory }) => {
       this.updateForm(subcategory);
 
-      this.categoryService.query().subscribe((res: HttpResponse<ICategory[]>) => (this.categories = res.body ?? []));
-    });
-  }
-
-  updateForm(subcategory: ISubcategory): void {
-    this.editForm.patchValue({
-      id: subcategory.id,
-      name: subcategory.name,
-      category: subcategory.category,
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -60,32 +54,60 @@ export class SubcategoryUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): ISubcategory {
-    return {
-      ...new Subcategory(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      category: this.editForm.get(['category'])!.value,
-    };
+  trackCategoryById(index: number, item: ICategory): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ISubcategory>>): void {
-    result.subscribe(
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
     );
   }
 
   protected onSaveSuccess(): void {
-    this.isSaving = false;
     this.previousState();
   }
 
   protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
     this.isSaving = false;
   }
 
-  trackCategoryById(index: number, item: ICategory): number {
-    return item.id!;
+  protected updateForm(subcategory: ISubcategory): void {
+    this.editForm.patchValue({
+      id: subcategory.id,
+      name: subcategory.name,
+      category: subcategory.category,
+    });
+
+    this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(
+      this.categoriesSharedCollection,
+      subcategory.category
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.categoryService
+      .query()
+      .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
+      .pipe(
+        map((categories: ICategory[]) =>
+          this.categoryService.addCategoryToCollectionIfMissing(categories, this.editForm.get('category')!.value)
+        )
+      )
+      .subscribe((categories: ICategory[]) => (this.categoriesSharedCollection = categories));
+  }
+
+  protected createFromForm(): ISubcategory {
+    return {
+      ...new Subcategory(),
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      category: this.editForm.get(['category'])!.value,
+    };
   }
 }

@@ -25,7 +25,13 @@ describe('Service Tests', () => {
       httpMock = TestBed.inject(HttpTestingController);
       currentDate = dayjs();
 
-      elemDefault = new Activity(0, currentDate, 0, 'AAAAAAA', ActivityType.INCOME);
+      elemDefault = {
+        id: 0,
+        date: currentDate,
+        amount: 0,
+        remarks: 'AAAAAAA',
+        type: ActivityType.INCOME,
+      };
     });
 
     describe('Service methods', () => {
@@ -93,6 +99,32 @@ describe('Service Tests', () => {
         expect(expectedResult).toMatchObject(expected);
       });
 
+      it('should partial update a Activity', () => {
+        const patchObject = Object.assign(
+          {
+            date: currentDate.format(DATE_TIME_FORMAT),
+            remarks: 'BBBBBB',
+            type: 'BBBBBB',
+          },
+          new Activity()
+        );
+
+        const returnedFromService = Object.assign(patchObject, elemDefault);
+
+        const expected = Object.assign(
+          {
+            date: currentDate,
+          },
+          returnedFromService
+        );
+
+        service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'PATCH' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
       it('should return a list of Activity', () => {
         const returnedFromService = Object.assign(
           {
@@ -126,6 +158,58 @@ describe('Service Tests', () => {
         const req = httpMock.expectOne({ method: 'DELETE' });
         req.flush({ status: 200 });
         expect(expectedResult);
+      });
+
+      describe('addActivityToCollectionIfMissing', () => {
+        it('should add a Activity to an empty array', () => {
+          const activity: IActivity = { id: 123 };
+          expectedResult = service.addActivityToCollectionIfMissing([], activity);
+          expect(expectedResult).toHaveLength(1);
+          expect(expectedResult).toContain(activity);
+        });
+
+        it('should not add a Activity to an array that contains it', () => {
+          const activity: IActivity = { id: 123 };
+          const activityCollection: IActivity[] = [
+            {
+              ...activity,
+            },
+            { id: 456 },
+          ];
+          expectedResult = service.addActivityToCollectionIfMissing(activityCollection, activity);
+          expect(expectedResult).toHaveLength(2);
+        });
+
+        it("should add a Activity to an array that doesn't contain it", () => {
+          const activity: IActivity = { id: 123 };
+          const activityCollection: IActivity[] = [{ id: 456 }];
+          expectedResult = service.addActivityToCollectionIfMissing(activityCollection, activity);
+          expect(expectedResult).toHaveLength(2);
+          expect(expectedResult).toContain(activity);
+        });
+
+        it('should add only unique Activity to an array', () => {
+          const activityArray: IActivity[] = [{ id: 123 }, { id: 456 }, { id: 77636 }];
+          const activityCollection: IActivity[] = [{ id: 123 }];
+          expectedResult = service.addActivityToCollectionIfMissing(activityCollection, ...activityArray);
+          expect(expectedResult).toHaveLength(3);
+        });
+
+        it('should accept varargs', () => {
+          const activity: IActivity = { id: 123 };
+          const activity2: IActivity = { id: 456 };
+          expectedResult = service.addActivityToCollectionIfMissing([], activity, activity2);
+          expect(expectedResult).toHaveLength(2);
+          expect(expectedResult).toContain(activity);
+          expect(expectedResult).toContain(activity2);
+        });
+
+        it('should accept null and undefined values', () => {
+          const activity: IActivity = { id: 123 };
+          expectedResult = service.addActivityToCollectionIfMissing([], null, activity, undefined);
+          expect(expectedResult).toHaveLength(1);
+          expect(expectedResult).toContain(activity);
+        });
       });
     });
 

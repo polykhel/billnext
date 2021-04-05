@@ -83,7 +83,7 @@ export class WalletComponent implements OnInit {
     });
   }
 
-  sort(): string[] {
+  protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
       result.push('id');
@@ -94,8 +94,8 @@ export class WalletComponent implements OnInit {
   protected paginateWallets(data: IWallet[] | null, headers: HttpHeaders): void {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
-      for (let i = 0; i < data.length; i++) {
-        this.wallets.push(data[i]);
+      for (const d of data) {
+        this.wallets.push(d);
       }
     }
   }

@@ -1,15 +1,17 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { WalletService } from '../service/wallet.service';
-import { Wallet } from '../wallet.model';
-import { User } from 'app/entities/user/user.model';
+import { IWallet, Wallet } from '../wallet.model';
+
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 
 import { WalletUpdateComponent } from './wallet-update.component';
 
@@ -17,7 +19,9 @@ describe('Component Tests', () => {
   describe('Wallet Management Update Component', () => {
     let comp: WalletUpdateComponent;
     let fixture: ComponentFixture<WalletUpdateComponent>;
-    let service: WalletService;
+    let activatedRoute: ActivatedRoute;
+    let walletService: WalletService;
+    let userService: UserService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -29,44 +33,114 @@ describe('Component Tests', () => {
         .compileComponents();
 
       fixture = TestBed.createComponent(WalletUpdateComponent);
+      activatedRoute = TestBed.inject(ActivatedRoute);
+      walletService = TestBed.inject(WalletService);
+      userService = TestBed.inject(UserService);
+
       comp = fixture.componentInstance;
-      service = TestBed.inject(WalletService);
+    });
+
+    describe('ngOnInit', () => {
+      it('Should call User query and add missing value', () => {
+        const wallet: IWallet = { id: 456 };
+        const user: IUser = { id: 'Investment' };
+        wallet.user = user;
+
+        const userCollection: IUser[] = [{ id: 'Honduras initiatives SSL' }];
+        spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
+        const additionalUsers = [user];
+        const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+        spyOn(userService, 'addUserToCollectionIfMissing').and.returnValue(expectedCollection);
+
+        activatedRoute.data = of({ wallet });
+        comp.ngOnInit();
+
+        expect(userService.query).toHaveBeenCalled();
+        expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
+        expect(comp.usersSharedCollection).toEqual(expectedCollection);
+      });
+
+      it('Should update editForm', () => {
+        const wallet: IWallet = { id: 456 };
+        const user: IUser = { id: 'Table Shirt' };
+        wallet.user = user;
+
+        activatedRoute.data = of({ wallet });
+        comp.ngOnInit();
+
+        expect(comp.editForm.value).toEqual(expect.objectContaining(wallet));
+        expect(comp.usersSharedCollection).toContain(user);
+      });
     });
 
     describe('save', () => {
-      it('Should call update service on save for existing entity', fakeAsync(() => {
+      it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const entity = new Wallet(123);
-        spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
-        comp.updateForm(entity);
+        const saveSubject = new Subject();
+        const wallet = { id: 123 };
+        spyOn(walletService, 'update').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ wallet });
+        comp.ngOnInit();
+
         // WHEN
         comp.save();
-        tick(); // simulate async
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.next(new HttpResponse({ body: wallet }));
+        saveSubject.complete();
 
         // THEN
-        expect(service.update).toHaveBeenCalledWith(entity);
+        expect(comp.previousState).toHaveBeenCalled();
+        expect(walletService.update).toHaveBeenCalledWith(wallet);
         expect(comp.isSaving).toEqual(false);
-      }));
+      });
 
-      it('Should call create service on save for new entity', fakeAsync(() => {
+      it('Should call create service on save for new entity', () => {
         // GIVEN
-        const entity = new Wallet();
-        spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
-        comp.updateForm(entity);
+        const saveSubject = new Subject();
+        const wallet = new Wallet();
+        spyOn(walletService, 'create').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ wallet });
+        comp.ngOnInit();
+
         // WHEN
         comp.save();
-        tick(); // simulate async
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.next(new HttpResponse({ body: wallet }));
+        saveSubject.complete();
 
         // THEN
-        expect(service.create).toHaveBeenCalledWith(entity);
+        expect(walletService.create).toHaveBeenCalledWith(wallet);
         expect(comp.isSaving).toEqual(false);
-      }));
+        expect(comp.previousState).toHaveBeenCalled();
+      });
+
+      it('Should set isSaving to false on error', () => {
+        // GIVEN
+        const saveSubject = new Subject();
+        const wallet = { id: 123 };
+        spyOn(walletService, 'update').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ wallet });
+        comp.ngOnInit();
+
+        // WHEN
+        comp.save();
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.error('This is an error!');
+
+        // THEN
+        expect(walletService.update).toHaveBeenCalledWith(wallet);
+        expect(comp.isSaving).toEqual(false);
+        expect(comp.previousState).not.toHaveBeenCalled();
+      });
     });
 
     describe('Tracking relationships identifiers', () => {
       describe('trackUserById', () => {
         it('Should return tracked User primary key', () => {
-          const entity = new User('123', 'user');
+          const entity = { id: 'ABC' };
           const trackResult = comp.trackUserById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });

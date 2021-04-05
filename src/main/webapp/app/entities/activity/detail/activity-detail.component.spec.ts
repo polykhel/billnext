@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-import { Activity } from '../activity.model';
-
 import { ActivityDetailComponent } from './activity-detail.component';
 
 describe('Component Tests', () => {
@@ -17,7 +15,7 @@ describe('Component Tests', () => {
         providers: [
           {
             provide: ActivatedRoute,
-            useValue: { data: of({ activity: new Activity(123) }) },
+            useValue: { data: of({ activity: { id: 123 } }) },
           },
         ],
       })

@@ -9,3 +9,7 @@ export interface ISubcategory {
 export class Subcategory implements ISubcategory {
   constructor(public id?: number, public name?: string, public category?: ICategory) {}
 }
+
+export function getSubcategoryIdentifier(subcategory: ISubcategory): number | undefined {
+  return subcategory.id;
+}

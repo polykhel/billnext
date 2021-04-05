@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import { IWallet, Wallet } from '../wallet.model';
 import { WalletService } from '../service/wallet.service';
@@ -15,7 +16,8 @@ import { UserService } from 'app/entities/user/user.service';
 })
 export class WalletUpdateComponent implements OnInit {
   isSaving = false;
-  users: IUser[] = [];
+
+  usersSharedCollection: IUser[] = [];
 
   editForm = this.fb.group({
     id: [null, [Validators.required]],
@@ -31,26 +33,14 @@ export class WalletUpdateComponent implements OnInit {
     protected walletService: WalletService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ wallet }) => {
       this.updateForm(wallet);
 
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body ?? []));
-    });
-  }
-
-  updateForm(wallet: IWallet): void {
-    this.editForm.patchValue({
-      id: wallet.id,
-      walletGroup: wallet.walletGroup,
-      name: wallet.name,
-      amount: wallet.amount,
-      currency: wallet.currency,
-      remarks: wallet.remarks,
-      user: wallet.user,
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -68,7 +58,52 @@ export class WalletUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IWallet {
+  trackUserById(index: number, item: IUser): string {
+    return item.id!;
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IWallet>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
+    this.isSaving = false;
+  }
+
+  protected updateForm(wallet: IWallet): void {
+    this.editForm.patchValue({
+      id: wallet.id,
+      walletGroup: wallet.walletGroup,
+      name: wallet.name,
+      amount: wallet.amount,
+      currency: wallet.currency,
+      remarks: wallet.remarks,
+      user: wallet.user,
+    });
+
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, wallet.user);
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+  }
+
+  protected createFromForm(): IWallet {
     return {
       ...new Wallet(),
       id: this.editForm.get(['id'])!.value,
@@ -79,25 +114,5 @@ export class WalletUpdateComponent implements OnInit {
       remarks: this.editForm.get(['remarks'])!.value,
       user: this.editForm.get(['user'])!.value,
     };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IWallet>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
-  }
-
-  trackUserById(index: number, item: IUser): string {
-    return item.id;
   }
 }

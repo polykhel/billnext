@@ -15,7 +15,7 @@ describe('Wallet e2e test', () => {
   beforeEach(() => {
     cy.getOauth2Data();
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogin(oauth2Data, 'user');
+      cy.oauthLogin(oauth2Data, Cypress.env('E2E_USERNAME') || 'admin', Cypress.env('E2E_PASSWORD') || 'admin');
     });
     cy.intercept('GET', '/api/wallets*').as('entitiesRequest');
     cy.visit('');
@@ -26,7 +26,7 @@ describe('Wallet e2e test', () => {
 
   afterEach(() => {
     cy.get('@oauth2Data').then(oauth2Data => {
-      cy.keycloackLogout(oauth2Data);
+      cy.oauthLogout(oauth2Data);
     });
     cy.clearCache();
   });
@@ -87,23 +87,24 @@ describe('Wallet e2e test', () => {
     cy.intercept('GET', '/api/wallets*').as('entitiesRequest');
     cy.visit('/');
     cy.clickOnEntityMenuItem('wallet');
-    cy.wait('@entitiesRequest');
+    cy.wait('@entitiesRequest')
+      .then(({ request, response }) => startingEntitiesCount = response.body.length);
     cy.get(entityCreateButtonSelector).click({force: true});
     cy.getEntityCreateUpdateHeading('Wallet');
 
-    cy.get(`[data-cy="walletGroup"]`).select('OVERDRAFTS');
+    cy.get(`[data-cy="walletGroup"]`).select('LOAN');
 
 
-    cy.get(`[data-cy="name"]`).type('Incredible ivory', { force: true }).invoke('val').should('match', new RegExp('Incredible ivory'));
+    cy.get(`[data-cy="name"]`).type('Republic', { force: true }).invoke('val').should('match', new RegExp('Republic'));
 
 
-    cy.get(`[data-cy="amount"]`).type('52064').should('have.value', '52064');
+    cy.get(`[data-cy="amount"]`).type('82646').should('have.value', '82646');
 
 
-    cy.get(`[data-cy="currency"]`).type('Africa Orchestrator', { force: true }).invoke('val').should('match', new RegExp('Africa Orchestrator'));
+    cy.get(`[data-cy="currency"]`).type('Orchestrator Latvia Bike', { force: true }).invoke('val').should('match', new RegExp('Orchestrator Latvia Bike'));
 
 
-    cy.get(`[data-cy="remarks"]`).type('Bedfordshire Steel', { force: true }).invoke('val').should('match', new RegExp('Bedfordshire Steel'));
+    cy.get(`[data-cy="remarks"]`).type('application Norway and', { force: true }).invoke('val').should('match', new RegExp('application Norway and'));
 
     cy.setFieldSelectToLastOfEntity('user');
 

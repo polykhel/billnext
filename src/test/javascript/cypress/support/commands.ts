@@ -30,6 +30,8 @@ export const entityItemSelector = '[data-cy="entity"]';
 
 // Administration
 export const userManagementPageHeadingSelector = '[data-cy="userManagementPageHeading"]';
+export const swaggerFrameSelector = 'iframe[data-cy="swagger-frame"]';
+export const swaggerPageSelector = '[id="swagger-ui"]';
 export const metricsPageHeadingSelector = '[data-cy="metricsPageHeading"]';
 export const healthPageHeadingSelector = '[data-cy="healthPageHeading"]';
 export const logsPageHeadingSelector = '[data-cy="logsPageHeading"]';

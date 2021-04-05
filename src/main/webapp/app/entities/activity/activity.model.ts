@@ -27,3 +27,7 @@ export class Activity implements IActivity {
     public category?: ICategory
   ) {}
 }
+
+export function getActivityIdentifier(activity: IActivity): number | undefined {
+  return activity.id;
+}

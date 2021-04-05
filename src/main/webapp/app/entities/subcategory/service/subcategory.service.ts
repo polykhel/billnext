@@ -2,25 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import { isPresent } from 'app/core/util/operators';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ISubcategory } from '../subcategory.model';
+import { ISubcategory, getSubcategoryIdentifier } from '../subcategory.model';
 
-type EntityResponseType = HttpResponse<ISubcategory>;
-type EntityArrayResponseType = HttpResponse<ISubcategory[]>;
+export type EntityResponseType = HttpResponse<ISubcategory>;
+export type EntityArrayResponseType = HttpResponse<ISubcategory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class SubcategoryService {
-  public resourceUrl = SERVER_API_URL + 'api/subcategories';
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/subcategories');
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   create(subcategory: ISubcategory): Observable<EntityResponseType> {
     return this.http.post<ISubcategory>(this.resourceUrl, subcategory, { observe: 'response' });
   }
 
   update(subcategory: ISubcategory): Observable<EntityResponseType> {
-    return this.http.put<ISubcategory>(this.resourceUrl, subcategory, { observe: 'response' });
+    return this.http.put<ISubcategory>(`${this.resourceUrl}/${getSubcategoryIdentifier(subcategory) as number}`, subcategory, {
+      observe: 'response',
+    });
+  }
+
+  partialUpdate(subcategory: ISubcategory): Observable<EntityResponseType> {
+    return this.http.patch<ISubcategory>(`${this.resourceUrl}/${getSubcategoryIdentifier(subcategory) as number}`, subcategory, {
+      observe: 'response',
+    });
   }
 
   find(id: number): Observable<EntityResponseType> {
@@ -34,5 +43,25 @@ export class SubcategoryService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  addSubcategoryToCollectionIfMissing(
+    subcategoryCollection: ISubcategory[],
+    ...subcategoriesToCheck: (ISubcategory | null | undefined)[]
+  ): ISubcategory[] {
+    const subcategories: ISubcategory[] = subcategoriesToCheck.filter(isPresent);
+    if (subcategories.length > 0) {
+      const subcategoryCollectionIdentifiers = subcategoryCollection.map(subcategoryItem => getSubcategoryIdentifier(subcategoryItem)!);
+      const subcategoriesToAdd = subcategories.filter(subcategoryItem => {
+        const subcategoryIdentifier = getSubcategoryIdentifier(subcategoryItem);
+        if (subcategoryIdentifier == null || subcategoryCollectionIdentifiers.includes(subcategoryIdentifier)) {
+          return false;
+        }
+        subcategoryCollectionIdentifiers.push(subcategoryIdentifier);
+        return true;
+      });
+      return [...subcategoriesToAdd, ...subcategoryCollection];
+    }
+    return subcategoryCollection;
   }
 }

@@ -9,7 +9,7 @@ import { ActivityService } from '../service/activity.service';
 
 @Injectable({ providedIn: 'root' })
 export class ActivityRoutingResolveService implements Resolve<IActivity> {
-  constructor(private service: ActivityService, private router: Router) {}
+  constructor(protected service: ActivityService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IActivity> | Observable<never> {
     const id = route.params['id'];
