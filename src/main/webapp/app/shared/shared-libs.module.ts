@@ -14,6 +14,9 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @NgModule({
   exports: [
@@ -31,6 +34,9 @@ import { NzImageModule } from 'ng-zorro-antd/image';
     NzAlertModule,
     NzDropDownModule,
     NzImageModule,
+    NzGridModule,
+    NzSpaceModule,
+    NzButtonModule,
   ],
   providers: [
     { provide: NZ_ICONS, useValue: nzIcons },
