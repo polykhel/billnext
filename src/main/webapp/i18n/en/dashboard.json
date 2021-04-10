@@ -1,28 +1,11 @@
 {
   "dashboard": {
-    "home": {
-      "title": "Dashboard",
-      "refreshListLabel": "Refresh list",
-      "createLabel": "Create a new Activity",
-      "createOrEditLabel": "Create or edit a Activity",
-      "notFound": "No Activities found"
-    },
-    "created": "A new Activity is created with identifier {{ param }}",
-    "updated": "A Activity is updated with identifier {{ param }}",
-    "deleted": "A Activity is deleted with identifier {{ param }}",
-    "delete": {
-      "question": "Are you sure you want to delete Activity {{ id }}?"
-    },
-    "detail": {
-      "title": "Activity"
-    },
-    "id": "Id",
-    "date": "Date",
-    "amount": "Amount",
-    "remarks": "Remarks",
-    "type": "Type",
-    "user": "User",
-    "wallet": "Wallet",
-    "category": "Category"
+    "tabs": {
+      "daily": "Daily",
+      "calendar": "Calendar",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "total": "Total"
+    }
   }
 }

@@ -11,7 +11,7 @@ import { SERVER_API_URL } from './app.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeModule } from './modules/home/home.module';
+import { HomeModule } from './layouts/home/home.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { httpInterceptorProviders } from './core/interceptor';
 import { translatePartialLoader, missingTranslationHandler } from './config/translation.config';
@@ -20,11 +20,11 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DateFnsModule } from 'ngx-date-fns';
 import { HeaderComponent } from 'app/layouts/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppInitializerProvider } from 'app/app-initializer.service';
+import { ModulesRoutingModule } from 'app/modules/modules-routing.module';
 
 @NgModule({
   imports: [
@@ -33,6 +33,7 @@ import { AppInitializerProvider } from 'app/app-initializer.service';
     SharedModule,
     HomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
+    ModulesRoutingModule,
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
@@ -52,7 +53,7 @@ import { AppInitializerProvider } from 'app/app-initializer.service';
     DateFnsModule.forRoot(),
   ],
   providers: [AppInitializerProvider, Title, { provide: LOCALE_ID, useValue: 'en' }, httpInterceptorProviders],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, HeaderComponent, DashboardComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, HeaderComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {
