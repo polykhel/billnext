@@ -1,15 +1,31 @@
-<div>
-  <div class="row">
-    <div class="col-md-4">
-      <span class="hipster img-fluid rounded"></span>
+<ng-container [ngSwitch]="status">
+  <nz-result *ngSwitchCase="'400'" nzStatus="warning" [nzTitle]="title" [nzSubTitle]="errorMessage">
+    <div nz-result-extra>
+      <ng-container *ngTemplateOutlet="goBackButton"></ng-container>
     </div>
-
-    <div class="col-md-8">
-      <h1 appTranslate="error.title">Error Page!</h1>
-
-      <div *ngIf="errorMessage">
-        <div class="alert alert-danger">{{ errorMessage }}</div>
-      </div>
+  </nz-result>
+  <nz-result *ngSwitchCase="'403'" nzStatus="403" [nzTitle]="title" [nzSubTitle]="errorMessage">
+    <div nz-result-extra>
+      <ng-container *ngTemplateOutlet="goBackButton"></ng-container>
     </div>
-  </div>
-</div>
+  </nz-result>
+  <nz-result *ngSwitchCase="'404'" nzStatus="404" [nzTitle]="title" [nzSubTitle]="errorMessage">
+    <div nz-result-extra>
+      <ng-container *ngTemplateOutlet="goBackButton"></ng-container>
+    </div>
+  </nz-result>
+  <nz-result *ngSwitchCase="'500'" nzStatus="500" [nzTitle]="title" [nzSubTitle]="errorMessage">
+    <div nz-result-extra>
+      <ng-container *ngTemplateOutlet="goBackButton"></ng-container>
+    </div>
+  </nz-result>
+  <nz-result *ngSwitchCase="'error'" nzStatus="error" [nzTitle]="title" [nzSubTitle]="errorMessage">
+    <div nz-result-extra>
+      <ng-container *ngTemplateOutlet="goBackButton"></ng-container>
+    </div>
+  </nz-result>
+</ng-container>
+
+<ng-template #goBackButton>
+  <button nz-button nzType="primary" appBackButton>Go Back</button>
+</ng-template>

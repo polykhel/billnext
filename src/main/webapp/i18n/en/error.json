@@ -1,12 +1,20 @@
 {
   "error": {
-    "title": "Error page!",
+    "title": {
+      "400": "Bad Request",
+      "403": "Access Denied",
+      "404": "Page Not Found",
+      "405": "Unsupported Operation",
+      "500": "Internal Server Error",
+      "error": "Something Went Wrong"
+    },
     "http": {
-      "400": "Bad request.",
-      "403": "You are not authorized to access this page.",
-      "404": "The page does not exist.",
-      "405": "The HTTP verb you used is not supported for this URL.",
-      "500": "Internal server error."
+      "400": "Sorry, the data you have submitted is not valid.",
+      "403": "Sorry, you are not authorized to access this page. ",
+      "404": "Sorry, the page you visited does not exist. ",
+      "405": "Sorry, the HTTP verb you used is not supported for this URL.",
+      "500": "Sorry, there is an error on the server.",
+      "error": "Sorry, something went wrong. Please bear with us."
     },
     "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
     "validation": "Validation error on the server."

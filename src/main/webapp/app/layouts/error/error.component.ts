@@ -8,6 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './error.component.html',
 })
 export class ErrorComponent implements OnInit, OnDestroy {
+  status?: 'success' | 'error' | 'info' | 'warning' | '404' | '403' | '500';
+  title?: string;
+  titleKey?: string;
   errorMessage?: string;
   errorKey?: string;
   langChangeSubscription?: Subscription;
@@ -16,11 +19,17 @@ export class ErrorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.data.subscribe(routeData => {
-      if (routeData.errorMessage) {
-        this.errorKey = routeData.errorMessage;
-        this.getErrorMessageTranslation();
-        this.langChangeSubscription = this.translateService.onLangChange.subscribe(() => this.getErrorMessageTranslation());
+      if (routeData.status) {
+        this.status = routeData.status;
+      } else {
+        this.status = 'error';
       }
+
+      this.titleKey = `error.title.${this.status}`;
+      this.errorKey = `error.http.${this.status}`;
+
+      this.getErrorMessageTranslation();
+      this.langChangeSubscription = this.translateService.onLangChange.subscribe(() => this.getErrorMessageTranslation());
     });
   }
 
@@ -31,7 +40,14 @@ export class ErrorComponent implements OnInit, OnDestroy {
   }
 
   private getErrorMessageTranslation(): void {
+    this.title = '';
     this.errorMessage = '';
+
+    if (this.titleKey) {
+      this.translateService.get(this.titleKey).subscribe(translatedTitle => {
+        this.title = translatedTitle;
+      });
+    }
     if (this.errorKey) {
       this.translateService.get(this.errorKey).subscribe(translatedErrorMessage => {
         this.errorMessage = translatedErrorMessage;

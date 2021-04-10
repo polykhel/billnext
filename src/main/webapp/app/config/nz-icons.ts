@@ -15,6 +15,7 @@ import {
   SettingOutline,
   SkinOutline,
   WalletOutline,
+  WarningFill,
 } from '@ant-design/icons-angular/icons';
 
 export const nzIcons = [
@@ -34,4 +35,5 @@ export const nzIcons = [
   SettingOutline,
   SkinOutline,
   WalletOutline,
+  WarningFill,
 ];

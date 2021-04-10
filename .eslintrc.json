@@ -81,6 +81,12 @@
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/unbound-method": "off",
     "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/restrict-template-expressions": [
+      "warn",
+      {
+        "allowNullish": true
+      }
+    ],
     "arrow-body-style": "error",
     "curly": "error",
     "eqeqeq": ["error", "always", { "null": "ignore" }],

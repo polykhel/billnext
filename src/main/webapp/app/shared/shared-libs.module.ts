@@ -17,6 +17,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 @NgModule({
   exports: [
@@ -37,6 +38,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzGridModule,
     NzSpaceModule,
     NzButtonModule,
+    NzResultModule,
   ],
   providers: [
     { provide: NZ_ICONS, useValue: nzIcons },
