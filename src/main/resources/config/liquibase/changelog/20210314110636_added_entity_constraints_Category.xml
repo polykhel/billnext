@@ -12,6 +12,6 @@
                                  baseTableName="category"
                                  constraintName="fk_category__user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="app_user"/>
     </changeSet>
 </databaseChangeLog>

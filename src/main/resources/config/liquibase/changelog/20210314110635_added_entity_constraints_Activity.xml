@@ -12,7 +12,7 @@
                                  baseTableName="activity"
                                  constraintName="fk_activity__user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="app_user"/>
 
         <addForeignKeyConstraint baseColumnNames="wallet_id"
                                  baseTableName="activity"
