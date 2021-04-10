@@ -6,7 +6,8 @@ import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
 import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
-import { BackButtonDirective } from 'app/shared/navigation/back-button.directive';
+import { BackButtonDirective } from './navigation/back-button.directive';
+import { FixedWidgetsComponent } from './widgets/fixed-widgets.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -18,6 +19,7 @@ import { BackButtonDirective } from 'app/shared/navigation/back-button.directive
     HasAnyAuthorityDirective,
     ItemCountComponent,
     BackButtonDirective,
+    FixedWidgetsComponent,
   ],
   exports: [
     SharedLibsModule,
@@ -28,6 +30,7 @@ import { BackButtonDirective } from 'app/shared/navigation/back-button.directive
     HasAnyAuthorityDirective,
     ItemCountComponent,
     BackButtonDirective,
+    FixedWidgetsComponent,
   ],
 })
 export class SharedModule {}

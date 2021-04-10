@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
   date = '2021 Mar';
+
+  addTransaction(): void {
+    // TODO: open modal for add transaction
+  }
 }
