@@ -36,7 +36,7 @@
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-                "output": "src/main/webapp/assets/"
+                "output": "/assets/"
               }
             ],
             "styles": [

@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TranslateModule } from '@ngx-translate/core';
-import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { nzIcons } from 'app/config/nz-icons';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
@@ -44,9 +43,6 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     NzTabsModule,
     NzDividerModule,
   ],
-  providers: [
-    { provide: NZ_ICONS, useValue: nzIcons },
-    { provide: NZ_I18N, useValue: en_US },
-  ],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
 })
 export class SharedLibsModule {}
