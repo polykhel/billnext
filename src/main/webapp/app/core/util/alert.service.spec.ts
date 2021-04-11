@@ -164,7 +164,7 @@ describe('Alert service test', () => {
 
     it('should clear alerts', inject([AlertService], (service: AlertService) => {
       service.addAlert({ type: 'info', message: 'Hello Jhipster info' });
-      service.addAlert({ type: 'danger', message: 'Hello Jhipster info' });
+      service.addAlert({ type: 'error', message: 'Hello Jhipster info' });
       service.addAlert({ type: 'success', message: 'Hello Jhipster info' });
       expect(service.get().length).toBe(3);
       service.clear();
@@ -217,9 +217,9 @@ describe('Alert service test', () => {
     }));
 
     it('should produce a error message', inject([AlertService], (service: AlertService) => {
-      expect(service.addAlert({ type: 'danger', message: 'Hello Jhipster' })).toEqual(
+      expect(service.addAlert({ type: 'error', message: 'Hello Jhipster' })).toEqual(
         jasmine.objectContaining({
-          type: 'danger',
+          type: 'error',
           message: 'Hello Jhipster',
         } as Alert)
       );

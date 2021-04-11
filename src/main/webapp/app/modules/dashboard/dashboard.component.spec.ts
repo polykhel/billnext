@@ -1,24 +1,26 @@
+import { DashboardComponent } from './dashboard.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard.component';
+describe('Component Tests', () => {
+  describe('Dashboard Component', () => {
+    let comp: DashboardComponent;
+    let fixture: ComponentFixture<DashboardComponent>;
 
-describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [DashboardComponent],
+      })
+        .overrideTemplate(DashboardComponent, '')
+        .compileComponents();
+    });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DashboardComponent],
-    }).compileComponents();
-  });
+    beforeEach(() => {
+      fixture = TestBed.createComponent(DashboardComponent);
+      comp = fixture.componentInstance;
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    it('should create', () => {
+      expect(comp).toBeTruthy();
+    });
   });
 });

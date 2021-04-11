@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
-enum ThemeType {
-  dark = 'dark',
-  default = 'default',
+export enum ThemeType {
+  DARK = 'dark',
+  LIGHT = 'default',
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  currentTheme = ThemeType.default;
+  currentTheme = ThemeType.LIGHT;
 
   private static reverseTheme(theme: string): ThemeType {
-    return theme === ThemeType.dark ? ThemeType.default : ThemeType.dark;
+    return theme === ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK;
   }
 
   private static removeUnusedTheme(theme: ThemeType): void {
