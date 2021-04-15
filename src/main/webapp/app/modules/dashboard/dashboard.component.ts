@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { addMonths, format, parse, subMonths } from 'date-fns';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,9 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.less'],
 })
 export class DashboardComponent {
-  date = '2021 Mar';
+  selectedDate: Date = new Date();
 
   addTransaction(): void {
     // TODO: open modal for add transaction
+  }
+
+  goToPreviousMonth(): void {
+    this.selectedDate = subMonths(this.selectedDate, 1);
+  }
+
+  goToNextMonth(): void {
+    this.selectedDate = addMonths(this.selectedDate, 1);
   }
 }

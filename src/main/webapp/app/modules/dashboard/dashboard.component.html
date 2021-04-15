@@ -1,10 +1,10 @@
 <div nz-row nzJustify="space-between">
   <div nz-col nzFlex="auto">
-    <button nz-button nzType="default" nzShape="circle">
+    <button nz-button nzType="default" nzShape="circle" (click)="goToPreviousMonth()">
       <i nz-icon nzType="left" nzTheme="outline"></i>
     </button>
-    <span>{{ date }}</span>
-    <button nz-button nzType="default" nzShape="circle">
+    <span>{{ selectedDate | date: 'MMM yyyy' }}</span>
+    <button nz-button nzType="default" nzShape="circle" (click)="goToNextMonth()">
       <i nz-icon nzType="right" nzTheme="outline"></i>
     </button>
   </div>
