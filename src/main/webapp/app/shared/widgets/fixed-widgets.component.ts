@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-fixed-widgets',
@@ -6,9 +6,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./fixed-widgets.component.less'],
 })
 export class FixedWidgetsComponent {
+  @Input() icon = 'plus';
   @Output() clickWidget: EventEmitter<any> = new EventEmitter();
 
   click(): void {
-    this.clickWidget.emit(true);
+    this.clickWidget.emit();
   }
 }
