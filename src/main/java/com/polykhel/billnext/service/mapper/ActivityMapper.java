@@ -1,8 +1,9 @@
 package com.polykhel.billnext.service.mapper;
 
-import com.polykhel.billnext.domain.*;
+import com.polykhel.billnext.domain.Activity;
 import com.polykhel.billnext.service.dto.ActivityDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link Activity} and its DTO {@link ActivityDTO}.

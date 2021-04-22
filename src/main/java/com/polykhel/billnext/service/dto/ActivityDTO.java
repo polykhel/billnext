@@ -5,11 +5,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO for the {@link com.polykhel.billnext.domain.Activity} entity.
  */
+@Getter
+@Setter
 public class ActivityDTO extends AbstractAuditingDTO implements Serializable {
 
     @NotNull
@@ -31,70 +35,6 @@ public class ActivityDTO extends AbstractAuditingDTO implements Serializable {
     private WalletDTO wallet;
 
     private CategoryDTO category;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ZonedDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public ActivityType getType() {
-        return type;
-    }
-
-    public void setType(ActivityType type) {
-        this.type = type;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
-    public WalletDTO getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(WalletDTO wallet) {
-        this.wallet = wallet;
-    }
-
-    public CategoryDTO getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,10 +1,14 @@
 package com.polykhel.billnext.service.dto;
 
 import com.polykhel.billnext.domain.User;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO representing a user, with only the public attributes.
  */
+@Getter
+@Setter
 public class UserDTO {
 
     private String id;
@@ -19,22 +23,6 @@ public class UserDTO {
         this.id = user.getId();
         // Customize it here if you need, or not, firstName/lastName/etc
         this.login = user.getLogin();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     // prettier-ignore

@@ -47,7 +47,7 @@ public class Activity extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "user", "activities" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "walletGroup", "activities" }, allowSetters = true)
     private Wallet wallet;
 
     @ManyToOne(optional = false)

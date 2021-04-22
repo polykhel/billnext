@@ -2,9 +2,7 @@ package com.polykhel.billnext.web.rest;
 
 import com.polykhel.billnext.service.UserService;
 import com.polykhel.billnext.service.dto.AdminUserDTO;
-
 import java.security.Principal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

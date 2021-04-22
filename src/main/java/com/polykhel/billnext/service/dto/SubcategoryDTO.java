@@ -2,12 +2,16 @@ package com.polykhel.billnext.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO for the {@link com.polykhel.billnext.domain.Subcategory} entity.
  */
-public class SubcategoryDTO extends AbstractAuditingDTO implements Serializable {
+@Getter
+@Setter
+public class SubcategoryDTO implements Serializable {
 
     @NotNull
     private Long id;
@@ -16,30 +20,6 @@ public class SubcategoryDTO extends AbstractAuditingDTO implements Serializable 
     private String name;
 
     private CategoryDTO category;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public CategoryDTO getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
-    }
 
     @Override
     public boolean equals(Object o) {

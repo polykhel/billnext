@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.polykhel.billnext.IntegrationTest;
+import com.polykhel.billnext.config.TestSecurityConfiguration;
 import com.polykhel.billnext.domain.User;
 import com.polykhel.billnext.repository.UserRepository;
 import com.polykhel.billnext.security.AuthoritiesConstants;

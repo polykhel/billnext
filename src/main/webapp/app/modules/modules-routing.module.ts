@@ -11,6 +11,13 @@ import { RouterModule } from '@angular/router';
         },
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       },
+      {
+        path: 'wallet-group',
+        data: {
+          pageTitle: 'walletGroup.home.title',
+        },
+        loadChildren: () => import('./wallet-group/wallet-group.module'),
+      },
     ]),
   ],
 })

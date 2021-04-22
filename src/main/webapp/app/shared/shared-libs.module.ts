@@ -20,6 +20,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @NgModule({
   exports: [
@@ -44,6 +45,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     NzTabsModule,
     NzDividerModule,
     NzAvatarModule,
+    NzModalModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
 })

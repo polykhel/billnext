@@ -1,6 +1,7 @@
 {
   "generator-jhipster": {
     "blueprints": [],
+    "otherModules": [],
     "applicationType": "monolith",
     "baseName": "billnext",
     "jhipsterVersion": "7.0.1",
@@ -12,14 +13,10 @@
     "jhiPrefix": "app",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
-    "testFrameworks": ["cypress"],
+    "testFrameworks": ["gatling", "cucumber", "cypress"],
     "pages": [],
-    "creationTimestamp": 1615704878807,
-    "promptValues": {
-      "packageName": "com.polykhel.billnext",
-      "nativeLanguage": "en"
-    },
-    "serviceDiscoveryType": "eureka",
+    "creationTimestamp": 1618927354285,
+    "serviceDiscoveryType": false,
     "reactive": false,
     "authenticationType": "oauth2",
     "packageName": "com.polykhel.billnext",
@@ -37,15 +34,14 @@
     "enableSwaggerCodegen": false,
     "clientFramework": "angularX",
     "withAdminUi": true,
-    "clientTheme": "sketchy",
-    "clientThemeVariant": "primary",
+    "clientTheme": "none",
     "enableTranslation": true,
     "nativeLanguage": "en",
     "packageFolder": "com/polykhel/billnext",
     "clientPackageManager": "npm",
+    "clientThemeVariant": "",
     "languages": ["en"],
-    "otherModules": [],
-    "entities": ["Wallet", "Activity", "Category", "Subcategory"],
-    "lastLiquibaseTimestamp": 1615719997000
+    "entities": ["Wallet", "WalletGroup", "Activity", "Category", "Subcategory"],
+    "lastLiquibaseTimestamp": 1619089094000
   }
 }

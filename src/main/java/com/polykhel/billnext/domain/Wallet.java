@@ -1,7 +1,6 @@
 package com.polykhel.billnext.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.polykhel.billnext.domain.enumeration.WalletGroup;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -27,11 +26,6 @@ public class Wallet extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "wallet_group", nullable = false)
-    private WalletGroup walletGroup;
-
-    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -47,7 +41,8 @@ public class Wallet extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    private User user;
+    @JsonIgnoreProperties(value = { "user", "wallets" }, allowSetters = true)
+    private WalletGroup walletGroup;
 
     @OneToMany(mappedBy = "wallet")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -131,19 +126,6 @@ public class Wallet extends AbstractAuditingEntity implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public Wallet user(User user) {
-        this.setUser(user);
-        return this;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Set<Activity> getActivities() {

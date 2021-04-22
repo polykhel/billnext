@@ -1,24 +1,14 @@
 entity Wallet {
 	id Long required unique
-    walletGroup WalletGroup required
     name String required
     amount BigDecimal required
     currency String
     remarks String
 }
 
-enum WalletGroup {
-	CASH (Cash)
-    ACCOUNTS (Accounts)
-    CARD (Card)
-    DEBIT ("Debit Card")
-    SAVINGS (Savings)
-    PREPAID ("Top-Up/Prepaid")
-    INVESTMENTS (Investments)
-    OVERDRAFTS (Overdrafts)
-    LOAN (Loan)
-    INSURANCE (Insurance)
-    OTHERS (Others)
+entity WalletGroup {
+	id Long required unique
+	name String required
 }
 
 entity Activity {
@@ -47,15 +37,21 @@ entity Subcategory {
 
 relationship ManyToOne {
     Category{user required} to User
-	Wallet{user required} to User
+    Wallet{walletGroup required} to WalletGroup{wallets}
+    WalletGroup{user required} to User
     Activity{user required} to User
     Activity{wallet required} to Wallet{activity}
     Activity{category required} to Category{activity}
     Subcategory{category required} to Category
 }
 
+filter Category
+filter Wallet
+filter Activity
+filter WalletGroup
+
 // Set pagination options
-paginate Wallet, Category, Subcategory with infinite-scroll
+paginate Wallet, WalletGroup, Category, Subcategory with infinite-scroll
 paginate Activity with pagination
 
 // Use Data Transfer Objects (DTO)

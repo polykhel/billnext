@@ -94,9 +94,9 @@
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
-        <createTable tableName="jhi_date_time_wrapper">
+        <createTable tableName="app_date_time_wrapper">
             <column  name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="jhi_date_time_wrapperPK"/>
+                <constraints primaryKey="true" primaryKeyName="app_date_time_wrapperPK"/>
             </column>
             <column name="instant" type="timestamp"/>
             <column name="local_date_time" type="timestamp"/>

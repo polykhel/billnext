@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Activity.
     -->
-    <changeSet id="20210314110635-2" author="jhipster">
+    <changeSet id="20210422105812-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="activity"

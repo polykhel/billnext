@@ -8,7 +8,7 @@
         Added the entity EntityAuditEvent.
     -->
     <changeSet id="20210314112159" author="jhipster">
-        <createTable tableName="jhi_entity_audit_event">
+        <createTable tableName="app_entity_audit_event">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -29,13 +29,13 @@
             </column>
         </createTable>
         <createIndex indexName="idx_entity_audit_event_entity_id"
-            tableName="jhi_entity_audit_event">
+            tableName="app_entity_audit_event">
             <column name="entity_id" type="bigint"/>
         </createIndex>
         <createIndex indexName="idx_entity_audit_event_entity_type"
-            tableName="jhi_entity_audit_event">
+            tableName="app_entity_audit_event">
             <column name="entity_type" type="varchar(255)"/>
         </createIndex>
-        <dropDefaultValue tableName="jhi_entity_audit_event" columnName="modified_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="app_entity_audit_event" columnName="modified_date" columnDataType="datetime"/>
     </changeSet>
 </databaseChangeLog>

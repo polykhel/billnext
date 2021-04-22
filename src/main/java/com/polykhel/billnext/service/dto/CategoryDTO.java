@@ -3,12 +3,16 @@ package com.polykhel.billnext.service.dto;
 import com.polykhel.billnext.domain.enumeration.ActivityType;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO for the {@link com.polykhel.billnext.domain.Category} entity.
  */
-public class CategoryDTO extends AbstractAuditingDTO implements Serializable {
+@Getter
+@Setter
+public class CategoryDTO implements Serializable {
 
     @NotNull
     private Long id;
@@ -19,38 +23,6 @@ public class CategoryDTO extends AbstractAuditingDTO implements Serializable {
     private ActivityType type;
 
     private UserDTO user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ActivityType getType() {
-        return type;
-    }
-
-    public void setType(ActivityType type) {
-        this.type = type;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {

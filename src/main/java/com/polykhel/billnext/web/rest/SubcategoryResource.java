@@ -2,7 +2,9 @@ package com.polykhel.billnext.web.rest;
 
 import com.polykhel.billnext.repository.SubcategoryRepository;
 import com.polykhel.billnext.service.SubcategoryService;
+import com.polykhel.billnext.service.criteria.SubcategoryCriteria;
 import com.polykhel.billnext.service.dto.SubcategoryDTO;
+import com.polykhel.billnext.service.query.SubcategoryQueryService;
 import com.polykhel.billnext.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,9 +44,16 @@ public class SubcategoryResource {
 
     private final SubcategoryRepository subcategoryRepository;
 
-    public SubcategoryResource(SubcategoryService subcategoryService, SubcategoryRepository subcategoryRepository) {
+    private final SubcategoryQueryService subcategoryQueryService;
+
+    public SubcategoryResource(
+        SubcategoryService subcategoryService,
+        SubcategoryRepository subcategoryRepository,
+        SubcategoryQueryService subcategoryQueryService
+    ) {
         this.subcategoryService = subcategoryService;
         this.subcategoryRepository = subcategoryRepository;
+        this.subcategoryQueryService = subcategoryQueryService;
     }
 
     /**
@@ -141,14 +150,27 @@ public class SubcategoryResource {
      * {@code GET  /subcategories} : get all the subcategories.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of subcategories in body.
      */
     @GetMapping("/subcategories")
-    public ResponseEntity<List<SubcategoryDTO>> getAllSubcategories(Pageable pageable) {
-        log.debug("REST request to get a page of Subcategories");
-        Page<SubcategoryDTO> page = subcategoryService.findAll(pageable);
+    public ResponseEntity<List<SubcategoryDTO>> getAllSubcategories(SubcategoryCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Subcategories by criteria: {}", criteria);
+        Page<SubcategoryDTO> page = subcategoryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /subcategories/count} : count all the subcategories.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/subcategories/count")
+    public ResponseEntity<Long> countSubcategories(SubcategoryCriteria criteria) {
+        log.debug("REST request to count Subcategories by criteria: {}", criteria);
+        return ResponseEntity.ok().body(subcategoryQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -178,20 +200,5 @@ public class SubcategoryResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    /**
-     * {@code GET  /subcategories/category/:categoryId} : get subcategories by category id.
-     *
-     * @param categoryId the id of the parent category.
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200(OK)} and the list of subcategories in body.
-     */
-    @GetMapping("/subcategories/category/{categoryId}")
-    public ResponseEntity<List<SubcategoryDTO>> getAllSubcategoriesByCategoryId(@PathVariable Long categoryId, Pageable pageable) {
-        log.debug("REST request to get a page of Subcategories by Category : {}", categoryId);
-        Page<SubcategoryDTO> page = subcategoryService.findAllByCategoryId(categoryId, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

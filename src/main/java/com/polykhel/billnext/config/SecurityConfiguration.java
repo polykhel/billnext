@@ -1,11 +1,12 @@
 package com.polykhel.billnext.config;
 
-import com.polykhel.billnext.security.*;
+import com.polykhel.billnext.security.AuthoritiesConstants;
 import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.security.oauth2.AudienceValidator;
 import com.polykhel.billnext.security.oauth2.CustomClaimConverter;
 import com.polykhel.billnext.security.oauth2.JwtGrantedAuthorityConverter;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

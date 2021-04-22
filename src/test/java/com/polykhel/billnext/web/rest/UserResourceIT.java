@@ -3,6 +3,7 @@ package com.polykhel.billnext.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -12,6 +13,7 @@ import com.polykhel.billnext.domain.User;
 import com.polykhel.billnext.repository.UserRepository;
 import com.polykhel.billnext.security.AuthoritiesConstants;
 import com.polykhel.billnext.service.dto.AdminUserDTO;
+import com.polykhel.billnext.service.dto.UserDTO;
 import com.polykhel.billnext.service.mapper.UserMapper;
 import java.time.Instant;
 import java.util.*;

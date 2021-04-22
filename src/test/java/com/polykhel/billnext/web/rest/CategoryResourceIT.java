@@ -7,10 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.polykhel.billnext.IntegrationTest;
+import com.polykhel.billnext.domain.Activity;
 import com.polykhel.billnext.domain.Category;
 import com.polykhel.billnext.domain.User;
 import com.polykhel.billnext.domain.enumeration.ActivityType;
 import com.polykhel.billnext.repository.CategoryRepository;
+import com.polykhel.billnext.service.criteria.CategoryCriteria;
 import com.polykhel.billnext.service.dto.CategoryDTO;
 import com.polykhel.billnext.service.mapper.CategoryMapper;
 import java.util.List;
@@ -197,6 +199,231 @@ class CategoryResourceIT {
             .andExpect(jsonPath("$.id").value(category.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getCategoriesByIdFiltering() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        Long id = category.getId();
+
+        defaultCategoryShouldBeFound("id.equals=" + id);
+        defaultCategoryShouldNotBeFound("id.notEquals=" + id);
+
+        defaultCategoryShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultCategoryShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultCategoryShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultCategoryShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name equals to DEFAULT_NAME
+        defaultCategoryShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the categoryList where name equals to UPDATED_NAME
+        defaultCategoryShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name not equals to DEFAULT_NAME
+        defaultCategoryShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
+
+        // Get all the categoryList where name not equals to UPDATED_NAME
+        defaultCategoryShouldBeFound("name.notEquals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultCategoryShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the categoryList where name equals to UPDATED_NAME
+        defaultCategoryShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name is not null
+        defaultCategoryShouldBeFound("name.specified=true");
+
+        // Get all the categoryList where name is null
+        defaultCategoryShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameContainsSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name contains DEFAULT_NAME
+        defaultCategoryShouldBeFound("name.contains=" + DEFAULT_NAME);
+
+        // Get all the categoryList where name contains UPDATED_NAME
+        defaultCategoryShouldNotBeFound("name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where name does not contain DEFAULT_NAME
+        defaultCategoryShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+
+        // Get all the categoryList where name does not contain UPDATED_NAME
+        defaultCategoryShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where type equals to DEFAULT_TYPE
+        defaultCategoryShouldBeFound("type.equals=" + DEFAULT_TYPE);
+
+        // Get all the categoryList where type equals to UPDATED_TYPE
+        defaultCategoryShouldNotBeFound("type.equals=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByTypeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where type not equals to DEFAULT_TYPE
+        defaultCategoryShouldNotBeFound("type.notEquals=" + DEFAULT_TYPE);
+
+        // Get all the categoryList where type not equals to UPDATED_TYPE
+        defaultCategoryShouldBeFound("type.notEquals=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByTypeIsInShouldWork() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where type in DEFAULT_TYPE or UPDATED_TYPE
+        defaultCategoryShouldBeFound("type.in=" + DEFAULT_TYPE + "," + UPDATED_TYPE);
+
+        // Get all the categoryList where type equals to UPDATED_TYPE
+        defaultCategoryShouldNotBeFound("type.in=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByTypeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+
+        // Get all the categoryList where type is not null
+        defaultCategoryShouldBeFound("type.specified=true");
+
+        // Get all the categoryList where type is null
+        defaultCategoryShouldNotBeFound("type.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByUserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        category.setUser(user);
+        categoryRepository.saveAndFlush(category);
+        String userId = user.getId();
+
+        // Get all the categoryList where user equals to userId
+        defaultCategoryShouldBeFound("userId.equals=" + userId);
+
+        // Get all the categoryList where user equals to "invalid-id"
+        defaultCategoryShouldNotBeFound("userId.equals=" + "invalid-id");
+    }
+
+    @Test
+    @Transactional
+    void getAllCategoriesByActivityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        categoryRepository.saveAndFlush(category);
+        Activity activity = ActivityResourceIT.createEntity(em);
+        em.persist(activity);
+        em.flush();
+        category.addActivity(activity);
+        categoryRepository.saveAndFlush(category);
+        Long activityId = activity.getId();
+
+        // Get all the categoryList where activity equals to activityId
+        defaultCategoryShouldBeFound("activityId.equals=" + activityId);
+
+        // Get all the categoryList where activity equals to (activityId + 1)
+        defaultCategoryShouldNotBeFound("activityId.equals=" + (activityId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultCategoryShouldBeFound(String filter) throws Exception {
+        restCategoryMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+
+        // Check, that the count call also returns 1
+        restCategoryMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultCategoryShouldNotBeFound(String filter) throws Exception {
+        restCategoryMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restCategoryMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

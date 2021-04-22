@@ -11,7 +11,8 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
@@ -48,6 +49,8 @@ public class CacheConfiguration {
             createCache(cm, com.polykhel.billnext.domain.User.class.getName() + ".authorities");
             createCache(cm, com.polykhel.billnext.domain.Wallet.class.getName());
             createCache(cm, com.polykhel.billnext.domain.Wallet.class.getName() + ".activities");
+            createCache(cm, com.polykhel.billnext.domain.WalletGroup.class.getName());
+            createCache(cm, com.polykhel.billnext.domain.WalletGroup.class.getName() + ".wallets");
             createCache(cm, com.polykhel.billnext.domain.Activity.class.getName());
             createCache(cm, com.polykhel.billnext.domain.Category.class.getName());
             createCache(cm, com.polykhel.billnext.domain.Category.class.getName() + ".activities");

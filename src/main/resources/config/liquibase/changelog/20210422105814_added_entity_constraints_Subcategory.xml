@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Subcategory.
     -->
-    <changeSet id="20210314110637-2" author="jhipster">
+    <changeSet id="20210422105814-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="category_id"
                                  baseTableName="subcategory"

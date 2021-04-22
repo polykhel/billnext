@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.polykhel.billnext.BillNextApp;
 import com.polykhel.billnext.IntegrationTest;
+import com.polykhel.billnext.config.TestSecurityConfiguration;
 import com.polykhel.billnext.security.AuthoritiesConstants;
 import java.util.Arrays;
 import java.util.HashMap;

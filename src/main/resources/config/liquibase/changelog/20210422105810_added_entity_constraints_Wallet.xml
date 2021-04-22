@@ -6,12 +6,12 @@
     <!--
         Added the constraints for entity Wallet.
     -->
-    <changeSet id="20210314110634-2" author="jhipster">
+    <changeSet id="20210422105810-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="wallet_group_id"
                                  baseTableName="wallet"
-                                 constraintName="fk_wallet__user_id"
+                                 constraintName="fk_wallet__wallet_group_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="app_user"/>
+                                 referencedTableName="wallet_group"/>
     </changeSet>
 </databaseChangeLog>

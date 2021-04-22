@@ -1,8 +1,11 @@
 package com.polykhel.billnext.service.mapper;
 
-import com.polykhel.billnext.domain.*;
+import com.polykhel.billnext.domain.Category;
 import com.polykhel.billnext.service.dto.CategoryDTO;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Category} and its DTO {@link CategoryDTO}.

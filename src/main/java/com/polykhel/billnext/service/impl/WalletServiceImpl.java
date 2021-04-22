@@ -74,10 +74,4 @@ public class WalletServiceImpl implements WalletService {
         log.debug("Request to delete Wallet : {}", id);
         walletRepository.deleteById(id);
     }
-
-    @Override
-    public Page<WalletDTO> findAllByCurrentUser(Pageable pageable) {
-        log.debug("Request to get all Wallets by the current user");
-        return walletRepository.findByUserIsCurrentUser(pageable).map(walletMapper::toDto);
-    }
 }

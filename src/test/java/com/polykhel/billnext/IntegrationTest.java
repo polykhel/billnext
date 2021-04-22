@@ -1,5 +1,6 @@
 package com.polykhel.billnext;
 
+import com.polykhel.billnext.BillNextApp;
 import com.polykhel.billnext.config.TestSecurityConfiguration;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
