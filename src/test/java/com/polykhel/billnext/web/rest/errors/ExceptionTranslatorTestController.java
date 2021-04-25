@@ -27,7 +27,7 @@ public class ExceptionTranslatorTestController {
     public void missingServletRequestParameterException(@RequestParam String param) {}
 
     @GetMapping("/access-denied")
-    public void accessdenied() {
+    public void accessDenied() {
         throw new AccessDeniedException("test access denied!");
     }
 

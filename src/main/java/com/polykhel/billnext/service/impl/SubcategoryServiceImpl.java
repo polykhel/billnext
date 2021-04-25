@@ -1,7 +1,10 @@
 package com.polykhel.billnext.service.impl;
 
+import static com.polykhel.billnext.util.StreamUtils.peek;
+
 import com.polykhel.billnext.domain.Subcategory;
 import com.polykhel.billnext.repository.SubcategoryRepository;
+import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.service.SubcategoryService;
 import com.polykhel.billnext.service.dto.SubcategoryDTO;
 import com.polykhel.billnext.service.mapper.SubcategoryMapper;
@@ -35,6 +38,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     public SubcategoryDTO save(SubcategoryDTO subcategoryDTO) {
         log.debug("Request to save Subcategory : {}", subcategoryDTO);
         Subcategory subcategory = subcategoryMapper.toEntity(subcategoryDTO);
+        SecurityUtils.validateIfCurrentUser(subcategory.getCategory().getUser());
         subcategory = subcategoryRepository.save(subcategory);
         return subcategoryMapper.toDto(subcategory);
     }
@@ -45,6 +49,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
 
         return subcategoryRepository
             .findById(subcategoryDTO.getId())
+            .map(peek(existingSubcategory -> SecurityUtils.validateIfCurrentUser(existingSubcategory.getCategory().getUser())))
             .map(
                 existingSubcategory -> {
                     subcategoryMapper.partialUpdate(existingSubcategory, subcategoryDTO);
@@ -66,12 +71,22 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     @Transactional(readOnly = true)
     public Optional<SubcategoryDTO> findOne(Long id) {
         log.debug("Request to get Subcategory : {}", id);
-        return subcategoryRepository.findById(id).map(subcategoryMapper::toDto);
+        return subcategoryRepository
+            .findById(id)
+            .map(peek(existingSubcategory -> SecurityUtils.validateIfCurrentUser(existingSubcategory.getCategory().getUser())))
+            .map(subcategoryMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Subcategory : {}", id);
-        subcategoryRepository.deleteById(id);
+        subcategoryRepository
+            .findById(id)
+            .ifPresent(
+                existingSubcategory -> {
+                    SecurityUtils.validateIfCurrentUser(existingSubcategory.getCategory().getUser());
+                    subcategoryRepository.deleteById(id);
+                }
+            );
     }
 }

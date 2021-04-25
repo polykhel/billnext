@@ -1,10 +1,14 @@
 package com.polykhel.billnext.service.impl;
 
+import static com.polykhel.billnext.util.StreamUtils.peek;
+
 import com.polykhel.billnext.domain.Category;
 import com.polykhel.billnext.repository.CategoryRepository;
+import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.service.CategoryService;
 import com.polykhel.billnext.service.dto.CategoryDTO;
 import com.polykhel.billnext.service.mapper.CategoryMapper;
+import com.polykhel.billnext.util.StreamUtils;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
+        SecurityUtils.validateIfCurrentUser(category.getUser());
         category = categoryRepository.save(category);
         return categoryMapper.toDto(category);
     }
@@ -45,6 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepository
             .findById(categoryDTO.getId())
+            .map(peek(existingCategory -> SecurityUtils.validateIfCurrentUser(existingCategory.getUser())))
             .map(
                 existingCategory -> {
                     categoryMapper.partialUpdate(existingCategory, categoryDTO);
@@ -66,12 +72,22 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public Optional<CategoryDTO> findOne(Long id) {
         log.debug("Request to get Category : {}", id);
-        return categoryRepository.findById(id).map(categoryMapper::toDto);
+        return categoryRepository
+            .findById(id)
+            .map(peek(existingCategory -> SecurityUtils.validateIfCurrentUser(existingCategory.getUser())))
+            .map(categoryMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Category : {}", id);
-        categoryRepository.deleteById(id);
+        categoryRepository
+            .findById(id)
+            .ifPresent(
+                existingCategory -> {
+                    SecurityUtils.validateIfCurrentUser(existingCategory.getUser());
+                    categoryRepository.deleteById(id);
+                }
+            );
     }
 }

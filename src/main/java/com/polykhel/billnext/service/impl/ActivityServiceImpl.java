@@ -1,7 +1,10 @@
 package com.polykhel.billnext.service.impl;
 
+import static com.polykhel.billnext.util.StreamUtils.peek;
+
 import com.polykhel.billnext.domain.Activity;
 import com.polykhel.billnext.repository.ActivityRepository;
+import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.service.ActivityService;
 import com.polykhel.billnext.service.dto.ActivityDTO;
 import com.polykhel.billnext.service.mapper.ActivityMapper;
@@ -35,6 +38,7 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityDTO save(ActivityDTO activityDTO) {
         log.debug("Request to save Activity : {}", activityDTO);
         Activity activity = activityMapper.toEntity(activityDTO);
+        SecurityUtils.validateIfCurrentUser(activity.getUser());
         activity = activityRepository.save(activity);
         return activityMapper.toDto(activity);
     }
@@ -45,6 +49,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         return activityRepository
             .findById(activityDTO.getId())
+            .map(peek(existingActivity -> SecurityUtils.validateIfCurrentUser(existingActivity.getUser())))
             .map(
                 existingActivity -> {
                     activityMapper.partialUpdate(existingActivity, activityDTO);
@@ -66,12 +71,22 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional(readOnly = true)
     public Optional<ActivityDTO> findOne(Long id) {
         log.debug("Request to get Activity : {}", id);
-        return activityRepository.findById(id).map(activityMapper::toDto);
+        return activityRepository
+            .findById(id)
+            .map(peek(existingActivity -> SecurityUtils.validateIfCurrentUser(existingActivity.getUser())))
+            .map(activityMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Activity : {}", id);
-        activityRepository.deleteById(id);
+        activityRepository
+            .findById(id)
+            .ifPresent(
+                existingActivity -> {
+                    SecurityUtils.validateIfCurrentUser(existingActivity.getUser());
+                    activityRepository.deleteById(id);
+                }
+            );
     }
 }

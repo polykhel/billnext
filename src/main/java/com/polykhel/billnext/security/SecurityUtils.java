@@ -1,5 +1,7 @@
 package com.polykhel.billnext.security;
 
+import com.polykhel.billnext.domain.User;
+import com.polykhel.billnext.web.rest.errors.ForbiddenException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +20,18 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 public final class SecurityUtils {
 
     private SecurityUtils() {}
+
+    /**
+     * Validate if the user is the same as the current user
+     *
+     * @param user user to check
+     * @throws ForbiddenException if user is not the same as current user
+     */
+    public static void validateIfCurrentUser(User user) {
+        if (user != null && user.getLogin() != null && !user.getLogin().equals(getCurrentUserLogin().orElse(""))) {
+            throw new ForbiddenException();
+        }
+    }
 
     /**
      * Get the login of the current user.

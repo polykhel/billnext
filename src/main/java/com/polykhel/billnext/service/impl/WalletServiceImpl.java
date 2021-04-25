@@ -1,10 +1,14 @@
 package com.polykhel.billnext.service.impl;
 
+import static com.polykhel.billnext.util.StreamUtils.peek;
+
 import com.polykhel.billnext.domain.Wallet;
 import com.polykhel.billnext.repository.WalletRepository;
+import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.service.WalletService;
 import com.polykhel.billnext.service.dto.WalletDTO;
 import com.polykhel.billnext.service.mapper.WalletMapper;
+import com.polykhel.billnext.util.StreamUtils;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,7 @@ public class WalletServiceImpl implements WalletService {
     public WalletDTO save(WalletDTO walletDTO) {
         log.debug("Request to save Wallet : {}", walletDTO);
         Wallet wallet = walletMapper.toEntity(walletDTO);
+        SecurityUtils.validateIfCurrentUser(wallet.getWalletGroup().getUser());
         wallet = walletRepository.save(wallet);
         return walletMapper.toDto(wallet);
     }
@@ -45,6 +50,7 @@ public class WalletServiceImpl implements WalletService {
 
         return walletRepository
             .findById(walletDTO.getId())
+            .map(peek(existingWallet -> SecurityUtils.validateIfCurrentUser(existingWallet.getWalletGroup().getUser())))
             .map(
                 existingWallet -> {
                     walletMapper.partialUpdate(existingWallet, walletDTO);
@@ -66,12 +72,22 @@ public class WalletServiceImpl implements WalletService {
     @Transactional(readOnly = true)
     public Optional<WalletDTO> findOne(Long id) {
         log.debug("Request to get Wallet : {}", id);
-        return walletRepository.findById(id).map(walletMapper::toDto);
+        return walletRepository
+            .findById(id)
+            .map(peek(existingWallet -> SecurityUtils.validateIfCurrentUser(existingWallet.getWalletGroup().getUser())))
+            .map(walletMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Wallet : {}", id);
-        walletRepository.deleteById(id);
+        walletRepository
+            .findById(id)
+            .ifPresent(
+                existingWallet -> {
+                    SecurityUtils.validateIfCurrentUser(existingWallet.getWalletGroup().getUser());
+                    walletRepository.deleteById(id);
+                }
+            );
     }
 }

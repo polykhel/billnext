@@ -1,7 +1,10 @@
 package com.polykhel.billnext.service.impl;
 
+import static com.polykhel.billnext.util.StreamUtils.peek;
+
 import com.polykhel.billnext.domain.WalletGroup;
 import com.polykhel.billnext.repository.WalletGroupRepository;
+import com.polykhel.billnext.security.SecurityUtils;
 import com.polykhel.billnext.service.WalletGroupService;
 import com.polykhel.billnext.service.dto.WalletGroupDTO;
 import com.polykhel.billnext.service.mapper.WalletGroupMapper;
@@ -35,6 +38,7 @@ public class WalletGroupServiceImpl implements WalletGroupService {
     public WalletGroupDTO save(WalletGroupDTO walletGroupDTO) {
         log.debug("Request to save WalletGroup : {}", walletGroupDTO);
         WalletGroup walletGroup = walletGroupMapper.toEntity(walletGroupDTO);
+        SecurityUtils.validateIfCurrentUser(walletGroup.getUser());
         walletGroup = walletGroupRepository.save(walletGroup);
         return walletGroupMapper.toDto(walletGroup);
     }
@@ -45,6 +49,7 @@ public class WalletGroupServiceImpl implements WalletGroupService {
 
         return walletGroupRepository
             .findById(walletGroupDTO.getId())
+            .map(peek(existingWalletGroup -> SecurityUtils.validateIfCurrentUser(existingWalletGroup.getUser())))
             .map(
                 existingWalletGroup -> {
                     walletGroupMapper.partialUpdate(existingWalletGroup, walletGroupDTO);
@@ -66,12 +71,22 @@ public class WalletGroupServiceImpl implements WalletGroupService {
     @Transactional(readOnly = true)
     public Optional<WalletGroupDTO> findOne(Long id) {
         log.debug("Request to get WalletGroup : {}", id);
-        return walletGroupRepository.findById(id).map(walletGroupMapper::toDto);
+        return walletGroupRepository
+            .findById(id)
+            .map(peek(existingWalletGroup -> SecurityUtils.validateIfCurrentUser(existingWalletGroup.getUser())))
+            .map(walletGroupMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         log.debug("Request to delete WalletGroup : {}", id);
-        walletGroupRepository.deleteById(id);
+        walletGroupRepository
+            .findById(id)
+            .ifPresent(
+                existingWalletGroup -> {
+                    SecurityUtils.validateIfCurrentUser(existingWalletGroup.getUser());
+                    walletGroupRepository.deleteById(id);
+                }
+            );
     }
 }
