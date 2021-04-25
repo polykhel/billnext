@@ -43,11 +43,11 @@ export class HeaderComponent {
 
   logout(): void {
     this.loginService.logout();
-    this.router.navigate(['']).then();
+    this.router.navigate(['']);
   }
 
   toggleTheme(): void {
-    this.themeService.toggleTheme().then();
+    this.themeService.toggleTheme();
   }
 
   changeLanguage(languageKey: string): void {
