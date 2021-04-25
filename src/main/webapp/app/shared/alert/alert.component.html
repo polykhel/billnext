@@ -1,5 +1,6 @@
 <div class="alerts" role="alert">
   <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
-    <nz-alert *ngIf="alert.message" [nzType]="alert.type" [nzMessage]="alert.message" nzShowIcon (nzOnClose)="close(alert)"> </nz-alert>
+    <nz-alert (nzOnClose)="close(alert)" *ngIf="alert.message" [nzMessage]="alert.message" [nzType]="alert.type" nzCloseable nzShowIcon>
+    </nz-alert>
   </div>
 </div>
