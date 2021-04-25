@@ -1,1 +1,2 @@
-id;login;first_name;last_name;email;image_url;activated;lang_key;created_by;last_modified_by
+id;login;first_name;last_name;email;image_url;activated;lang_key;created_by;created_date;last_modified_by;last_modified_date
+4c973896-5761-41fc-8217-07c5d13a004b;admin;Admin;Administrator;admin@localhost;NULL;true;en;admin;2021-04-25;admin;2021-04-25
