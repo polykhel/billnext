@@ -57,14 +57,18 @@ public class AsyncEntityAuditEventWriter {
         Class<?> entityClass = entity.getClass(); // Retrieve entity class with reflection
         auditedEntity.setAction(action.value());
         auditedEntity.setEntityType(entityClass.getName());
-        Long entityId;
+        String entityId;
         String entityData;
         log.trace("Getting Entity Id and Content");
         try {
-            Field privateLongField = entityClass.getDeclaredField("id");
-            privateLongField.setAccessible(true);
-            entityId = (Long) privateLongField.get(entity);
-            privateLongField.setAccessible(false);
+            Field privateField = entityClass.getDeclaredField("id");
+            privateField.setAccessible(true);
+            try {
+                entityId = ((Long) privateField.get(entity)).toString();
+            } catch (ClassCastException e) {
+                entityId = (String) privateField.get(entity);
+            }
+            privateField.setAccessible(false);
             entityData = objectMapper.writeValueAsString(entity);
         } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | IOException e) {
             log.error("Exception while getting entity ID and content {}", e);

@@ -15,7 +15,7 @@ public interface EntityAuditEventRepository extends JpaRepository<EntityAuditEve
     List<EntityAuditEvent> findAllByEntityTypeAndEntityId(String entityType, Long entityId);
 
     @Query("SELECT max(a.commitVersion) FROM EntityAuditEvent a where a.entityType = :type and a.entityId = :entityId")
-    Integer findMaxCommitVersion(@Param("type") String type, @Param("entityId") Long entityId);
+    Integer findMaxCommitVersion(@Param("type") String type, @Param("entityId") String entityId);
 
     @Query("SELECT DISTINCT (a.entityType) from EntityAuditEvent a")
     List<String> findAllEntityTypes();
@@ -29,7 +29,7 @@ public interface EntityAuditEventRepository extends JpaRepository<EntityAuditEve
     )
     EntityAuditEvent findOneByEntityTypeAndEntityIdAndCommitVersion(
         @Param("type") String type,
-        @Param("entityId") Long entityId,
+        @Param("entityId") String entityId,
         @Param("commitVersion") Integer commitVersion
     );
 }
