@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 public class WalletDTO implements Serializable {
 
-    @NotNull
     private Long id;
 
     @NotNull

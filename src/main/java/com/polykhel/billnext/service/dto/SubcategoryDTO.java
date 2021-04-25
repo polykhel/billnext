@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class SubcategoryDTO implements Serializable {
 
-    @NotNull
     private Long id;
 
     @NotNull

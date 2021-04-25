@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 public class CategoryDTO implements Serializable {
 
-    @NotNull
     private Long id;
 
     @NotNull

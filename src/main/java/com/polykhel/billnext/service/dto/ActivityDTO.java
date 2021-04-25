@@ -16,7 +16,6 @@ import lombok.Setter;
 @Setter
 public class ActivityDTO extends AbstractAuditingDTO implements Serializable {
 
-    @NotNull
     private Long id;
 
     @NotNull
