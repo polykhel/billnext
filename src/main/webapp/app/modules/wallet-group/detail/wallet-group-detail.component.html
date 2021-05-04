@@ -1,0 +1,30 @@
+<nz-row>
+  <nz-col nzSpan="24">
+    <div *ngIf="walletGroup">
+      <h2 data-cy="walletGroupDetailsHeading"><span appTranslate="walletGroup.detail.title">Wallet Group</span></h2>
+
+      <hr />
+
+      <app-alert-error></app-alert-error>
+
+      <app-alert></app-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span appTranslate="walletGroup.id">Id</span></dt>
+        <dd>
+          <span>{{ walletGroup.id }}</span>
+        </dd>
+        <dt><span appTranslate="walletGroup.name">Name</span></dt>
+        <dd>
+          <span>{{ walletGroup.name }}</span>
+        </dd>
+        <dt><span appTranslate="walletGroup.user">User</span></dt>
+        <dd>
+          <span>{{ walletGroup.user?.id }}</span>
+        </dd>
+      </dl>
+
+      <button nz-button nzType="default" appBackButton data-cy="entityDetailsBackButton"><i nz-icon nzType="left"></i>Back</button>
+    </div>
+  </nz-col>
+</nz-row>

@@ -11,7 +11,6 @@ import com.polykhel.billnext.domain.User;
 import com.polykhel.billnext.domain.Wallet;
 import com.polykhel.billnext.domain.WalletGroup;
 import com.polykhel.billnext.repository.WalletGroupRepository;
-import com.polykhel.billnext.service.criteria.WalletGroupCriteria;
 import com.polykhel.billnext.service.dto.WalletGroupDTO;
 import com.polykhel.billnext.service.mapper.WalletGroupMapper;
 import java.util.List;

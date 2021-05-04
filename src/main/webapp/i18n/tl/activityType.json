@@ -1,9 +1,0 @@
-{
-  "billnextApp": {
-    "ActivityType": {
-      "null": "",
-      "INCOME": "INCOME",
-      "EXPENSE": "EXPENSE"
-    }
-  }
-}

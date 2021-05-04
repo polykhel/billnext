@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
         data: {
           pageTitle: 'walletGroup.home.title',
         },
-        loadChildren: () => import('./wallet-group/wallet-group.module'),
+        loadChildren: () => import('./wallet-group/wallet-group.module').then(m => m.WalletGroupModule),
       },
     ]),
   ],

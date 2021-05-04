@@ -1,9 +1,11 @@
 import { IUser } from 'app/modules/user/user.model';
+import { IWallet } from 'app/modules/wallet/wallet.model';
 
 export interface IWalletGroup {
   id?: number;
   name?: string;
   user?: IUser;
+  wallets?: IWallet[] | null;
 }
 
 export class WalletGroup implements IWalletGroup {

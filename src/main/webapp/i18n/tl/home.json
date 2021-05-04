@@ -1,9 +1,0 @@
-{
-  "home": {
-    "title": "BillNext",
-    "subtitle": "Track your bills and expenses!",
-    "logged": {
-      "message": "You are logged in as user \"{{username}}\"."
-    }
-  }
-}

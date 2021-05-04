@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,20 +32,16 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class WalletGroupResource {
 
-    private final Logger log = LoggerFactory.getLogger(WalletGroupResource.class);
-
     private static final String ENTITY_NAME = "walletGroup";
+    private final WalletGroupService walletGroupService;
+    private final WalletGroupRepository walletGroupRepository;
+    private final WalletGroupQueryService walletGroupQueryService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final WalletGroupService walletGroupService;
-
-    private final WalletGroupRepository walletGroupRepository;
-
-    private final WalletGroupQueryService walletGroupQueryService;
 
     public WalletGroupResource(
         WalletGroupService walletGroupService,
@@ -79,7 +76,7 @@ public class WalletGroupResource {
     /**
      * {@code PUT  /wallet-groups/:id} : Updates an existing walletGroup.
      *
-     * @param id the id of the walletGroupDTO to save.
+     * @param id             the id of the walletGroupDTO to save.
      * @param walletGroupDTO the walletGroupDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated walletGroupDTO,
      * or with status {@code 400 (Bad Request)} if the walletGroupDTO is not valid,
@@ -113,7 +110,7 @@ public class WalletGroupResource {
     /**
      * {@code PATCH  /wallet-groups/:id} : Partial updates given fields of an existing walletGroup, field will ignore if it is null
      *
-     * @param id the id of the walletGroupDTO to save.
+     * @param id             the id of the walletGroupDTO to save.
      * @param walletGroupDTO the walletGroupDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated walletGroupDTO,
      * or with status {@code 400 (Bad Request)} if the walletGroupDTO is not valid,

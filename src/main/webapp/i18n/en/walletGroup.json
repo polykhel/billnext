@@ -1,18 +1,23 @@
 {
-  "billnextApp": {
-    "WalletGroup": {
-      "null": "",
-      "CASH": "Cash",
-      "ACCOUNTS": "Accounts",
-      "CARD": "Card",
-      "DEBIT": "Debit Card",
-      "SAVINGS": "Savings",
-      "PREPAID": "Top-Up/Prepaid",
-      "INVESTMENTS": "Investments",
-      "OVERDRAFTS": "Overdrafts",
-      "LOAN": "Loan",
-      "INSURANCE": "Insurance",
-      "OTHERS": "Others"
-    }
+  "walletGroup": {
+    "home": {
+      "title": "Wallet Groups",
+      "refreshListLabel": "Refresh list",
+      "createLabel": "Create a new Wallet Group",
+      "createOrEditLabel": "Create or edit a Wallet Group",
+      "notFound": "No Wallet Groups found"
+    },
+    "created": "A new Wallet Group is created with identifier {{ param }}",
+    "updated": "A Wallet Group is updated with identifier {{ param }}",
+    "deleted": "A Wallet Group is deleted with identifier {{ param }}",
+    "delete": {
+      "question": "Are you sure you want to delete Wallet Group {{ id }}?"
+    },
+    "detail": {
+      "title": "Wallet Group"
+    },
+    "id": "Id",
+    "name": "Name",
+    "user": "User"
   }
 }

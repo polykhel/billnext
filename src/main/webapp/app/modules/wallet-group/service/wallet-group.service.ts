@@ -4,6 +4,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { getWalletGroupIdentifier, IWalletGroup } from 'app/modules/wallet-group/wallet-group.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from 'app/core/request/request-util';
+import { isPresent } from 'app/core/util/operators';
 
 export type EntityResponseType = HttpResponse<IWalletGroup>;
 export type EntityArrayResponseType = HttpResponse<IWalletGroup[]>;
@@ -37,5 +38,29 @@ export class WalletGroupService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IWalletGroup[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  addWalletGroupToCollectionIfMissing(
+    walletGroupCollection: IWalletGroup[],
+    ...walletGroupsToCheck: (IWalletGroup | null | undefined)[]
+  ): IWalletGroup[] {
+    const walletGroups: IWalletGroup[] = walletGroupsToCheck.filter(isPresent);
+    if (walletGroups.length > 0) {
+      const walletGroupCollectionIdentifiers = walletGroupCollection.map(walletGroupItem => getWalletGroupIdentifier(walletGroupItem)!);
+      const walletGroupsToAdd = walletGroups.filter(walletGroupItem => {
+        const walletGroupIdentifier = getWalletGroupIdentifier(walletGroupItem);
+        if (walletGroupIdentifier == null || walletGroupCollectionIdentifiers.includes(walletGroupIdentifier)) {
+          return false;
+        }
+        walletGroupCollectionIdentifiers.push(walletGroupIdentifier);
+        return true;
+      });
+      return [...walletGroupsToAdd, ...walletGroupCollection];
+    }
+    return walletGroupCollection;
   }
 }
