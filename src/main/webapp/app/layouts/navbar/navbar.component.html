@@ -2,6 +2,7 @@
   <a routerLink="/">
     <img alt="logo" src="/content/images/logo_transparent.png" />
     <h1>BillNext</h1>
+    <span class="navbar-version">{{ version }}</span>
   </a>
 </div>
 <ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline">
@@ -20,5 +21,9 @@
   <li nz-menu-item>
     <i nz-icon nzType="setting"></i>
     <span *ngIf="!isCollapsed" appTranslate="navbar.settings">Settings</span>
+  </li>
+  <li *ngIf="openAPIEnabled" nz-menu-item routerLink="admin/docs">
+    <i nz-icon nzType="book"></i>
+    <span *ngIf="!isCollapsed" appTranslate="navbar.apidocs">API</span>
   </li>
 </ul>

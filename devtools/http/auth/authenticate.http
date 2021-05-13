@@ -1,0 +1,19 @@
+POST {{app}}/authenticate
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin",
+    "rememberMe": false
+}
+
+> {%
+client.test("authenticationToken exists", function() {
+  client.assert(response.body.hasOwnProperty("id_token"), "Cannot find 'id_token' option in response");
+})
+client.global.set('authenticationToken', response.body.id_token)
+client.test("authenticationToken retrieved", function() {
+  client.assert(client.global.get('bearerToken') === response.body.id_token, "authenticationToken was not correctly set")
+})
+%}
+

@@ -1,0 +1,2 @@
+GET {{app}}/account
+Authorization: Bearer {{authenticationToken}}

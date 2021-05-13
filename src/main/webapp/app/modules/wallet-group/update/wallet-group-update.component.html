@@ -9,8 +9,8 @@
         <app-alert-error></app-alert-error>
 
         <nz-form-item>
-          <nz-form-label [nzSpan]="7" nzRequired><span appTranslate="walletGroup.name">Name</span></nz-form-label>
-          <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="nameErrorTpl">
+          <nz-form-label nzSpan="7" nzRequired><span appTranslate="walletGroup.name">Name</span></nz-form-label>
+          <nz-form-control nzSpan="12" nzHasFeedback [nzErrorTip]="nameErrorTpl">
             <input nz-input formControlName="name" placeholder="Name" />
             <ng-template #nameErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">

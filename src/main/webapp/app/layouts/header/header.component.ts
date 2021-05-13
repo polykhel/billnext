@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { LoginService } from 'app/shared/login/login.service';
 import { Router } from '@angular/router';
 import { AccountService } from 'app/core/auth/account.service';
+import { LoginService } from 'app/login/login.service';
 import { ThemeService } from 'app/shared/theme/theme.service';
 import { LANGUAGES } from 'app/config/language.constants';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
   }
 
   login(): void {
-    this.loginService.login();
+    this.router.navigate(['/login']);
   }
 
   logout(): void {

@@ -1,0 +1,8 @@
+POST {{app}}/wallet-groups
+Authorization: Bearer {{authenticationToken}}
+Content-Type: application/json
+
+{
+    "id": null,
+    "name": "test"
+}

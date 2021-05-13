@@ -4,7 +4,6 @@ import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
 import { AccountService } from 'app/core/auth/account.service';
-import { LoginService } from 'app/shared/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class NavbarComponent implements OnInit {
   @Input() isCollapsed = false;
 
   constructor(
-    private loginService: LoginService,
     private translateService: TranslateService,
     private sessionStorage: SessionStorageService,
     private accountService: AccountService,
