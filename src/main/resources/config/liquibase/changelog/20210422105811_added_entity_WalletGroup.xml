@@ -37,6 +37,13 @@
             <column name="last_modified_date" type="timestamp"/>
         </addColumn>
     </changeSet>
+
+    <changeSet author="mpollente" id="1620530972783-3">
+        <addColumn tableName="wallet_group">
+            <column name="order_index" type="int4"/>
+        </addColumn>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

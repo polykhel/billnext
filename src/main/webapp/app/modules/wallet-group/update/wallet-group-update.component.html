@@ -1,0 +1,25 @@
+<nz-row>
+  <nz-col nzSpan="24">
+    <form (ngSubmit)="save()" [formGroup]="editForm" name="editForm" novalidate nz-form role="form">
+      <h2 appTranslate="walletGroup.home.createOrEditLabel" data-cy="WalletGroupCreateUpdateHeading" id="app-wallet-group-heading">
+        Create or edit a Wallet Group
+      </h2>
+
+      <div>
+        <app-alert-error></app-alert-error>
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired><span appTranslate="walletGroup.name">Name</span></nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="nameErrorTpl">
+            <input nz-input formControlName="name" placeholder="Name" />
+            <ng-template #nameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                <span appTranslate="entity.validation.required">This field is required</span>
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </nz-col>
+</nz-row>

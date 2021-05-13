@@ -20,6 +20,8 @@ public class WalletGroupDTO implements Serializable {
 
     private UserDTO user;
 
+    private Integer orderIndex;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

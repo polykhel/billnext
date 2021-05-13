@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TranslateModule } from '@ngx-translate/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -21,14 +20,17 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   exports: [
     FormsModule,
     CommonModule,
-    InfiniteScrollModule,
     ReactiveFormsModule,
     TranslateModule,
+    DragDropModule,
     NzIconModule,
     NzLayoutModule,
     NzFormModule,
@@ -46,6 +48,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzDividerModule,
     NzAvatarModule,
     NzModalModule,
+    NzInputModule,
+    NzTableModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
 })

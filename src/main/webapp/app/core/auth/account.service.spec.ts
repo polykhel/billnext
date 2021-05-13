@@ -16,6 +16,7 @@ import { AccountService } from './account.service';
 
 function accountWithAuthorities(authorities: string[]): Account {
   return {
+    id: '',
     activated: true,
     authorities,
     email: '',

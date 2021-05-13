@@ -37,6 +37,9 @@ public class WalletGroup extends AbstractAuditingEntity implements Serializable 
     @JsonIgnoreProperties(value = { "walletGroup", "activities" }, allowSetters = true)
     private Set<Wallet> wallets = new HashSet<>();
 
+    @Column(name = "order_index")
+    private Integer orderIndex;
+
     public Long getId() {
         return id;
     }
@@ -105,6 +108,14 @@ public class WalletGroup extends AbstractAuditingEntity implements Serializable 
             wallets.forEach(i -> i.setWalletGroup(this));
         }
         this.wallets = wallets;
+    }
+
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
     }
 
     @Override

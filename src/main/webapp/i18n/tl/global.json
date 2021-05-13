@@ -109,7 +109,7 @@
       "title": "Confirm delete operation"
     },
     "validation": {
-      "required": "This field is required.",
+      "required": "Ang patlang na ito ay kailangan sagutan.",
       "minlength": "This field is required to be at least {{ min }} characters.",
       "maxlength": "This field cannot be longer than {{ max }} characters.",
       "min": "This field should be at least {{ min }}.",

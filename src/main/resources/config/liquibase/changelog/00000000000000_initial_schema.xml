@@ -32,10 +32,12 @@
                 <constraints nullable="false" />
             </column>
             <column name="lang_key" type="varchar(10)"/>
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by" type="varchar(50)" defaultValue="system">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp"/>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
@@ -77,7 +79,6 @@
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
-        <dropDefaultValue tableName="app_user" columnName="created_date" columnDataType="${datetimeType}"/>
         <loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"

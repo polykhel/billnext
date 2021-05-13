@@ -1,0 +1,63 @@
+<div>
+  <div data-cy="WalletGroupHeading" id="page-heading">
+    <h2 appTranslate="walletGroup.home.title">Wallet Groups</h2>
+
+    <nz-space class="header-buttons" [ngSwitch]="isReordering">
+      <ng-container *ngSwitchCase="false">
+        <button *nzSpaceItem nz-button nzType="dashed" (click)="reorder()" [disabled]="isLoading">Reorder</button>
+      </ng-container>
+      <ng-container *ngSwitchCase="true">
+        <button *nzSpaceItem nz-button nzType="dashed" (click)="reorder()" [disabled]="isLoading">Save new order</button>
+        <button *nzSpaceItem nz-button nzType="dashed" (click)="reorder()" [disabled]="isLoading">Cancel reordering</button>
+      </ng-container>
+      <button *nzSpaceItem nz-button (click)="reset()" [disabled]="isLoading" [nzLoading]="isLoading">
+        <i nz-icon nzType="sync"></i>
+        <span appTranslate="walletGroup.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        *nzSpaceItem
+        nz-button
+        nzType="primary"
+        [routerLink]="['/wallet-group/new']"
+        class="btn btn-primary jh-create-entity create-wallet"
+        data-cy="entityCreateButton"
+        id="jh-create-entity"
+      >
+        <i nz-icon nzType="plus"></i>
+        <span appTranslate="walletGroup.home.createLabel">Create a new Wallet Group</span>
+      </button>
+    </nz-space>
+  </div>
+
+  <app-alert-error></app-alert-error>
+
+  <app-alert></app-alert>
+
+  <nz-table
+    #walletGroupTable
+    [nzBordered]="false"
+    [nzData]="walletGroups"
+    [nzFrontPagination]="false"
+    [nzLoading]="isLoading"
+    [nzShowPagination]="false"
+    [nzTableLayout]="'fixed'"
+    class="drag-list"
+  >
+    <tbody (cdkDropListDropped)="drop($event)" cdkDropList>
+      <tr *ngFor="let data of walletGroupTable.data" cdkDrag class="drag-box">
+        <td>
+          {{ data.name }}
+        </td>
+        <td class="action-buttons" nzAlign="right">
+          <button *ngIf="isReordering" cdkDragHandle nz-button><i nz-icon nzType="drag"></i></button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button><i nz-icon nzType="edit"></i></button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzDanger><i nz-icon nzType="delete"></i></button>
+          <nz-divider nzType="vertical"></nz-divider>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

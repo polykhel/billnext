@@ -9,20 +9,13 @@
     <i nz-icon nzType="dashboard"></i>
     <span *ngIf="!isCollapsed" appTranslate="navbar.dashboard">Dashboard</span>
   </li>
-  <li nz-submenu nzOpen>
-    <span title>
-      <i nz-icon nzType="bar-chart"></i>
-      <span appTranslate="navbar.stats">Stats</span>
-    </span>
-    <ul>
-      <li nz-menu-item nzMatchRouter>
-        <a>Basic Form</a>
-      </li>
-    </ul>
-  </li>
   <li nz-menu-item>
     <i nz-icon nzType="wallet"></i>
     <span *ngIf="!isCollapsed" appTranslate="navbar.wallets">Wallets</span>
+  </li>
+  <li nz-menu-item routerLink="/wallet-group">
+    <i nz-icon nzType="group"></i>
+    <span *ngIf="!isCollapsed" appTranslate="navbar.walletGroups">Wallet Groups</span>
   </li>
   <li nz-menu-item>
     <i nz-icon nzType="setting"></i>

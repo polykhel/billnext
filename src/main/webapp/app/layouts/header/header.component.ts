@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { LoginService } from 'app/shared/login/login.service';
 import { Router } from '@angular/router';
 import { AccountService } from 'app/core/auth/account.service';
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.less'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   isCollapsed = false;
   languages = LANGUAGES;
   currentLanguage = 'en';
@@ -27,6 +27,10 @@ export class HeaderComponent {
     private sessionStorage: SessionStorageService,
     private translateService: TranslateService
   ) {}
+
+  ngOnInit(): void {
+    this.currentLanguage = this.translateService.currentLang;
+  }
 
   toggleNavbar(): void {
     this.isCollapsed = !this.isCollapsed;
