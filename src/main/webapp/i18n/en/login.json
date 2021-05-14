@@ -1,11 +1,11 @@
 {
   "login": {
-    "title": "Sign in",
+    "title": "Log in",
     "form": {
       "password": "Password",
       "password.placeholder": "Your password",
       "rememberme": "Remember me",
-      "button": "Sign in"
+      "button": "Log in"
     },
     "messages": {
       "validate": {
@@ -17,7 +17,7 @@
         }
       },
       "error": {
-        "authentication": "<strong>Failed to sign in!</strong> Please check your credentials and try again."
+        "authentication": "<strong>Failed to log in!</strong> Please check your credentials and try again."
       }
     },
     "password": {

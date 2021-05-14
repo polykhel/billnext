@@ -1,4 +1,18 @@
 /* ==========================================================================
+Generic styles
+========================================================================== */
+
+/* Error highlight on input fields */
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid green;
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid red;
+}
+
+/* ==========================================================================
 Utility classes
 ========================================================================== */
 .float-right {
@@ -9,14 +23,54 @@ Utility classes
   float: left;
 }
 
-.w-100 {
-  width: 100%;
-}
-
 .mt-3 {
   margin-top: 1rem;
 }
 
 .pointer {
   cursor: pointer;
+}
+
+.error {
+  color: white;
+  background-color: red;
+}
+
+.pad {
+  padding: 10px;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+
+.w-60 {
+  width: 60% !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.break {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.readonly {
+  background-color: #eee;
+  opacity: 1;
+}
+
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.hand,
+[jhisortby] {
+  cursor: pointer;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
 }

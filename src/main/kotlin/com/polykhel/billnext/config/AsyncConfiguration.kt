@@ -18,7 +18,7 @@ import java.util.concurrent.Executor
 @EnableScheduling
 class AsyncConfiguration(private val taskExecutionProperties: TaskExecutionProperties) : AsyncConfigurer {
 
-    private val log = LoggerFactory.getLogger(AsyncConfiguration::class.java)
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @Bean(name = ["taskExecutor"])
     override fun getAsyncExecutor(): Executor {
@@ -32,5 +32,5 @@ class AsyncConfiguration(private val taskExecutionProperties: TaskExecutionPrope
         return ExceptionHandlingAsyncTaskExecutor(executor)
     }
 
-    override fun getAsyncUncaughtExceptionHandler(): AsyncUncaughtExceptionHandler = SimpleAsyncUncaughtExceptionHandler()
+    override fun getAsyncUncaughtExceptionHandler() = SimpleAsyncUncaughtExceptionHandler()
 }

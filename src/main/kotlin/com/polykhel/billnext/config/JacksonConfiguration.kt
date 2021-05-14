@@ -16,13 +16,14 @@ class JacksonConfiguration {
      * @return the corresponding Jackson module.
      */
     @Bean
-    fun javaTimeModule(): JavaTimeModule = JavaTimeModule()
+    fun javaTimeModule() = JavaTimeModule()
 
     @Bean
     fun jdk8TimeModule() = Jdk8Module()
+
     /*
-        * Support for Hibernate types in Jackson.
-        */
+     * Support for Hibernate types in Jackson.
+     */
     @Bean
     fun hibernate5Module() = Hibernate5Module()
 

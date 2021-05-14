@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { errorRoute } from './layouts/error/error.route';
 import { DEBUG_INFO_ENABLED } from './app.constants';
+import { errorRoute } from './layouts/error/error.route';
 
 const LAYOUT_ROUTES = [...errorRoute];
 
@@ -9,6 +9,10 @@ const LAYOUT_ROUTES = [...errorRoute];
   imports: [
     RouterModule.forRoot(
       [
+        {
+          path: 'account',
+          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+        },
         {
           path: 'login',
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),

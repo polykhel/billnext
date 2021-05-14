@@ -1,0 +1,20 @@
+<nz-row nzJustify="center">
+  <nz-col nzMd="16">
+    <h1 appTranslate="activate.title">Activation</h1>
+
+    <nz-alert *ngIf="success" nzType="success" [nzMessage]="successTpl">
+      <ng-template #successTpl>
+        <span appTranslate="activate.messages.success"><strong>Your user account has been activated.</strong> Please</span>
+        <a appTranslate="global.messages.info.authenticated.link" routerLink="/login">log in</a>.
+      </ng-template>
+    </nz-alert>
+
+    <nz-alert *ngIf="error" [nzMessage]="errorTpl" nzType="error">
+      <ng-template #errorTpl>
+        <span appTranslate="activate.messages.error">
+          <strong>Your user could not be activated.</strong> Please use the registration form to sign up.
+        </span>
+      </ng-template>
+    </nz-alert>
+  </nz-col>
+</nz-row>

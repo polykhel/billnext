@@ -3,10 +3,10 @@ jest.mock('app/core/auth/account.service');
 jest.mock('app/shared/login/login.service');
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { LoginService } from 'app/login/login.service';
 import { of } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
-import { LoginService } from 'app/shared/login/login.service';
 
 import { HomeComponent } from './home.component';
 

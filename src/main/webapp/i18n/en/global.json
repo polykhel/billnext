@@ -16,7 +16,7 @@
         "settings": "Settings",
         "password": "Password",
         "sessions": "Sessions",
-        "login": "Sign in",
+        "login": "Log in",
         "logout": "Sign out",
         "register": "Register"
       },
@@ -32,6 +32,11 @@
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
+      "dashboard": "Dashboard",
+      "stats": "Stats",
+      "wallets": "Wallets",
+      "walletgroups": "Wallet Groups",
+      "profile": "Profile",
       "language": "Language"
     },
     "form": {
@@ -50,7 +55,7 @@
       "info": {
         "authenticated": {
           "prefix": "If you want to ",
-          "link": "sign in",
+          "link": "log in",
           "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
         },
         "register": {

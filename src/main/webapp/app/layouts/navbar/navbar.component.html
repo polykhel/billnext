@@ -1,29 +1,44 @@
 <div class="sidebar-logo">
-  <a routerLink="/">
-    <img alt="logo" src="/content/images/logo_transparent.png" />
+  <a [ngSwitch]="!!getImageUrl()" routerLink="/">
+    <ng-container *ngSwitchCase="true">
+      <img [src]="getImageUrl()" alt="Avatar" class="profile-image rounded-circle" />
+    </ng-container>
+    <ng-container *ngSwitchCase="false">
+      <img alt="logo" class="logo" src="/content/images/logo_transparent.png" />
+    </ng-container>
     <h1>BillNext</h1>
     <span class="navbar-version">{{ version }}</span>
   </a>
 </div>
-<ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="inline">
-  <li nz-menu-item routerLink="/dashboard">
+<ul [nzInlineCollapsed]="isCollapsed" nz-menu nzMode="vertical">
+  <li nz-menu-item nzMatchRouter nzMatchRouterExact routerLink="/dashboard">
     <i nz-icon nzType="dashboard"></i>
-    <span *ngIf="!isCollapsed" appTranslate="navbar.dashboard">Dashboard</span>
+    <span *ngIf="!isCollapsed" appTranslate="global.menu.dashboard">Dashboard</span>
   </li>
-  <li nz-menu-item>
+  <li nz-menu-item nzMatchRouter nzMatchRouterExact routerLink="/wallet">
     <i nz-icon nzType="wallet"></i>
-    <span *ngIf="!isCollapsed" appTranslate="navbar.wallets">Wallets</span>
+    <span *ngIf="!isCollapsed" appTranslate="global.menu.wallets">Wallets</span>
   </li>
-  <li nz-menu-item routerLink="/wallet-group">
+  <li nz-menu-item nzMatchRouter nzMatchRouterExact routerLink="/wallet-group">
     <i nz-icon nzType="group"></i>
-    <span *ngIf="!isCollapsed" appTranslate="navbar.walletGroups">Wallet Groups</span>
+    <span *ngIf="!isCollapsed" appTranslate="global.menu.walletgroups">Wallet Groups</span>
   </li>
-  <li nz-menu-item>
-    <i nz-icon nzType="setting"></i>
-    <span *ngIf="!isCollapsed" appTranslate="navbar.settings">Settings</span>
+  <li nz-submenu>
+    <span title>
+      <i nz-icon nzType="user"></i>
+      <span *ngIf="!isCollapsed" appTranslate="global.menu.account.main">Account</span>
+    </span>
+    <ul>
+      <li nz-menu-item nzMatchRouter nzMatchRouterExact routerLink="account/password">
+        <i nz-icon nzType="lock"></i><span appTranslate="global.menu.account.password">Password</span>
+      </li>
+      <li nz-menu-item nzMatchRouter nzMatchRouterExact routerLink="account/settings">
+        <i nz-icon nzType="setting"></i><span appTranslate="global.menu.account.settings"> Settings</span>
+      </li>
+    </ul>
   </li>
   <li *ngIf="openAPIEnabled" nz-menu-item routerLink="admin/docs">
     <i nz-icon nzType="book"></i>
-    <span *ngIf="!isCollapsed" appTranslate="navbar.apidocs">API</span>
+    <span *ngIf="!isCollapsed">API</span>
   </li>
 </ul>
