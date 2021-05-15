@@ -5,6 +5,7 @@ import { PasswordResetFinishComponent } from 'app/account/password-reset/finish/
 import { PasswordResetInitComponent } from 'app/account/password-reset/init/password-reset-init.component';
 import { PasswordStrengthBarComponent } from 'app/account/password/password-strength-bar/password-strength-bar.component';
 import { PasswordComponent } from 'app/account/password/password.component';
+import { RegisterComponent } from 'app/account/register/register.component';
 import { SharedModule } from 'app/shared/shared.module';
 
 import { ActivateComponent } from './activate/activate.component';
@@ -18,6 +19,7 @@ import { ActivateComponent } from './activate/activate.component';
     PasswordStrengthBarComponent,
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
+    RegisterComponent,
   ],
   providers: [],
 })

@@ -1,0 +1,167 @@
+<nz-row nzJustify="center">
+  <nz-col nzMd="16">
+    <h1 appTranslate="register.title" data-cy="registerTitle">Registration</h1>
+
+    <nz-alert *ngIf="success" [nzMessage]="successTpl" class="mt-3" nzType="success">
+      <ng-template #successTpl>
+        <span appTranslate="register.messages.success">
+          <strong>Registration saved!</strong> Please check your email for confirmation.
+        </span>
+      </ng-template>
+    </nz-alert>
+
+    <nz-alert *ngIf="error" [nzMessage]="errorTpl" class="mt-3" nzType="error">
+      <ng-template #errorTpl>
+        <span appTranslate="register.messages.error.fail"><strong>Registration failed!</strong> Please try again later. </span>
+      </ng-template>
+    </nz-alert>
+
+    <nz-alert *ngIf="errorUserExists" [nzMessage]="errorUserExistsTpl" class="mt-3" nzType="error">
+      <ng-template #errorUserExistsTpl>
+        <span appTranslate="register.messages.error.userexists">
+          <strong>Login name already registered!</strong> Please choose another one. Please try again later.
+        </span>
+      </ng-template>
+    </nz-alert>
+
+    <nz-alert *ngIf="errorEmailExists" [nzMessage]="errorEmailExistsTpl" class="mt-3" nzType="error">
+      <ng-template #errorEmailExistsTpl>
+        <span appTranslate="register.messages.error.emailexists">
+          <strong>Email is already in use!</strong> Please choose another one. Please try again later.
+        </span>
+      </ng-template>
+    </nz-alert>
+
+    <nz-alert *ngIf="doNotMatch" [nzMessage]="doNotMatchTpl" class="mt-3" nzType="error">
+      <ng-template #doNotMatchTpl>
+        <span appTranslate="register.messages.error.dontmatch">The password and its confirmation do not match!</span>
+      </ng-template>
+    </nz-alert>
+
+    <form (ngSubmit)="register()" *ngIf="!success" [formGroup]="registerForm" name="form" nz-form role="form">
+      <nz-form-item>
+        <nz-form-label nzSpan="8" nzFor="login">
+          <span appTranslate="global.form.username.label">Username</span>
+        </nz-form-label>
+        <nz-form-control nzSpan="16" [nzErrorTip]="usernameErrorTpl" nzHasFeedback>
+          <input
+            #login
+            data-cy="username"
+            formControlName="login"
+            id="login"
+            name="login"
+            nz-input
+            placeholder="{{ 'global.form.username.placeholder' | translate }}"
+            type="text"
+          />
+          <ng-template #usernameErrorTpl let-control>
+            <small *ngIf="control.hasError('required')" appTranslate="register.messages.validate.login.required"
+              >Your username is required.</small
+            >
+            <small *ngIf="control.hasError('maxlength')" appTranslate="register.messages.validate.login.maxlength"
+              >Your username cannot be longer than 50 characters.</small
+            >
+            <small *ngIf="control.hasError('minlength')" appTranslate="register.messages.validate.login.minlength"
+              >Your username is required to be at least 1 character.</small
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="8" nzFor="email">
+          <span appTranslate="global.form.email.label">Email</span>
+        </nz-form-label>
+        <nz-form-control nzSpan="16" [nzErrorTip]="emailErrorTpl" nzHasFeedback>
+          <input
+            data-cy="email"
+            formControlName="email"
+            id="email"
+            name="email"
+            nz-input
+            placeholder="{{ 'global.form.email.placeholder' | translate }}"
+            type="text"
+          />
+          <ng-template #emailErrorTpl let-control>
+            <small *ngIf="control.hasError('required')" appTranslate="global.messages.validate.email.required"
+              >Your email is required.</small
+            >
+            <small *ngIf="control.hasError('maxlength')" appTranslate="global.messages.validate.email.maxlength"
+              >Your email cannot be longer than 100 characters.</small
+            >
+            <small *ngIf="control.hasError('minlength')" appTranslate="global.messages.validate.email.minlength"
+              >Your email is required to be at least 5 characters.</small
+            >
+            <small *ngIf="control.hasError('email')" appTranslate="global.messages.validate.email.invalid">Your email is invalid.</small>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="8" nzFor="password">
+          <span appTranslate="global.form.newpassword.label">Password</span>
+        </nz-form-label>
+        <nz-form-control nzSpan="16" [nzErrorTip]="passwordErrorTpl" nzHasFeedback>
+          <input
+            data-cy="firstPassword"
+            formControlName="password"
+            id="password"
+            name="password"
+            nz-input
+            placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
+            type="text"
+          />
+          <ng-template #passwordErrorTpl let-control>
+            <small *ngIf="control.hasError('required')" appTranslate="global.messages.validate.newpassword.required"
+              >Your password is required.</small
+            >
+            <small *ngIf="control.hasError('maxlength')" appTranslate="global.messages.validate.newpassword.maxlength"
+              >Your password cannot be longer than 50 characters.</small
+            >
+            <small *ngIf="control.hasError('minlength')" appTranslate="global.messages.validate.newpassword.minlength"
+              >Your password is required to be at least 4 characters.</small
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzSpan="8" nzFor="password">
+          <span appTranslate="global.form.confirmpassword.label">Password</span>
+        </nz-form-label>
+        <nz-form-control nzSpan="16" [nzErrorTip]="passwordErrorTpl" nzHasFeedback>
+          <input
+            data-cy="secondPassword"
+            formControlName="confirmPassword"
+            id="confirmPassword"
+            name="confirmPassword"
+            nz-input
+            placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
+            type="text"
+          />
+          <ng-template #passwordErrorTpl let-control>
+            <small *ngIf="control.hasError('required')" appTranslate="global.messages.validate.confirmpassword.required"
+              >Your password is required.</small
+            >
+            <small *ngIf="control.hasError('maxlength')" appTranslate="global.messages.validate.confirmpassword.maxlength"
+              >Your password cannot be longer than 50 characters.</small
+            >
+            <small *ngIf="control.hasError('minlength')" appTranslate="global.messages.validate.confirmpassword.minlength"
+              >Your password is required to be at least 4 characters.</small
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        [disabled]="registerForm.invalid"
+        appTranslate="register.form.button"
+        class="float-right mt-3"
+        data-cy="submit"
+        nz-button
+        nzType="primary"
+        type="submit"
+      >
+        Register
+      </button>
+    </form>
+  </nz-col>
+</nz-row>
